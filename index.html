@@ -363,9 +363,12 @@
     .panelBody{ padding: 12px; }
 
     .teamList{
-      display:flex;
-      flex-direction: column;
-      gap: 8px;
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    @media (max-width: 820px){
+      .teamList{ grid-template-columns: 1fr; }
     }
     .teamRow{
       display:flex;
@@ -381,7 +384,12 @@
       border-color: rgba(176,75,255,.22);
       background: rgba(176,75,255,.06);
     }
-    .teamRow button{
+    .teamRow.selected{
+      border-color: rgba(176,75,255,.38);
+      background: rgba(176,75,255,.10);
+      box-shadow: 0 0 0 4px rgba(176,75,255,.08);
+    }
+    .teamRow .pick{
       all: unset;
       cursor: pointer;
       display:flex;
@@ -562,8 +570,7 @@
         <div class="tabs">
           <button class="tab active" data-tab="league">リーグ設定</button>
           <button class="tab" data-tab="teams">チーム一覧</button>
-          <button class="tab" data-tab="teamEdit" id="tabTeamEdit" style="display:none;">チーム編集</button>
-        </div>
+          </div>
 
         <!-- League settings -->
         <div id="tab_league">
@@ -623,12 +630,68 @@
 
         <!-- Teams tab -->
         <div id="tab_teams" class="hide">
-          <div class="panel">
-            <div class="panelHead">
-              <strong>登録チーム</strong>
-              <span id="teamCount" class="muted"></span>
+          <div class="split">
+            <div class="panel">
+              <div class="panelHead">
+                <strong>登録チーム</strong>
+                <span id="teamCount" class="muted"></span>
+              </div>
+              <div class="panelBody">
+                <div class="row" style="justify-content:flex-start; margin-top:0; margin-bottom:10px;">
+                  <button class="btn primary" id="btnAddTeam">チーム追加</button>
+                </div>
+
+                <div class="teamList" id="teamList"></div>
+                <div class="small" style="margin-top:10px;">チームをタップすると右側に情報が表示され、編集して保存できます。</div>
+              </div>
             </div>
-            <div class="panelBody">
+
+            <div class="panel">
+              <div class="panelHead">
+                <strong>チーム情報</strong>
+                <span id="editingTeamMeta" class="muted">未選択</span>
+              </div>
+              <div class="panelBody" id="teamEditor">
+                <div id="teamEditorEmpty" style="
+                  border:1px dashed rgba(255,255,255,.14);
+                  border-radius:16px;
+                  padding:12px;
+                  color:rgba(255,255,255,.62);
+                  background:rgba(0,0,0,.12);
+                ">
+                  左のチーム一覧からチームを選択してください。
+                </div>
+
+                <div id="teamEditorForm" class="hide">
+                  <div class="field">
+                    <div class="label">チーム名</div>
+                    <input class="input" id="teamEditName" />
+                  </div>
+
+                  <div class="field" style="margin-top:10px;">
+                    <div class="label">チームロゴ（写真から選択）</div>
+                    <div class="fileBtn">
+                      <input id="teamLogoFile" type="file" accept="image/*" />
+                    </div>
+                    <div class="small">ロゴ表示は角丸の四角です。</div>
+                  </div>
+
+                  <div class="field" style="margin-top:10px;">
+                    <div class="label">コメント</div>
+                    <textarea class="textarea" id="teamEditComment" rows="6" placeholder="例：スタイル、目標、メモなど"></textarea>
+                  </div>
+
+                  <div class="row">
+                    <button class="btn" id="btnClearTeamLogo">ロゴ削除</button>
+                    <button class="btn primary" id="btnSaveTeam">保存</button>
+                    <button class="btn danger" id="btnDeleteTeam">チーム削除</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+<div class="panelBody">
               <div class="row" style="justify-content:flex-start; margin-top:0; margin-bottom:10px;">
                 <button class="btn primary" id="btnAddTeam">チーム追加</button>
               </div>
@@ -639,15 +702,7 @@
           </div>
         </div>
 
-        <!-- Team edit tab -->
-        <div id="tab_teamEdit" class="hide">
-          <div class="split">
-            <div class="panel">
-              <div class="panelHead">
-                <strong>チーム情報</strong>
-                <span id="editingTeamMeta" class="muted"></span>
-              </div>
-              <div class="panelBody">
+                      <div class="panelBody">
                 <div class="field">
                   <div class="label">チーム名</div>
                   <input class="input" id="teamEditName" />
@@ -730,9 +785,6 @@
     tabs: Array.from(document.querySelectorAll(".tab")),
     tab_league: document.getElementById("tab_league"),
     tab_teams: document.getElementById("tab_teams"),
-    tab_teamEdit: document.getElementById("tab_teamEdit"),
-    tabTeamEditBtn: document.getElementById("tabTeamEdit"),
-
     // League edit
     leagueEditName: document.getElementById("leagueEditName"),
     leagueLogoFile: document.getElementById("leagueLogoFile"),
@@ -749,13 +801,13 @@
 
     // Team edit
     editingTeamMeta: document.getElementById("editingTeamMeta"),
+    teamEditorEmpty: document.getElementById("teamEditorEmpty"),
+    teamEditorForm: document.getElementById("teamEditorForm"),
     teamEditName: document.getElementById("teamEditName"),
     teamLogoFile: document.getElementById("teamLogoFile"),
     teamEditComment: document.getElementById("teamEditComment"),
     btnSaveTeam: document.getElementById("btnSaveTeam"),
-    btnClearTeamLogo: document.getElementById("btnClearTeamLogo"),
-    btnBackToTeams: document.getElementById("btnBackToTeams"),
-    btnDeleteTeam: document.getElementById("btnDeleteTeam"),
+    btnClearTeamLogo: document.getElementById("btnClearTeamLogo"),    btnDeleteTeam: document.getElementById("btnDeleteTeam"),
   };
 
   // Currently managing league/team
@@ -898,13 +950,10 @@
     persist();
     render();
     renderTeamsInModal();
+    syncTeamEditorVisibility();
     toast("チームを追加しました");
   });
-
-  // Team edit actions
-  el.btnBackToTeams.addEventListener("click", () => {
-    activeTeamId = null;
-    setTab("teams");
+  // Team editor actions
   });
 
   el.btnSaveTeam.addEventListener("click", () => {
@@ -929,6 +978,7 @@
     persist();
     render();
     renderTeamsInModal();
+    syncTeamEditorVisibility();
     syncTeamEditMeta();
     toast("チームロゴを削除しました");
   });
@@ -942,6 +992,7 @@
     persist();
     render();
     renderTeamsInModal();
+    syncTeamEditorVisibility();
     syncTeamEditMeta();
     toast("チームロゴを更新しました");
     el.teamLogoFile.value = "";
@@ -958,7 +1009,7 @@
     persist();
     render();
     renderTeamsInModal();
-    setTab("teams");
+    syncTeamEditorVisibility();
     toast("チームを削除しました");
   });
 
@@ -1064,7 +1115,7 @@
     el.leagueEditPoints.value = league.points;
 
     syncModalHeader();
-    setTab("league", true);
+    setTab("league");
 
     el.overlay.classList.add("show");
     el.overlay.setAttribute("aria-hidden","false");
@@ -1074,10 +1125,7 @@
     activeLeagueId = null;
     activeTeamId = null;
     el.overlay.classList.remove("show");
-    el.overlay.setAttribute("aria-hidden","true");
-    // reset team edit tab visibility
-    el.tabTeamEditBtn.style.display = "none";
-  }
+    el.overlay.setAttribute("aria-hidden","true");  }
 
   function syncModalHeader(){
     const league = getActiveLeague();
@@ -1107,22 +1155,10 @@
     // show/hide
     el.tab_league.classList.toggle("hide", key !== "league");
     el.tab_teams.classList.toggle("hide", key !== "teams");
-    el.tab_teamEdit.classList.toggle("hide", key !== "teamEdit");
 
     if (key === "teams"){
       renderTeamsInModal();
-      // hide team edit tab button unless editing
-      if (!activeTeamId) el.tabTeamEditBtn.style.display = "none";
-    }
-    if (key === "teamEdit"){
-      if (!activeTeamId && !force){
-        setTab("teams");
-        return;
-      }
-      el.tabTeamEditBtn.style.display = "inline-flex";
-      el.tabTeamEditBtn.classList.add("active");
-      // fill fields
-      fillTeamEditFields();
+      syncTeamEditorVisibility();
     }
   }
 
@@ -1136,6 +1172,7 @@
     if (league.teams.length === 0){
       el.teamList.innerHTML = `
         <div style="
+          grid-column: 1 / -1;
           border:1px dashed rgba(255,255,255,.14);
           border-radius:16px;
           padding:12px;
@@ -1145,19 +1182,24 @@
           まだチームがありません。「チーム追加」で作成できます。
         </div>
       `;
+      activeTeamId = null;
+      syncTeamEditorVisibility();
       return;
     }
 
     league.teams.forEach((team, idx) => {
       const row = document.createElement("div");
       row.className = "teamRow";
+      if (activeTeamId === team.id) row.classList.add("selected");
 
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.addEventListener("click", () => {
+      const pick = document.createElement("button");
+      pick.className = "pick";
+      pick.type = "button";
+      pick.addEventListener("click", () => {
         activeTeamId = team.id;
-        el.tabTeamEditBtn.style.display = "inline-flex";
-        setTab("teamEdit", true);
+        renderTeamsInModal(); // refresh highlight
+        fillTeamEditFields();
+        syncTeamEditorVisibility();
       });
 
       const logo = document.createElement("div");
@@ -1165,6 +1207,7 @@
       logo.style.width = "38px";
       logo.style.height = "38px";
       logo.style.borderRadius = "14px";
+      logo.innerHTML = "";
       if (team.logoDataUrl){
         const img = document.createElement("img");
         img.src = team.logoDataUrl;
@@ -1191,8 +1234,8 @@
       txt.appendChild(nm);
       txt.appendChild(hint);
 
-      btn.appendChild(logo);
-      btn.appendChild(txt);
+      pick.appendChild(logo);
+      pick.appendChild(txt);
 
       const del = document.createElement("button");
       del.className = "xBtn";
@@ -1203,17 +1246,24 @@
         const ok = confirm(`「${team.name}」を削除しますか？`);
         if (!ok) return;
         league.teams = league.teams.filter(t => t.id !== team.id);
+        if (activeTeamId === team.id) activeTeamId = null;
         persist();
         render();
         renderTeamsInModal();
+        syncTeamEditorVisibility();
         toast("チームを削除しました");
       });
 
-      row.appendChild(btn);
+      row.appendChild(pick);
       row.appendChild(del);
 
       el.teamList.appendChild(row);
     });
+
+    if (activeTeamId){
+      fillTeamEditFields();
+    }
+    syncTeamEditorVisibility();
   }
 
   function fillTeamEditFields(){
@@ -1232,6 +1282,19 @@
     if (!team || !league) return;
 
     el.editingTeamMeta.textContent = `所属: ${league.name}`;
+  }
+
+  function syncTeamEditorVisibility(){
+    const league = getActiveLeague();
+    const team = getActiveTeam();
+    if (!league || !team){
+      el.editingTeamMeta.textContent = "未選択";
+      el.teamEditorEmpty.classList.remove("hide");
+      el.teamEditorForm.classList.add("hide");
+      return;
+    }
+    el.teamEditorEmpty.classList.add("hide");
+    el.teamEditorForm.classList.remove("hide");
   }
 
   // ---- Helpers: state

@@ -1,13 +1,8 @@
-# League UI (GitHub Pages)
+# League UI (GitHub Pages) v3
 
-このフォルダをそのままGitHubリポジトリ直下に置くと動きます（ビルド不要）。
-
-## できること
-- リーグ作成（League 1 / League 2 … 自動連番）
-- リーグ一覧はコンパクト表示（「管理」ボタンでそのリーグを管理）
-- リーグロゴ編集（写真から選択 / 角丸の四角で表示）
-- 登録チーム作成（Team 1 / Team 2 …）
-- チーム一覧でチームを押す → チーム名 / ロゴ / コメント編集
+- チーム一覧を2列表示（幅が狭い端末では1列）
+- チーム一覧でチームを押すと、同じ画面の右側に詳細が出て編集/保存できます
+- ロゴは写真から選択（角丸四角）
 
 ## GitHub Pages
-Settings → Pages → Branch: main / root を選択。
+Settings → Pages → Branch: main / root
