@@ -32,7 +32,6 @@
     }
     .app{ max-width:1200px; margin:0 auto; padding:22px 18px 34px; }
 
-    /* topbar */
     .topbar{
       display:flex; gap:12px; align-items:center; justify-content:space-between;
       padding:14px 16px; border:1px solid var(--stroke);
@@ -61,7 +60,6 @@
     }
     .dot{ width:8px; height:8px; border-radius:99px; background:var(--good); box-shadow:0 0 0 4px rgba(75,227,139,.12); }
 
-    /* buttons */
     .btn{
       border:1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.06);
@@ -79,13 +77,11 @@
       box-shadow: 0 10px 22px rgba(176,75,255,.18);
     }
     .btn.primary:hover{ filter: brightness(1.04); }
-    .btn.danger{
-      border-color: rgba(255,77,109,.26);
-      background: rgba(255,77,109,.08);
-    }
+    .btn.danger{ border-color: rgba(255,77,109,.26); background: rgba(255,77,109,.08); }
+    .btn.ghost{ background: rgba(0,0,0,.20); border-color: rgba(255,255,255,.10); }
+    .btn.small{ padding:8px 10px; border-radius:11px; font-size:12px; }
 
-    /* layout */
-    .grid{ margin-top:16px; display:grid; grid-template-columns: 1.45fr 1fr; gap:16px; align-items:start; }
+    .grid{ margin-top:16px; display:grid; grid-template-columns: 1fr 1fr; gap:16px; align-items:start; }
     @media (max-width:980px){ .grid{ grid-template-columns:1fr; } .brand{ min-width:auto; } }
 
     .card{
@@ -98,7 +94,7 @@
     }
     .cardHead{
       display:flex; align-items:center; justify-content:space-between;
-      padding:14px 16px;
+      padding:12px 14px;
       border-bottom:1px solid var(--stroke-2);
       background: linear-gradient(180deg, rgba(0,0,0,.12), transparent);
       gap:10px;
@@ -106,9 +102,11 @@
     .cardHead .title{ display:flex; flex-direction:column; gap:2px; }
     .cardHead h2{ margin:0; font-size:13px; letter-spacing:.2px; }
     .cardHead p{ margin:0; font-size:12px; color:var(--muted); }
-    .cardBody{ padding:14px 16px 16px; }
+    .cardBody{ padding:12px 14px 14px; }
 
-    /* form */
+    .compactRow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .grow{ flex:1 1 auto; min-width: 220px; }
+
     .form{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
     @media (max-width:720px){ .form{ grid-template-columns:1fr; } }
     .field{ display:flex; flex-direction:column; gap:6px; }
@@ -134,7 +132,24 @@
     .hint{ font-size:11px; color:var(--faint); line-height:1.35; }
     .row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; align-items:center; justify-content:flex-end; }
 
-    /* league list (compact) */
+    details{
+      border:1px solid var(--stroke-2);
+      border-radius: 16px;
+      background: rgba(0,0,0,.16);
+      padding: 10px 10px;
+    }
+    summary{
+      cursor:pointer;
+      list-style:none;
+      user-select:none;
+      display:flex; align-items:center; justify-content:space-between;
+      font-weight:800;
+      color: rgba(255,255,255,.88);
+      font-size: 12px;
+    }
+    summary::-webkit-details-marker{ display:none; }
+    .chev{ color: var(--muted); font-weight:900; }
+
     .list{ display:flex; flex-direction:column; gap:10px; }
     .leagueCard{
       border:1px solid var(--stroke);
@@ -162,6 +177,7 @@
       max-width: 340px;
     }
     .leagueMeta{ font-size:12px; color:var(--muted); display:flex; gap:10px; flex-wrap:wrap; }
+
     .badge{
       display:inline-flex; align-items:center; gap:6px;
       padding:6px 10px; border-radius:999px; border:1px solid var(--stroke);
@@ -170,7 +186,6 @@
     }
     .badge .bDot{ width:6px; height:6px; border-radius:99px; background:var(--accent); box-shadow:0 0 0 3px rgba(176,75,255,.12); }
 
-    /* modal */
     .overlay{
       position:fixed; inset:0;
       background: rgba(0,0,0,.55);
@@ -180,7 +195,7 @@
     }
     .overlay.show{ display:flex; }
     .modal{
-      width: min(980px, 100%);
+      width: min(1040px, 100%);
       border:1px solid var(--stroke);
       border-radius:20px;
       background: linear-gradient(180deg, rgba(16, 22, 45, .92), rgba(12, 16, 35, .90));
@@ -235,12 +250,20 @@
     .panelHead span{ font-size:12px; color:var(--muted); }
     .panelBody{ padding:12px; }
 
-    /* teams list 2 columns */
-    .teamList{
-      display:grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
+    .seasonList{ display:flex; flex-direction:column; gap:10px; }
+    .seasonRow{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding:10px 10px;
+      border-radius:16px;
+      border:1px solid var(--stroke-2);
+      background: rgba(255,255,255,.03);
     }
+    .seasonRow:hover{ border-color: rgba(176,75,255,.22); background: rgba(176,75,255,.06); }
+    .seasonRow .left{ display:flex; flex-direction:column; gap:2px; min-width:0; }
+    .seasonRow .name{ font-weight:800; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .seasonRow .meta{ font-size:11px; color: var(--muted); }
+
+    .teamList{ display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
     @media (max-width: 820px){ .teamList{ grid-template-columns: 1fr; } }
     .teamCard{
       display:flex; align-items:center; justify-content:space-between;
@@ -286,8 +309,59 @@
 
     .small{ font-size:11px; color:var(--faint); line-height:1.35; }
     .hide{ display:none !important; }
-
     .footer{ margin-top:14px; color:var(--faint); font-size:12px; text-align:center; }
+
+    .seasonView{
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      display: none;
+      flex-direction: column;
+      background:
+        radial-gradient(1200px 600px at 72% 16%, rgba(176,75,255,.18), transparent 55%),
+        radial-gradient(700px 500px at 26% 92%, rgba(75,227,139,.06), transparent 55%),
+        linear-gradient(180deg, rgba(7,10,18,.98), rgba(11,16,32,.98));
+      backdrop-filter: blur(12px);
+    }
+    .seasonView.show{ display:flex; }
+    .seasonTop{ max-width: 1200px; width: 100%; margin: 0 auto; padding: 16px 18px 10px; }
+    .seasonTopInner{
+      display:flex; align-items:center; justify-content: space-between; gap: 10px;
+      padding: 12px 12px;
+      border-radius: 18px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.20);
+      box-shadow: var(--shadow-soft);
+    }
+    .seasonTitle{ display:flex; align-items:center; gap:10px; min-width: 0; }
+    .seasonTitle .t{ min-width:0; display:flex; flex-direction: column; gap: 2px; }
+    .seasonTitle .t .l1{
+      font-weight: 900; font-size: 13px;
+      white-space: nowrap; overflow:hidden; text-overflow: ellipsis; max-width: 42vw;
+    }
+    .seasonTitle .t .l2{
+      font-size: 12px; color: var(--muted);
+      white-space: nowrap; overflow:hidden; text-overflow: ellipsis; max-width: 42vw;
+    }
+    .seasonBtns{ display:flex; gap: 8px; align-items:center; flex-wrap: wrap; justify-content: flex-end; max-width: 56vw; }
+    .seasonChip{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.22);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .seasonChip.active{
+      color: rgba(255,255,255,.92);
+      border-color: rgba(176,75,255,.34);
+      background: rgba(176,75,255,.16);
+      box-shadow: 0 0 0 4px rgba(176,75,255,.08);
+    }
+    .seasonBody{ max-width: 1200px; width: 100%; margin: 0 auto; padding: 6px 18px 22px; flex: 1 1 auto; overflow: auto; }
 
     .toast{
       position:fixed; left:50%; bottom:18px;
@@ -302,14 +376,14 @@
       backdrop-filter: blur(10px);
       opacity:0; pointer-events:none;
       transition: opacity .18s ease, transform .18s ease;
-      z-index:30;
+      z-index:50;
     }
     .toast.show{ opacity:1; transform: translateX(-50%) translateY(-2px); }
   </style>
 </head>
 
 <body>
-  <div class="app">
+  <div class="app" id="homeApp">
     <header class="topbar">
       <div class="brand">
         <div class="logoMark" aria-hidden="true"></div>
@@ -329,43 +403,58 @@
         <div class="cardHead">
           <div class="title">
             <h2>リーグを作成</h2>
-            <p>追加時は League 1 / League 2 … を自動生成（編集OK）</p>
+            <p>コンパクト（詳細は開いて設定）</p>
           </div>
           <button class="btn primary" id="btnCreateLeague">リーグ追加</button>
         </div>
 
         <div class="cardBody">
-          <div class="form">
-            <div class="field">
-              <div class="label">次に作るリーグ名（初期値）</div>
+          <div class="compactRow">
+            <div class="field grow">
+              <div class="label">リーグ名（初期値）</div>
               <input class="input" id="nextLeagueName" />
-              <div class="hint">基本は「固有名詞 + 番号」で運用（例: League 3）。</div>
-            </div>
-
-            <div class="field">
-              <div class="label">リーグ形式（仮）</div>
-              <select class="select" id="format">
-                <option value="round_robin">総当たり</option>
-                <option value="home_away">H/A（2回戦）</option>
-              </select>
-              <div class="hint">※ 今はUI/保存まで。試合生成は次ステップ。</div>
-            </div>
-
-            <div class="field">
-              <div class="label">勝ち点（勝/分/負）</div>
-              <input class="input" id="points" placeholder="3 / 1 / 0" value="3 / 1 / 0" />
-              <div class="hint">※ 現段階は保存のみ。</div>
-            </div>
-
-            <div class="field">
-              <div class="label">チーム初期数（作成時に自動で追加）</div>
-              <input class="input" id="initialTeams" type="number" min="0" max="40" value="12" />
-              <div class="hint">作成したら Team 1 / Team 2 … を自動で入れる。</div>
+              <div class="hint">基本は「固有名詞 + 番号」（例: League 3）。</div>
             </div>
           </div>
 
-          <div class="row">
-            <button class="btn" id="btnExport">JSONを書き出し</button>
+          <div style="margin-top:10px;">
+            <details>
+              <summary>詳細設定 <span class="chev">▾</span></summary>
+              <div style="margin-top:10px;">
+                <div class="form">
+                  <div class="field">
+                    <div class="label">リーグ形式（仮）</div>
+                    <select class="select" id="format">
+                      <option value="round_robin">総当たり</option>
+                      <option value="home_away">H/A（2回戦）</option>
+                    </select>
+                    <div class="hint">※ 今はUI/保存まで。試合生成は次ステップ。</div>
+                  </div>
+
+                  <div class="field">
+                    <div class="label">勝ち点（勝/分/負）</div>
+                    <input class="input" id="points" placeholder="3 / 1 / 0" value="3 / 1 / 0" />
+                    <div class="hint">※ 現段階は保存のみ。</div>
+                  </div>
+
+                  <div class="field">
+                    <div class="label">チーム初期数（作成時に自動で追加）</div>
+                    <input class="input" id="initialTeams" type="number" min="0" max="40" value="12" />
+                    <div class="hint">作成したら Team 1 / Team 2 … を自動で入れる。</div>
+                  </div>
+
+                  <div class="field">
+                    <div class="label">初期シーズン名（任意）</div>
+                    <input class="input" id="initialSeasonName" placeholder="例：2025-26 / Season 1 など" />
+                    <div class="hint">空なら Season 1 にします。</div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <button class="btn" id="btnExport">JSONを書き出し</button>
+                </div>
+              </div>
+            </details>
           </div>
         </div>
       </section>
@@ -374,7 +463,7 @@
         <div class="cardHead">
           <div class="title">
             <h2>作成済みリーグ</h2>
-            <p>コンパクト表示 → 管理ボタンで詳細編集</p>
+            <p>コンパクト表示 → 管理ボタンで編集</p>
           </div>
           <div class="badge"><span class="bDot" aria-hidden="true"></span><span id="leagueCount">0 leagues</span></div>
         </div>
@@ -387,7 +476,6 @@
     </main>
   </div>
 
-  <!-- Manage Modal -->
   <div class="overlay" id="leagueOverlay" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="leagueModalTitle">
       <div class="modalHead">
@@ -395,7 +483,7 @@
           <div class="sqLogo" id="leagueModalLogo" aria-hidden="true">L</div>
           <div class="txt">
             <h3 id="leagueModalTitle">リーグ管理</h3>
-            <p id="leagueModalSub">設定・チーム管理</p>
+            <p id="leagueModalSub">設定・チーム管理・シーズン</p>
           </div>
         </div>
         <div style="display:flex; gap:8px; align-items:center;">
@@ -407,6 +495,7 @@
       <div class="modalBody">
         <div class="tabs">
           <button class="tab active" data-tab="league">リーグ設定</button>
+          <button class="tab" data-tab="seasons">シーズン</button>
           <button class="tab" data-tab="teams">チーム管理</button>
         </div>
 
@@ -458,8 +547,42 @@
                 </div>
 
                 <div class="row">
-                  <button class="btn" id="btnToTeams">チーム管理へ</button>
+                  <button class="btn" id="btnToSeasons">シーズンへ</button>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="tab_seasons" class="hide">
+          <div class="split">
+            <div class="panel">
+              <div class="panelHead">
+                <strong>シーズン一覧</strong>
+                <span id="seasonCount" class="muted"></span>
+              </div>
+              <div class="panelBody">
+                <div class="field">
+                  <div class="label">次シーズン名（任意）</div>
+                  <input class="input" id="newSeasonName" placeholder="例：2026-27 / Season 2 など" />
+                  <div class="hint">空なら Season + 番号 で作成します。</div>
+                </div>
+                <div class="row" style="justify-content:flex-start;">
+                  <button class="btn primary" id="btnCreateSeason">次シーズン作成</button>
+                </div>
+
+                <div class="seasonList" id="seasonList"></div>
+                <div class="small" style="margin-top:10px;">シーズンを押すと、そのシーズン画面に「全画面で切り替え」ます。</div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panelHead">
+                <strong>メモ</strong>
+                <span class="muted">（ここは後で拡張）</span>
+              </div>
+              <div class="panelBody">
+                <div class="small">今は「シーズン作成 / 切り替え」の土台だけ入れています。次ステップで、順位表・日程・結果入力をシーズン単位で持たせます。</div>
               </div>
             </div>
           </div>
@@ -487,13 +610,7 @@
                 <span id="editingTeamMeta">未選択</span>
               </div>
               <div class="panelBody">
-                <div id="teamEditorEmpty" style="
-                  border:1px dashed rgba(255,255,255,.14);
-                  border-radius:16px;
-                  padding:12px;
-                  color:rgba(255,255,255,.62);
-                  background:rgba(0,0,0,.12);
-                ">
+                <div id="teamEditorEmpty" style="border:1px dashed rgba(255,255,255,.14); border-radius:16px; padding:12px; color:rgba(255,255,255,.62); background:rgba(0,0,0,.12);">
                   左のチーム一覧からチームを選択してください。
                 </div>
 
@@ -527,23 +644,56 @@
           </div>
         </div>
 
-      </div><!-- /modalBody -->
-    </div><!-- /modal -->
-  </div><!-- /overlay -->
+      </div>
+    </div>
+  </div>
+
+  <div class="seasonView" id="seasonView" aria-hidden="true">
+    <div class="seasonTop">
+      <div class="seasonTopInner">
+        <div class="seasonTitle">
+          <div class="sqLogo" id="seasonLeagueLogo" aria-hidden="true">L</div>
+          <div class="t">
+            <div class="l1" id="seasonHeaderLeague">League</div>
+            <div class="l2" id="seasonHeaderSeason">Season</div>
+          </div>
+        </div>
+
+        <div class="seasonBtns">
+          <button class="btn ghost small" id="btnSeasonHome">ホーム</button>
+          <div id="seasonChips" style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="seasonBody">
+      <div class="card">
+        <div class="cardHead">
+          <div class="title">
+            <h2 id="seasonPageTitle">シーズン画面</h2>
+            <p class="muted">ここに順位表 / 日程 / 結果入力を追加していく</p>
+          </div>
+        </div>
+        <div class="cardBody">
+          <div class="small">
+            いまは「シーズン切り替えの枠」だけ作成済み。<br/>
+            次ステップで、このシーズンに紐づく順位表・試合日程・結果を保存します。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="toast" id="toast"></div>
 
 <script>
 (() => {
-  const STORAGE_KEY = "league_builder_v4";
-
-  // ---- State
+  const STORAGE_KEY = "league_builder_v5";
   let state = load() ?? { leagues: [], nextLeagueNumber: 1 };
 
-  // ---- DOM
   const el = {
-    // main
     nextLeagueName: document.getElementById("nextLeagueName"),
+    initialSeasonName: document.getElementById("initialSeasonName"),
     format: document.getElementById("format"),
     points: document.getElementById("points"),
     initialTeams: document.getElementById("initialTeams"),
@@ -554,7 +704,6 @@
     leagueCount: document.getElementById("leagueCount"),
     toast: document.getElementById("toast"),
 
-    // modal
     overlay: document.getElementById("leagueOverlay"),
     btnCloseLeague: document.getElementById("btnCloseLeague"),
     btnDeleteLeague: document.getElementById("btnDeleteLeague"),
@@ -562,26 +711,28 @@
     leagueModalSub: document.getElementById("leagueModalSub"),
     leagueModalLogo: document.getElementById("leagueModalLogo"),
     leagueInfoMeta: document.getElementById("leagueInfoMeta"),
-
     tabs: Array.from(document.querySelectorAll(".tab")),
     tabLeague: document.getElementById("tab_league"),
+    tabSeasons: document.getElementById("tab_seasons"),
     tabTeams: document.getElementById("tab_teams"),
 
-    // league edit
     leagueEditName: document.getElementById("leagueEditName"),
     leagueLogoFile: document.getElementById("leagueLogoFile"),
     btnClearLeagueLogo: document.getElementById("btnClearLeagueLogo"),
     leagueEditFormat: document.getElementById("leagueEditFormat"),
     leagueEditPoints: document.getElementById("leagueEditPoints"),
     btnSaveLeague: document.getElementById("btnSaveLeague"),
-    btnToTeams: document.getElementById("btnToTeams"),
+    btnToSeasons: document.getElementById("btnToSeasons"),
 
-    // teams
+    seasonCount: document.getElementById("seasonCount"),
+    newSeasonName: document.getElementById("newSeasonName"),
+    btnCreateSeason: document.getElementById("btnCreateSeason"),
+    seasonList: document.getElementById("seasonList"),
+
     teamCount: document.getElementById("teamCount"),
     btnAddTeam: document.getElementById("btnAddTeam"),
     teamList: document.getElementById("teamList"),
 
-    // team editor
     editingTeamMeta: document.getElementById("editingTeamMeta"),
     teamEditorEmpty: document.getElementById("teamEditorEmpty"),
     teamEditorForm: document.getElementById("teamEditorForm"),
@@ -591,23 +742,30 @@
     btnClearTeamLogo: document.getElementById("btnClearTeamLogo"),
     btnSaveTeam: document.getElementById("btnSaveTeam"),
     btnDeleteTeam: document.getElementById("btnDeleteTeam"),
-  };
 
-  // Guard: if core button missing, stop quietly (prevents hard crash)
-  if (!el.btnCreateLeague || !el.leagueList) return;
+    seasonView: document.getElementById("seasonView"),
+    seasonLeagueLogo: document.getElementById("seasonLeagueLogo"),
+    seasonHeaderLeague: document.getElementById("seasonHeaderLeague"),
+    seasonHeaderSeason: document.getElementById("seasonHeaderSeason"),
+    seasonChips: document.getElementById("seasonChips"),
+    btnSeasonHome: document.getElementById("btnSeasonHome"),
+    seasonPageTitle: document.getElementById("seasonPageTitle"),
+  };
 
   let activeLeagueId = null;
   let activeTeamId = null;
+  let activeSeasonId = null;
 
   refreshNextLeagueName();
-  render();
+  renderHome();
 
-  // ---- Main events
   el.btnCreateLeague.addEventListener("click", () => {
     const name = (el.nextLeagueName.value || "").trim() || defaultLeagueName();
     const format = el.format.value;
     const points = (el.points.value || "").trim() || "3 / 1 / 0";
     const initialTeams = clampInt(el.initialTeams.value, 0, 40);
+    const seasonNameRaw = (el.initialSeasonName.value || "").trim();
+    const seasonName = seasonNameRaw || "Season 1";
 
     const league = {
       id: uid(),
@@ -615,18 +773,25 @@
       format,
       points,
       logoDataUrl: "",
-      teams: []
+      teams: [],
+      seasons: [],
+      activeSeasonId: ""
     };
 
     for (let i = 0; i < initialTeams; i++){
       league.teams.push({ id: uid(), name: `Team ${i + 1}`, logoDataUrl: "", comment: "" });
     }
 
+    const s = { id: uid(), name: seasonName, createdAt: Date.now() };
+    league.seasons.push(s);
+    league.activeSeasonId = s.id;
+
     state.leagues.unshift(league);
     bumpNextLeagueNumberOnCreate(name);
     persist();
-    render();
+    renderHome();
     refreshNextLeagueName();
+    el.initialSeasonName.value = "";
     toast(`「${name}」を追加しました`);
   });
 
@@ -635,7 +800,7 @@
     if (!ok) return;
     state = { leagues: [], nextLeagueNumber: 1 };
     persist();
-    render();
+    renderHome();
     refreshNextLeagueName();
     toast("全データを削除しました");
   });
@@ -656,17 +821,17 @@
     }
   });
 
-  // ---- Modal open/close
   el.btnCloseLeague.addEventListener("click", closeLeagueModal);
   el.overlay.addEventListener("click", (e) => { if (e.target === el.overlay) closeLeagueModal(); });
-  window.addEventListener("keydown", (e) => { if (e.key === "Escape" && el.overlay.classList.contains("show")) closeLeagueModal(); });
-
-  // Tabs
-  el.tabs.forEach(t => {
-    t.addEventListener("click", () => setTab(t.getAttribute("data-tab")));
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape"){
+      if (el.seasonView.classList.contains("show")) closeSeasonView();
+      else if (el.overlay.classList.contains("show")) closeLeagueModal();
+    }
   });
 
-  // ---- League edit events
+  el.tabs.forEach(t => t.addEventListener("click", () => setTab(t.getAttribute("data-tab"))));
+
   el.btnSaveLeague.addEventListener("click", () => {
     const league = getActiveLeague();
     if (!league) return;
@@ -676,7 +841,7 @@
     league.format = el.leagueEditFormat.value;
     league.points = (el.leagueEditPoints.value || "").trim() || "3 / 1 / 0";
     persist();
-    render();
+    renderHome();
     syncModalHeader();
     toast("リーグを保存しました");
   });
@@ -686,7 +851,7 @@
     if (!league) return;
     league.logoDataUrl = "";
     persist();
-    render();
+    renderHome();
     syncModalHeader();
     toast("リーグロゴを削除しました");
   });
@@ -698,13 +863,13 @@
     if (!file) return;
     league.logoDataUrl = await fileToDataUrl(file);
     persist();
-    render();
+    renderHome();
     syncModalHeader();
     toast("リーグロゴを更新しました");
     el.leagueLogoFile.value = "";
   });
 
-  el.btnToTeams.addEventListener("click", () => setTab("teams"));
+  el.btnToSeasons.addEventListener("click", () => setTab("seasons"));
 
   el.btnDeleteLeague.addEventListener("click", () => {
     const league = getActiveLeague();
@@ -713,12 +878,29 @@
     if (!ok) return;
     state.leagues = state.leagues.filter(l => l.id !== league.id);
     persist();
-    render();
+    renderHome();
     closeLeagueModal();
     toast("リーグを削除しました");
   });
 
-  // ---- Teams events
+  el.btnCreateSeason.addEventListener("click", () => {
+    const league = getActiveLeague();
+    if (!league) return;
+    normalizeLeague(league);
+
+    const raw = (el.newSeasonName.value || "").trim();
+    const name = raw || `Season ${nextSeasonNumber(league)}`;
+    const season = { id: uid(), name, createdAt: Date.now() };
+    league.seasons.push(season);
+    league.activeSeasonId = season.id;
+
+    persist();
+    el.newSeasonName.value = "";
+    renderSeasons();
+    syncModalHeader();
+    toast(`「${name}」を作成しました`);
+  });
+
   el.btnAddTeam.addEventListener("click", () => {
     const league = getActiveLeague();
     if (!league) return;
@@ -726,6 +908,7 @@
     league.teams.push({ id: uid(), name: `Team ${num}`, logoDataUrl: "", comment: "" });
     persist();
     renderTeams();
+    syncModalHeader();
     toast("チームを追加しました");
   });
 
@@ -737,7 +920,7 @@
     team.name = name;
     team.comment = (el.teamEditComment.value || "").trim();
     persist();
-    render();
+    renderHome();
     renderTeams();
     toast("チームを保存しました");
   });
@@ -758,7 +941,7 @@
     if (!file) return;
     team.logoDataUrl = await fileToDataUrl(file);
     persist();
-    render();
+    renderHome();
     renderTeams();
     toast("チームロゴを更新しました");
     el.teamLogoFile.value = "";
@@ -773,13 +956,18 @@
     league.teams = league.teams.filter(t => t.id !== team.id);
     activeTeamId = null;
     persist();
-    render();
+    renderHome();
     renderTeams();
     toast("チームを削除しました");
   });
 
-  // ---- Render main list
-  function render(){
+  el.btnSeasonHome.addEventListener("click", () => {
+    closeSeasonView();
+    if (!el.overlay.classList.contains("show") && activeLeagueId) openLeagueModal(activeLeagueId);
+    setTab("seasons");
+  });
+
+  function renderHome(){
     el.leagueCount.textContent = `${state.leagues.length} leagues`;
     el.leagueList.innerHTML = "";
 
@@ -797,6 +985,8 @@
   }
 
   function renderLeagueCard(league){
+    normalizeLeague(league);
+
     const card = document.createElement("div");
     card.className = "leagueCard";
 
@@ -825,7 +1015,8 @@
 
     const meta = document.createElement("div");
     meta.className = "leagueMeta";
-    meta.innerHTML = `<span>形式: ${formatLabel(league.format)}</span><span>チーム: ${league.teams.length}</span>`;
+    const sName = getActiveSeasonName(league);
+    meta.innerHTML = `<span>形式: ${formatLabel(league.format)}</span><span>チーム: ${league.teams.length}</span><span>シーズン: ${escapeHtml(sName)}</span>`;
 
     info.appendChild(name);
     info.appendChild(meta);
@@ -847,13 +1038,14 @@
     return card;
   }
 
-  // ---- Modal functions
   function openLeagueModal(leagueId){
     activeLeagueId = leagueId;
     activeTeamId = null;
+    activeSeasonId = null;
 
     const league = getActiveLeague();
     if (!league) return;
+    normalizeLeague(league);
 
     el.leagueEditName.value = league.name;
     el.leagueEditFormat.value = league.format;
@@ -867,8 +1059,6 @@
   }
 
   function closeLeagueModal(){
-    activeLeagueId = null;
-    activeTeamId = null;
     el.overlay.classList.remove("show");
     el.overlay.setAttribute("aria-hidden","true");
   }
@@ -876,8 +1066,10 @@
   function syncModalHeader(){
     const league = getActiveLeague();
     if (!league) return;
+    normalizeLeague(league);
+
     el.leagueModalTitle.textContent = league.name;
-    el.leagueModalSub.textContent = `形式: ${formatLabel(league.format)} / 勝ち点: ${league.points} / チーム: ${league.teams.length}`;
+    el.leagueModalSub.textContent = `形式: ${formatLabel(league.format)} / 勝ち点: ${league.points} / チーム: ${league.teams.length} / シーズン: ${getActiveSeasonName(league)}`;
     el.leagueInfoMeta.textContent = `${league.teams.length} teams`;
 
     el.leagueModalLogo.innerHTML = "";
@@ -893,8 +1085,61 @@
   function setTab(key){
     el.tabs.forEach(t => t.classList.toggle("active", t.getAttribute("data-tab") === key));
     el.tabLeague.classList.toggle("hide", key !== "league");
+    el.tabSeasons.classList.toggle("hide", key !== "seasons");
     el.tabTeams.classList.toggle("hide", key !== "teams");
+
+    if (key === "seasons") renderSeasons();
     if (key === "teams") renderTeams();
+  }
+
+  function renderSeasons(){
+    const league = getActiveLeague();
+    if (!league) return;
+    normalizeLeague(league);
+
+    el.seasonCount.textContent = `${league.seasons.length} seasons`;
+    el.seasonList.innerHTML = "";
+
+    league.seasons.slice().reverse().forEach((s) => {
+      const row = document.createElement("div");
+      row.className = "seasonRow";
+
+      const left = document.createElement("div");
+      left.className = "left";
+
+      const nm = document.createElement("div");
+      nm.className = "name";
+      nm.textContent = s.name;
+
+      const meta = document.createElement("div");
+      meta.className = "meta";
+      meta.textContent = `作成: ${formatDate(s.createdAt)}${league.activeSeasonId === s.id ? " / 現在" : ""}`;
+
+      left.appendChild(nm);
+      left.appendChild(meta);
+
+      const btns = document.createElement("div");
+      btns.style.display = "flex";
+      btns.style.gap = "8px";
+      btns.style.alignItems = "center";
+
+      const open = document.createElement("button");
+      open.className = "btn primary small";
+      open.textContent = "開く";
+      open.addEventListener("click", () => {
+        league.activeSeasonId = s.id;
+        persist();
+        syncModalHeader();
+        openSeasonView(league.id, s.id);
+      });
+
+      btns.appendChild(open);
+
+      row.appendChild(left);
+      row.appendChild(btns);
+
+      el.seasonList.appendChild(row);
+    });
   }
 
   function renderTeams(){
@@ -973,7 +1218,7 @@
         league.teams = league.teams.filter(t => t.id !== team.id);
         if (activeTeamId === team.id) activeTeamId = null;
         persist();
-        render();
+        renderHome();
         renderTeams();
         toast("チームを削除しました");
       });
@@ -1009,7 +1254,55 @@
     el.teamEditorForm.classList.remove("hide");
   }
 
-  // ---- Helpers
+  function openSeasonView(leagueId, seasonId){
+    activeLeagueId = leagueId;
+    activeSeasonId = seasonId;
+
+    const league = getActiveLeague();
+    if (!league) return;
+    normalizeLeague(league);
+
+    const season = league.seasons.find(s => s.id === seasonId) || league.seasons[0];
+    if (!season) return;
+
+    closeLeagueModal();
+
+    el.seasonHeaderLeague.textContent = league.name;
+    el.seasonHeaderSeason.textContent = season.name;
+    el.seasonPageTitle.textContent = season.name;
+
+    el.seasonLeagueLogo.innerHTML = "";
+    if (league.logoDataUrl){
+      const img = document.createElement("img");
+      img.src = league.logoDataUrl;
+      img.alt = "league logo";
+      el.seasonLeagueLogo.appendChild(img);
+    }else{
+      el.seasonLeagueLogo.textContent = "L";
+    }
+
+    el.seasonChips.innerHTML = "";
+    league.seasons.forEach(s => {
+      const chip = document.createElement("button");
+      chip.className = "seasonChip" + (s.id === season.id ? " active" : "");
+      chip.textContent = s.name;
+      chip.addEventListener("click", () => {
+        league.activeSeasonId = s.id;
+        persist();
+        openSeasonView(league.id, s.id);
+      });
+      el.seasonChips.appendChild(chip);
+    });
+
+    el.seasonView.classList.add("show");
+    el.seasonView.setAttribute("aria-hidden","false");
+  }
+
+  function closeSeasonView(){
+    el.seasonView.classList.remove("show");
+    el.seasonView.setAttribute("aria-hidden","true");
+  }
+
   function getActiveLeague(){
     if (!activeLeagueId) return null;
     return state.leagues.find(l => l.id === activeLeagueId) || null;
@@ -1020,11 +1313,42 @@
     return league.teams.find(t => t.id === activeTeamId) || null;
   }
 
+  function normalizeLeague(league){
+    league.logoDataUrl ??= "";
+    league.teams ??= [];
+    league.seasons ??= [];
+    if (!league.seasons.length){
+      const s = { id: uid(), name: "Season 1", createdAt: Date.now() };
+      league.seasons.push(s);
+      league.activeSeasonId = s.id;
+    }
+    if (!league.activeSeasonId){
+      league.activeSeasonId = league.seasons[league.seasons.length - 1].id;
+    }
+  }
+
+  function getActiveSeasonName(league){
+    normalizeLeague(league);
+    const s = league.seasons.find(x => x.id === league.activeSeasonId) || league.seasons[0];
+    return s ? s.name : "Season";
+  }
+
+  function nextSeasonNumber(league){
+    let max = 0;
+    for (const s of league.seasons){
+      const m = /^Season\s+(\d+)$/i.exec((s.name || "").trim());
+      if (m){
+        const n = parseInt(m[1], 10);
+        if (Number.isFinite(n)) max = Math.max(max, n);
+      }
+    }
+    return max + 1;
+  }
+
   function persist(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 
   function load(){
     try{
-      // Prefer v4
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw){
         const parsed = JSON.parse(raw);
@@ -1034,12 +1358,13 @@
             l.logoDataUrl ??= "";
             l.teams ??= [];
             l.teams.forEach(t => { t.logoDataUrl ??= ""; t.comment ??= ""; });
+            l.seasons ??= [];
+            l.activeSeasonId ??= "";
           });
           return parsed;
         }
       }
-      // Migrate from older keys (v2/v3)
-      const legacyKeys = ["league_builder_v3","league_builder_v2","league_builder_v1"];
+      const legacyKeys = ["league_builder_v4","league_builder_v3","league_builder_v2","league_builder_v1"];
       for (const k of legacyKeys){
         const r = localStorage.getItem(k);
         if (!r) continue;
@@ -1047,19 +1372,27 @@
         if (!p || !Array.isArray(p.leagues)) continue;
         const migrated = {
           nextLeagueNumber: typeof p.nextLeagueNumber === "number" ? p.nextLeagueNumber : 1,
-          leagues: p.leagues.map(l => ({
-            id: l.id || uid(),
-            name: l.name || "League",
-            format: l.format || "round_robin",
-            points: l.points || "3 / 1 / 0",
-            logoDataUrl: l.logoDataUrl || "",
-            teams: (l.teams || []).map(t => ({
-              id: t.id || uid(),
-              name: t.name || "Team",
-              logoDataUrl: t.logoDataUrl || "",
-              comment: t.comment || ""
-            }))
-          }))
+          leagues: p.leagues.map(l => {
+            const league = {
+              id: l.id || uid(),
+              name: l.name || "League",
+              format: l.format || "round_robin",
+              points: l.points || "3 / 1 / 0",
+              logoDataUrl: l.logoDataUrl || "",
+              teams: (l.teams || []).map(t => ({
+                id: t.id || uid(),
+                name: t.name || "Team",
+                logoDataUrl: t.logoDataUrl || "",
+                comment: t.comment || ""
+              })),
+              seasons: [],
+              activeSeasonId: ""
+            };
+            const s = { id: uid(), name: "Season 1", createdAt: Date.now() };
+            league.seasons = [s];
+            league.activeSeasonId = s.id;
+            return league;
+          })
         };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
         return migrated;
@@ -1106,6 +1439,21 @@
       reader.onerror = () => reject(new Error("read failed"));
       reader.readAsDataURL(file);
     });
+  }
+
+  function formatDate(ts){
+    try{
+      const d = new Date(ts);
+      return `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,"0")}/${String(d.getDate()).padStart(2,"0")}`;
+    }catch{
+      return "-";
+    }
+  }
+
+  function escapeHtml(str){
+    return String(str || "").replace(/[&<>"']/g, (c) => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[c]));
   }
 
   function toast(msg){
