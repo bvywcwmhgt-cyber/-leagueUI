@@ -11,104 +11,65 @@
 
   <style>
     :root{
-      --bg-0: #070A12;
-      --bg-1: #0B1020;
-      --panel: rgba(16, 22, 45, .92);
-      --panel-2: rgba(12, 16, 35, .92);
-      --stroke: rgba(255,255,255,.09);
-      --stroke-2: rgba(255,255,255,.06);
-
-      --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.64);
-      --faint: rgba(255,255,255,.42);
-
-      --accent: #B04BFF;
-      --accent-2: #7A3CFF;
-      --good: #4BE38B;
-      --warn: #FFB84D;
-      --bad:  #FF4D6D;
-
-      --r-xl: 18px;
-      --r-lg: 16px;
-      --r-md: 12px;
-      --r-sm: 10px;
-
-      --shadow: 0 14px 35px rgba(0,0,0,.45);
-      --shadow-soft: 0 10px 24px rgba(0,0,0,.32);
-
+      --bg-0:#070A12; --bg-1:#0B1020;
+      --stroke:rgba(255,255,255,.09); --stroke-2:rgba(255,255,255,.06);
+      --text:rgba(255,255,255,.92); --muted:rgba(255,255,255,.64); --faint:rgba(255,255,255,.42);
+      --accent:#B04BFF; --accent-2:#7A3CFF; --good:#4BE38B; --bad:#FF4D6D;
+      --r-xl:18px; --r-lg:16px;
+      --shadow:0 14px 35px rgba(0,0,0,.45); --shadow-soft:0 10px 24px rgba(0,0,0,.32);
       --font: Inter, "Noto Sans JP", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
-
-    *{ box-sizing: border-box; }
-    html, body{ height: 100%; }
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
     body{
-      margin: 0;
-      font-family: var(--font);
-      color: var(--text);
+      margin:0; font-family:var(--font); color:var(--text);
       background:
         radial-gradient(1200px 600px at 72% 16%, rgba(176,75,255,.22), transparent 55%),
         radial-gradient(900px 520px at 20% 12%, rgba(122,60,255,.12), transparent 60%),
         radial-gradient(700px 500px at 26% 92%, rgba(75,227,139,.08), transparent 55%),
         linear-gradient(180deg, var(--bg-0), var(--bg-1));
-      overflow-x: hidden;
+      overflow-x:hidden;
     }
+    .app{ max-width:1200px; margin:0 auto; padding:22px 18px 34px; }
 
-    .app{
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 22px 18px 34px;
-    }
-
-    /* Topbar */
+    /* topbar */
     .topbar{
-      display:flex;
-      gap: 12px;
-      align-items:center;
-      justify-content: space-between;
-      padding: 14px 16px;
-      border: 1px solid var(--stroke);
-      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-      border-radius: var(--r-xl);
-      box-shadow: var(--shadow-soft);
+      display:flex; gap:12px; align-items:center; justify-content:space-between;
+      padding:14px 16px; border:1px solid var(--stroke);
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border-radius:var(--r-xl); box-shadow:var(--shadow-soft);
       backdrop-filter: blur(10px);
-      position: sticky;
-      top: 10px;
-      z-index: 3;
+      position: sticky; top: 10px; z-index: 3;
     }
-    .brand{ display:flex; align-items:center; gap: 10px; min-width: 220px; }
+    .brand{ display:flex; align-items:center; gap:10px; min-width:220px; }
     .logoMark{
-      width: 38px; height: 38px; border-radius: 12px;
+      width:38px; height:38px; border-radius:12px;
       background:
         radial-gradient(16px 16px at 30% 30%, rgba(255,255,255,.35), transparent 60%),
         linear-gradient(135deg, rgba(176,75,255,.95), rgba(122,60,255,.55));
-      border: 1px solid rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.14);
       box-shadow: 0 10px 20px rgba(176,75,255,.12);
     }
-    .brand h1{ font-size: 14px; line-height: 1.1; margin: 0; letter-spacing: .2px; }
-    .brand p{ margin: 2px 0 0; font-size: 12px; color: var(--muted); }
-    .actions{ display:flex; gap: 10px; align-items:center; flex-wrap: wrap; justify-content: flex-end; }
-
+    .brand h1{ margin:0; font-size:14px; line-height:1.1; letter-spacing:.2px; }
+    .brand p{ margin:2px 0 0; font-size:12px; color:var(--muted); }
+    .actions{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end; }
     .pill{
-      display:inline-flex; align-items:center; gap: 8px;
-      padding: 10px 12px; border-radius: 999px;
-      border: 1px solid var(--stroke);
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px; border-radius:999px; border:1px solid var(--stroke);
       background: rgba(0,0,0,.18);
-      color: var(--muted); font-size: 12px; user-select: none;
+      color:var(--muted); font-size:12px; user-select:none;
     }
-    .dot{ width: 8px; height: 8px; border-radius: 99px; background: var(--good); box-shadow: 0 0 0 4px rgba(75,227,139,.12); }
+    .dot{ width:8px; height:8px; border-radius:99px; background:var(--good); box-shadow:0 0 0 4px rgba(75,227,139,.12); }
 
-    /* Buttons */
+    /* buttons */
     .btn{
-      border: 1px solid rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.06);
-      color: var(--text);
-      padding: 10px 12px;
-      border-radius: 12px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 13px;
+      color:var(--text);
+      padding:10px 12px; border-radius:12px;
+      cursor:pointer; font-weight:700; font-size:13px;
       transition: transform .06s ease, background .16s ease, border-color .16s ease, filter .16s ease;
-      white-space: nowrap;
+      white-space:nowrap;
     }
     .btn:hover{ background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.16); }
     .btn:active{ transform: translateY(1px); }
@@ -123,205 +84,131 @@
       background: rgba(255,77,109,.08);
     }
 
-    /* Layout */
-    .grid{
-      margin-top: 16px;
-      display: grid;
-      grid-template-columns: 1.45fr 1fr;
-      gap: 16px;
-      align-items: start;
-    }
-    @media (max-width: 980px){
-      .grid{ grid-template-columns: 1fr; }
-      .brand{ min-width: auto; }
-    }
+    /* layout */
+    .grid{ margin-top:16px; display:grid; grid-template-columns: 1.45fr 1fr; gap:16px; align-items:start; }
+    @media (max-width:980px){ .grid{ grid-template-columns:1fr; } .brand{ min-width:auto; } }
 
     .card{
-      border: 1px solid var(--stroke);
-      border-radius: var(--r-xl);
+      border:1px solid var(--stroke);
+      border-radius:var(--r-xl);
       background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
       box-shadow: var(--shadow);
       backdrop-filter: blur(10px);
-      overflow: hidden;
+      overflow:hidden;
     }
     .cardHead{
-      display:flex; align-items:center; justify-content: space-between;
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--stroke-2);
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 16px;
+      border-bottom:1px solid var(--stroke-2);
       background: linear-gradient(180deg, rgba(0,0,0,.12), transparent);
+      gap:10px;
     }
-    .cardHead .title{ display:flex; flex-direction: column; gap: 2px; }
-    .cardHead h2{ margin: 0; font-size: 13px; letter-spacing: .2px; }
-    .cardHead p{ margin: 0; font-size: 12px; color: var(--muted); }
+    .cardHead .title{ display:flex; flex-direction:column; gap:2px; }
+    .cardHead h2{ margin:0; font-size:13px; letter-spacing:.2px; }
+    .cardHead p{ margin:0; font-size:12px; color:var(--muted); }
+    .cardBody{ padding:14px 16px 16px; }
 
-    .cardBody{ padding: 14px 16px 16px; }
-
-    /* Form */
-    .form{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    @media (max-width: 720px){ .form{ grid-template-columns: 1fr; } }
-    .field{ display:flex; flex-direction: column; gap: 6px; }
-    .label{ font-size: 12px; color: var(--muted); }
-    .input, .select, .textarea{
-      width: 100%;
-      min-height: 40px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid var(--stroke);
+    /* form */
+    .form{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+    @media (max-width:720px){ .form{ grid-template-columns:1fr; } }
+    .field{ display:flex; flex-direction:column; gap:6px; }
+    .label{ font-size:12px; color:var(--muted); }
+    .input,.select,.textarea{
+      width:100%;
+      min-height:40px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--stroke);
       background: rgba(0,0,0,.22);
-      color: var(--text);
-      outline: none;
-      font-size: 13px;
+      color:var(--text);
+      outline:none;
+      font-size:13px;
       transition: border-color .15s ease, box-shadow .15s ease;
       resize: vertical;
     }
-    .input{ height: 40px; padding: 0 12px; }
-    .input:focus, .select:focus, .textarea:focus{
+    .input{ height:40px; padding:0 12px; }
+    .input:focus,.select:focus,.textarea:focus{
       border-color: rgba(176,75,255,.45);
       box-shadow: 0 0 0 4px rgba(176,75,255,.12);
     }
-    .hint{ font-size: 11px; color: var(--faint); line-height: 1.35; }
+    .hint{ font-size:11px; color:var(--faint); line-height:1.35; }
+    .row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; align-items:center; justify-content:flex-end; }
 
-    .row{ display:flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; align-items: center; justify-content: flex-end; }
-
-    /* Compact list (leagues) */
-    .list{ display:flex; flex-direction: column; gap: 10px; }
+    /* league list (compact) */
+    .list{ display:flex; flex-direction:column; gap:10px; }
     .leagueCard{
-      border: 1px solid var(--stroke);
-      border-radius: var(--r-xl);
+      border:1px solid var(--stroke);
+      border-radius:var(--r-xl);
       background: rgba(0,0,0,.16);
-      overflow: hidden;
+      overflow:hidden;
     }
-    .leagueTop{
-      display:flex; align-items:center; justify-content: space-between;
-      gap: 10px;
-      padding: 12px 12px;
-    }
-    .leagueLeft{ display:flex; align-items:center; gap: 10px; min-width: 0; }
+    .leagueTop{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px; }
+    .leagueLeft{ display:flex; align-items:center; gap:10px; min-width:0; }
     .sqLogo{
-      width: 42px; height: 42px;
-      border-radius: 14px; /* 角丸四角 */
-      border: 1px solid rgba(255,255,255,.14);
+      width:42px; height:42px; border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
       background:
         radial-gradient(16px 16px at 30% 30%, rgba(255,255,255,.18), transparent 60%),
         linear-gradient(135deg, rgba(176,75,255,.38), rgba(0,0,0,.2));
-      overflow: hidden;
-      flex: 0 0 auto;
-      display:flex; align-items:center; justify-content: center;
-      color: rgba(255,255,255,.7);
-      font-weight: 800;
-      font-size: 12px;
-      letter-spacing: .2px;
+      overflow:hidden; flex:0 0 auto;
+      display:flex; align-items:center; justify-content:center;
+      color:rgba(255,255,255,.7); font-weight:900; font-size:12px;
     }
-    .sqLogo img{ width: 100%; height: 100%; object-fit: cover; display:block; }
-    .leagueInfo{ min-width: 0; display:flex; flex-direction: column; gap: 2px; }
+    .sqLogo img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .leagueInfo{ min-width:0; display:flex; flex-direction:column; gap:2px; }
     .leagueName{
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: .2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 320px;
+      font-size:13px; font-weight:800; letter-spacing:.2px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      max-width: 340px;
     }
-    .leagueMeta{
-      font-size: 12px;
-      color: var(--muted);
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .rightBtns{ display:flex; gap: 8px; align-items:center; flex-wrap: wrap; justify-content: flex-end; }
-
+    .leagueMeta{ font-size:12px; color:var(--muted); display:flex; gap:10px; flex-wrap:wrap; }
     .badge{
-      display:inline-flex; align-items:center; gap: 6px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid var(--stroke);
+      display:inline-flex; align-items:center; gap:6px;
+      padding:6px 10px; border-radius:999px; border:1px solid var(--stroke);
       background: rgba(255,255,255,.05);
-      font-size: 12px;
-      color: var(--muted);
+      font-size:12px; color:var(--muted);
     }
-    .badge .bDot{
-      width: 6px; height: 6px; border-radius: 99px;
-      background: var(--accent);
-      box-shadow: 0 0 0 3px rgba(176,75,255,.12);
-    }
+    .badge .bDot{ width:6px; height:6px; border-radius:99px; background:var(--accent); box-shadow:0 0 0 3px rgba(176,75,255,.12); }
 
-    .footer{ margin-top: 14px; color: var(--faint); font-size: 12px; text-align: center; }
-
-    /* Modal */
+    /* modal */
     .overlay{
-      position: fixed;
-      inset: 0;
+      position:fixed; inset:0;
       background: rgba(0,0,0,.55);
       backdrop-filter: blur(10px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 20;
-      padding: 18px;
+      display:none; align-items:center; justify-content:center;
+      z-index:20; padding:18px;
     }
     .overlay.show{ display:flex; }
-
     .modal{
-      width: min(960px, 100%);
-      border: 1px solid var(--stroke);
-      border-radius: 20px;
+      width: min(980px, 100%);
+      border:1px solid var(--stroke);
+      border-radius:20px;
       background: linear-gradient(180deg, rgba(16, 22, 45, .92), rgba(12, 16, 35, .90));
       box-shadow: var(--shadow);
-      overflow: hidden;
+      overflow:hidden;
     }
     .modalHead{
-      display:flex;
-      align-items:center;
-      justify-content: space-between;
-      padding: 14px 14px;
-      border-bottom: 1px solid var(--stroke-2);
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px; gap:10px;
+      border-bottom:1px solid var(--stroke-2);
       background: linear-gradient(180deg, rgba(0,0,0,.12), transparent);
-      gap: 10px;
     }
-    .modalTitle{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      min-width: 0;
-    }
-    .modalTitle .txt{
-      min-width: 0;
-      display:flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .modalTitle h3{
-      margin: 0;
-      font-size: 13px;
-      letter-spacing: .2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .modalTitle p{
-      margin: 0;
-      font-size: 12px;
-      color: var(--muted);
-    }
-    .modalBody{ padding: 12px 14px 14px; }
+    .modalTitle{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .modalTitle .txt{ min-width:0; display:flex; flex-direction:column; gap:2px; }
+    .modalTitle h3{ margin:0; font-size:13px; letter-spacing:.2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .modalTitle p{ margin:0; font-size:12px; color:var(--muted); }
+    .modalBody{ padding:12px 14px 14px; }
 
-    .tabs{
-      display:flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 12px;
-    }
+    .tabs{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
     .tab{
-      padding: 9px 10px;
-      border-radius: 999px;
-      border: 1px solid var(--stroke);
+      padding:9px 10px;
+      border-radius:999px;
+      border:1px solid var(--stroke);
       background: rgba(0,0,0,.18);
-      color: var(--muted);
-      font-size: 12px;
-      cursor: pointer;
-      font-weight: 700;
+      color:var(--muted);
+      font-size:12px;
+      cursor:pointer;
+      font-weight:800;
     }
     .tab.active{
       color: rgba(255,255,255,.92);
@@ -330,140 +217,94 @@
       box-shadow: 0 0 0 4px rgba(176,75,255,.08);
     }
 
-    .split{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      align-items: start;
-    }
-    @media (max-width: 860px){
-      .split{ grid-template-columns: 1fr; }
-    }
+    .split{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; align-items:start; }
+    @media (max-width:860px){ .split{ grid-template-columns:1fr; } }
 
     .panel{
-      border: 1px solid var(--stroke);
-      border-radius: 18px;
+      border:1px solid var(--stroke);
+      border-radius:18px;
       background: rgba(0,0,0,.16);
-      overflow: hidden;
+      overflow:hidden;
     }
     .panelHead{
-      padding: 12px 12px;
-      border-bottom: 1px solid var(--stroke-2);
-      display:flex;
-      align-items:center;
-      justify-content: space-between;
-      gap: 10px;
+      padding:12px;
+      border-bottom:1px solid var(--stroke-2);
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
     }
-    .panelHead strong{
-      font-size: 13px;
-      letter-spacing: .2px;
-    }
-    .panelHead span{ font-size: 12px; color: var(--muted); }
+    .panelHead strong{ font-size:13px; letter-spacing:.2px; }
+    .panelHead span{ font-size:12px; color:var(--muted); }
+    .panelBody{ padding:12px; }
 
-    .panelBody{ padding: 12px; }
-
+    /* teams list 2 columns */
     .teamList{
       display:grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 10px;
     }
-    @media (max-width: 820px){
-      .teamList{ grid-template-columns: 1fr; }
-    }
-    .teamRow{
-      display:flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 10px 10px;
-      border-radius: 16px;
-      border: 1px solid var(--stroke-2);
+    @media (max-width: 820px){ .teamList{ grid-template-columns: 1fr; } }
+    .teamCard{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
+      padding:10px 10px;
+      border-radius:16px;
+      border:1px solid var(--stroke-2);
       background: rgba(255,255,255,.03);
     }
-    .teamRow:hover{
-      border-color: rgba(176,75,255,.22);
-      background: rgba(176,75,255,.06);
-    }
-    .teamRow.selected{
+    .teamCard:hover{ border-color: rgba(176,75,255,.22); background: rgba(176,75,255,.06); }
+    .teamCard.selected{
       border-color: rgba(176,75,255,.38);
       background: rgba(176,75,255,.10);
       box-shadow: 0 0 0 4px rgba(176,75,255,.08);
     }
-    .teamRow .pick{
+    .pick{
       all: unset;
-      cursor: pointer;
-      display:flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
-      flex: 1 1 auto;
+      cursor:pointer;
+      display:flex; align-items:center; gap:10px;
+      min-width:0; flex: 1 1 auto;
     }
-    .teamName{
-      font-size: 13px;
-      font-weight: 700;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .teamHint{ font-size: 11px; color: var(--muted); }
+    .teamTxt{ min-width:0; display:flex; flex-direction:column; gap:2px; }
+    .teamName{ font-size:13px; font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .teamHint{ font-size:11px; color:var(--muted); }
 
     .xBtn{
-      width: 34px;
-      height: 34px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,77,109,.26);
+      width:34px; height:34px;
+      border-radius:12px;
+      border:1px solid rgba(255,77,109,.26);
       background: rgba(255,77,109,.08);
       color: rgba(255,255,255,.88);
-      cursor: pointer;
-      font-weight: 900;
-      line-height: 1;
-      flex: 0 0 auto;
+      cursor:pointer; font-weight:900; line-height:1;
+      flex:0 0 auto;
     }
-    .xBtn:hover{ filter: brightness(1.05); }
 
-    .toast{
-      position: fixed;
-      left: 50%;
-      bottom: 18px;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,.55);
-      border: 1px solid var(--stroke);
-      padding: 10px 12px;
-      border-radius: 999px;
-      font-size: 12px;
-      color: var(--text);
-      box-shadow: var(--shadow-soft);
-      backdrop-filter: blur(10px);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .18s ease, transform .18s ease;
-      z-index: 30;
-    }
-    .toast.show{ opacity: 1; transform: translateX(-50%) translateY(-2px); }
-
-    /* Small helper */
-    .muted{ color: var(--muted); }
-    .hide{ display:none !important; }
     .fileBtn{
-      display:flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid var(--stroke);
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding:10px 12px; border-radius:12px;
+      border:1px solid var(--stroke);
       background: rgba(0,0,0,.22);
     }
-    .fileBtn input[type="file"]{
-      width: 100%;
-      color: var(--muted);
-      font-size: 12px;
+    .fileBtn input[type="file"]{ width:100%; color:var(--muted); font-size:12px; }
+
+    .small{ font-size:11px; color:var(--faint); line-height:1.35; }
+    .hide{ display:none !important; }
+
+    .footer{ margin-top:14px; color:var(--faint); font-size:12px; text-align:center; }
+
+    .toast{
+      position:fixed; left:50%; bottom:18px;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,.55);
+      border:1px solid var(--stroke);
+      padding:10px 12px;
+      border-radius:999px;
+      font-size:12px;
+      color:var(--text);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(10px);
+      opacity:0; pointer-events:none;
+      transition: opacity .18s ease, transform .18s ease;
+      z-index:30;
     }
-    .small{
-      font-size: 11px;
-      color: var(--faint);
-      line-height: 1.35;
-    }
+    .toast.show{ opacity:1; transform: translateX(-50%) translateY(-2px); }
   </style>
 </head>
 
@@ -477,7 +318,6 @@
           <p>リーグ作成 / 管理 UI</p>
         </div>
       </div>
-
       <div class="actions">
         <div class="pill"><span class="dot" aria-hidden="true"></span> ローカル保存: ON</div>
         <button class="btn" id="btnReset">全消去</button>
@@ -485,7 +325,6 @@
     </header>
 
     <main class="grid">
-      <!-- Create League -->
       <section class="card">
         <div class="cardHead">
           <div class="title">
@@ -531,7 +370,6 @@
         </div>
       </section>
 
-      <!-- League list -->
       <section class="card">
         <div class="cardHead">
           <div class="title">
@@ -549,7 +387,7 @@
     </main>
   </div>
 
-  <!-- League Manage Modal -->
+  <!-- Manage Modal -->
   <div class="overlay" id="leagueOverlay" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="leagueModalTitle">
       <div class="modalHead">
@@ -557,7 +395,7 @@
           <div class="sqLogo" id="leagueModalLogo" aria-hidden="true">L</div>
           <div class="txt">
             <h3 id="leagueModalTitle">リーグ管理</h3>
-            <p id="leagueModalSub" class="muted">設定・チーム管理</p>
+            <p id="leagueModalSub">設定・チーム管理</p>
           </div>
         </div>
         <div style="display:flex; gap:8px; align-items:center;">
@@ -569,10 +407,9 @@
       <div class="modalBody">
         <div class="tabs">
           <button class="tab active" data-tab="league">リーグ設定</button>
-          <button class="tab" data-tab="teams">チーム一覧</button>
-          </div>
+          <button class="tab" data-tab="teams">チーム管理</button>
+        </div>
 
-        <!-- League settings -->
         <div id="tab_league">
           <div class="split">
             <div class="panel">
@@ -628,30 +465,28 @@
           </div>
         </div>
 
-        <!-- Teams tab -->
         <div id="tab_teams" class="hide">
           <div class="split">
             <div class="panel">
               <div class="panelHead">
                 <strong>登録チーム</strong>
-                <span id="teamCount" class="muted"></span>
+                <span id="teamCount"></span>
               </div>
               <div class="panelBody">
                 <div class="row" style="justify-content:flex-start; margin-top:0; margin-bottom:10px;">
                   <button class="btn primary" id="btnAddTeam">チーム追加</button>
                 </div>
-
                 <div class="teamList" id="teamList"></div>
-                <div class="small" style="margin-top:10px;">チームをタップすると右側に情報が表示され、編集して保存できます。</div>
+                <div class="small" style="margin-top:10px;">チームをタップすると右側に詳細が出ます。</div>
               </div>
             </div>
 
             <div class="panel">
               <div class="panelHead">
-                <strong>チーム情報</strong>
-                <span id="editingTeamMeta" class="muted">未選択</span>
+                <strong>チーム詳細</strong>
+                <span id="editingTeamMeta">未選択</span>
               </div>
-              <div class="panelBody" id="teamEditor">
+              <div class="panelBody">
                 <div id="teamEditorEmpty" style="
                   border:1px dashed rgba(255,255,255,.14);
                   border-radius:16px;
@@ -691,58 +526,6 @@
             </div>
           </div>
         </div>
-<div class="panelBody">
-              <div class="row" style="justify-content:flex-start; margin-top:0; margin-bottom:10px;">
-                <button class="btn primary" id="btnAddTeam">チーム追加</button>
-              </div>
-
-              <div class="teamList" id="teamList"></div>
-              <div class="small" style="margin-top:10px;">チームをタップすると「チーム名 / ロゴ / コメント」を編集できます。</div>
-            </div>
-          </div>
-        </div>
-
-                      <div class="panelBody">
-                <div class="field">
-                  <div class="label">チーム名</div>
-                  <input class="input" id="teamEditName" />
-                </div>
-
-                <div class="field" style="margin-top:10px;">
-                  <div class="label">チームロゴ（写真から選択）</div>
-                  <div class="fileBtn">
-                    <input id="teamLogoFile" type="file" accept="image/*" />
-                  </div>
-                  <div class="small">ロゴ表示は角丸の四角です。</div>
-                </div>
-
-                <div class="row">
-                  <button class="btn" id="btnClearTeamLogo">ロゴ削除</button>
-                  <button class="btn primary" id="btnSaveTeam">保存</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="panel">
-              <div class="panelHead">
-                <strong>コメント</strong>
-                <span class="muted">任意</span>
-              </div>
-              <div class="panelBody">
-                <div class="field">
-                  <div class="label">コメント</div>
-                  <textarea class="textarea" id="teamEditComment" rows="6" placeholder="例：スタイル、目標、メモなど"></textarea>
-                  <div class="hint">ここは表示や検索に使えるように後で拡張できます。</div>
-                </div>
-
-                <div class="row">
-                  <button class="btn" id="btnBackToTeams">チーム一覧へ戻る</button>
-                  <button class="btn danger" id="btnDeleteTeam">チーム削除</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
       </div><!-- /modalBody -->
     </div><!-- /modal -->
@@ -752,16 +535,14 @@
 
 <script>
 (() => {
-  const STORAGE_KEY = "league_builder_v2";
+  const STORAGE_KEY = "league_builder_v4";
 
-  /** state
-   * leagues: [{id,name,format,points,logoDataUrl?,teams:[{id,name,logoDataUrl?,comment?}]}]
-   * nextLeagueNumber
-   */
+  // ---- State
   let state = load() ?? { leagues: [], nextLeagueNumber: 1 };
 
-  // DOM
+  // ---- DOM
   const el = {
+    // main
     nextLeagueName: document.getElementById("nextLeagueName"),
     format: document.getElementById("format"),
     points: document.getElementById("points"),
@@ -773,7 +554,7 @@
     leagueCount: document.getElementById("leagueCount"),
     toast: document.getElementById("toast"),
 
-    // Modal
+    // modal
     overlay: document.getElementById("leagueOverlay"),
     btnCloseLeague: document.getElementById("btnCloseLeague"),
     btnDeleteLeague: document.getElementById("btnDeleteLeague"),
@@ -783,42 +564,45 @@
     leagueInfoMeta: document.getElementById("leagueInfoMeta"),
 
     tabs: Array.from(document.querySelectorAll(".tab")),
-    tab_league: document.getElementById("tab_league"),
-    tab_teams: document.getElementById("tab_teams"),
-    // League edit
+    tabLeague: document.getElementById("tab_league"),
+    tabTeams: document.getElementById("tab_teams"),
+
+    // league edit
     leagueEditName: document.getElementById("leagueEditName"),
     leagueLogoFile: document.getElementById("leagueLogoFile"),
+    btnClearLeagueLogo: document.getElementById("btnClearLeagueLogo"),
     leagueEditFormat: document.getElementById("leagueEditFormat"),
     leagueEditPoints: document.getElementById("leagueEditPoints"),
     btnSaveLeague: document.getElementById("btnSaveLeague"),
-    btnClearLeagueLogo: document.getElementById("btnClearLeagueLogo"),
     btnToTeams: document.getElementById("btnToTeams"),
 
-    // Teams
+    // teams
     teamCount: document.getElementById("teamCount"),
     btnAddTeam: document.getElementById("btnAddTeam"),
     teamList: document.getElementById("teamList"),
 
-    // Team edit
+    // team editor
     editingTeamMeta: document.getElementById("editingTeamMeta"),
     teamEditorEmpty: document.getElementById("teamEditorEmpty"),
     teamEditorForm: document.getElementById("teamEditorForm"),
     teamEditName: document.getElementById("teamEditName"),
     teamLogoFile: document.getElementById("teamLogoFile"),
     teamEditComment: document.getElementById("teamEditComment"),
+    btnClearTeamLogo: document.getElementById("btnClearTeamLogo"),
     btnSaveTeam: document.getElementById("btnSaveTeam"),
-    btnClearTeamLogo: document.getElementById("btnClearTeamLogo"),    btnDeleteTeam: document.getElementById("btnDeleteTeam"),
+    btnDeleteTeam: document.getElementById("btnDeleteTeam"),
   };
 
-  // Currently managing league/team
+  // Guard: if core button missing, stop quietly (prevents hard crash)
+  if (!el.btnCreateLeague || !el.leagueList) return;
+
   let activeLeagueId = null;
   let activeTeamId = null;
 
-  // Init
   refreshNextLeagueName();
   render();
 
-  // ---- Events: main
+  // ---- Main events
   el.btnCreateLeague.addEventListener("click", () => {
     const name = (el.nextLeagueName.value || "").trim() || defaultLeagueName();
     const format = el.format.value;
@@ -833,6 +617,7 @@
       logoDataUrl: "",
       teams: []
     };
+
     for (let i = 0; i < initialTeams; i++){
       league.teams.push({ id: uid(), name: `Team ${i + 1}`, logoDataUrl: "", comment: "" });
     }
@@ -871,24 +656,17 @@
     }
   });
 
-  // ---- Modal: open/close
+  // ---- Modal open/close
   el.btnCloseLeague.addEventListener("click", closeLeagueModal);
-  el.overlay.addEventListener("click", (e) => {
-    if (e.target === el.overlay) closeLeagueModal();
-  });
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && el.overlay.classList.contains("show")) closeLeagueModal();
-  });
+  el.overlay.addEventListener("click", (e) => { if (e.target === el.overlay) closeLeagueModal(); });
+  window.addEventListener("keydown", (e) => { if (e.key === "Escape" && el.overlay.classList.contains("show")) closeLeagueModal(); });
 
   // Tabs
   el.tabs.forEach(t => {
-    t.addEventListener("click", () => {
-      const key = t.getAttribute("data-tab");
-      setTab(key);
-    });
+    t.addEventListener("click", () => setTab(t.getAttribute("data-tab")));
   });
 
-  // League edit actions
+  // ---- League edit events
   el.btnSaveLeague.addEventListener("click", () => {
     const league = getActiveLeague();
     if (!league) return;
@@ -940,20 +718,15 @@
     toast("リーグを削除しました");
   });
 
-  // Teams tab actions
+  // ---- Teams events
   el.btnAddTeam.addEventListener("click", () => {
     const league = getActiveLeague();
     if (!league) return;
     const num = nextTeamNumber(league);
-    const team = { id: uid(), name: `Team ${num}`, logoDataUrl: "", comment: "" };
-    league.teams.push(team);
+    league.teams.push({ id: uid(), name: `Team ${num}`, logoDataUrl: "", comment: "" });
     persist();
-    render();
-    renderTeamsInModal();
-    syncTeamEditorVisibility();
+    renderTeams();
     toast("チームを追加しました");
-  });
-  // Team editor actions
   });
 
   el.btnSaveTeam.addEventListener("click", () => {
@@ -965,9 +738,7 @@
     team.comment = (el.teamEditComment.value || "").trim();
     persist();
     render();
-    renderTeamsInModal();
-    syncModalHeader(); // league header logo stays, but counts may update
-    syncTeamEditMeta();
+    renderTeams();
     toast("チームを保存しました");
   });
 
@@ -976,10 +747,7 @@
     if (!team) return;
     team.logoDataUrl = "";
     persist();
-    render();
-    renderTeamsInModal();
-    syncTeamEditorVisibility();
-    syncTeamEditMeta();
+    renderTeams();
     toast("チームロゴを削除しました");
   });
 
@@ -991,9 +759,7 @@
     team.logoDataUrl = await fileToDataUrl(file);
     persist();
     render();
-    renderTeamsInModal();
-    syncTeamEditorVisibility();
-    syncTeamEditMeta();
+    renderTeams();
     toast("チームロゴを更新しました");
     el.teamLogoFile.value = "";
   });
@@ -1008,18 +774,20 @@
     activeTeamId = null;
     persist();
     render();
-    renderTeamsInModal();
-    syncTeamEditorVisibility();
+    renderTeams();
     toast("チームを削除しました");
   });
 
-  // ---- Render: main list
+  // ---- Render main list
   function render(){
     el.leagueCount.textContent = `${state.leagues.length} leagues`;
     el.leagueList.innerHTML = "";
 
     if (state.leagues.length === 0){
-      el.leagueList.innerHTML = emptyState();
+      el.leagueList.innerHTML = `
+        <div style="border:1px dashed rgba(255,255,255,.14); border-radius:18px; padding:14px 12px; color:rgba(255,255,255,.62); background:rgba(0,0,0,.14);">
+          まだリーグがありません。左の「リーグ追加」から作成できます。
+        </div>`;
       return;
     }
 
@@ -1042,9 +810,7 @@
     logo.className = "sqLogo";
     if (league.logoDataUrl){
       const img = document.createElement("img");
-      img.src = league.logoDataUrl;
-      img.alt = "league logo";
-      logo.textContent = "";
+      img.src = league.logoDataUrl; img.alt = "league logo";
       logo.appendChild(img);
     }else{
       logo.textContent = "L";
@@ -1059,10 +825,7 @@
 
     const meta = document.createElement("div");
     meta.className = "leagueMeta";
-    meta.innerHTML = `
-      <span>形式: ${formatLabel(league.format)}</span>
-      <span>チーム: ${league.teams.length}</span>
-    `;
+    meta.innerHTML = `<span>形式: ${formatLabel(league.format)}</span><span>チーム: ${league.teams.length}</span>`;
 
     info.appendChild(name);
     info.appendChild(meta);
@@ -1071,13 +834,10 @@
     left.appendChild(info);
 
     const right = document.createElement("div");
-    right.className = "rightBtns";
-
     const manage = document.createElement("button");
     manage.className = "btn primary";
     manage.textContent = "管理";
     manage.addEventListener("click", () => openLeagueModal(league.id));
-
     right.appendChild(manage);
 
     top.appendChild(left);
@@ -1087,21 +847,7 @@
     return card;
   }
 
-  function emptyState(){
-    return `
-      <div style="
-        border:1px dashed rgba(255,255,255,.14);
-        border-radius:18px;
-        padding:14px 12px;
-        color:rgba(255,255,255,.62);
-        background:rgba(0,0,0,.14);
-      ">
-        まだリーグがありません。左の「リーグ追加」から作成できます。
-      </div>
-    `;
-  }
-
-  // ---- Modal rendering
+  // ---- Modal functions
   function openLeagueModal(leagueId){
     activeLeagueId = leagueId;
     activeTeamId = null;
@@ -1109,7 +855,6 @@
     const league = getActiveLeague();
     if (!league) return;
 
-    // Fill league fields
     el.leagueEditName.value = league.name;
     el.leagueEditFormat.value = league.format;
     el.leagueEditPoints.value = league.points;
@@ -1125,44 +870,34 @@
     activeLeagueId = null;
     activeTeamId = null;
     el.overlay.classList.remove("show");
-    el.overlay.setAttribute("aria-hidden","true");  }
+    el.overlay.setAttribute("aria-hidden","true");
+  }
 
   function syncModalHeader(){
     const league = getActiveLeague();
     if (!league) return;
-
     el.leagueModalTitle.textContent = league.name;
     el.leagueModalSub.textContent = `形式: ${formatLabel(league.format)} / 勝ち点: ${league.points} / チーム: ${league.teams.length}`;
     el.leagueInfoMeta.textContent = `${league.teams.length} teams`;
 
-    // logo
     el.leagueModalLogo.innerHTML = "";
-    el.leagueModalLogo.classList.add("sqLogo");
     if (league.logoDataUrl){
       const img = document.createElement("img");
-      img.src = league.logoDataUrl;
-      img.alt = "league logo";
+      img.src = league.logoDataUrl; img.alt = "league logo";
       el.leagueModalLogo.appendChild(img);
     }else{
       el.leagueModalLogo.textContent = "L";
     }
   }
 
-  function setTab(key, force = false){
-    // active styling
+  function setTab(key){
     el.tabs.forEach(t => t.classList.toggle("active", t.getAttribute("data-tab") === key));
-
-    // show/hide
-    el.tab_league.classList.toggle("hide", key !== "league");
-    el.tab_teams.classList.toggle("hide", key !== "teams");
-
-    if (key === "teams"){
-      renderTeamsInModal();
-      syncTeamEditorVisibility();
-    }
+    el.tabLeague.classList.toggle("hide", key !== "league");
+    el.tabTeams.classList.toggle("hide", key !== "teams");
+    if (key === "teams") renderTeams();
   }
 
-  function renderTeamsInModal(){
+  function renderTeams(){
     const league = getActiveLeague();
     if (!league) return;
 
@@ -1171,25 +906,19 @@
 
     if (league.teams.length === 0){
       el.teamList.innerHTML = `
-        <div style="
-          grid-column: 1 / -1;
-          border:1px dashed rgba(255,255,255,.14);
-          border-radius:16px;
-          padding:12px;
-          color:rgba(255,255,255,.62);
-          background:rgba(0,0,0,.12);
-        ">
+        <div style="grid-column:1/-1; border:1px dashed rgba(255,255,255,.14); border-radius:16px; padding:12px; color:rgba(255,255,255,.62); background:rgba(0,0,0,.12);">
           まだチームがありません。「チーム追加」で作成できます。
-        </div>
-      `;
+        </div>`;
       activeTeamId = null;
-      syncTeamEditorVisibility();
+      syncTeamEditor();
       return;
     }
 
-    league.teams.forEach((team, idx) => {
+    for (let i = 0; i < league.teams.length; i++){
+      const team = league.teams[i];
+
       const row = document.createElement("div");
-      row.className = "teamRow";
+      row.className = "teamCard";
       if (activeTeamId === team.id) row.classList.add("selected");
 
       const pick = document.createElement("button");
@@ -1197,9 +926,9 @@
       pick.type = "button";
       pick.addEventListener("click", () => {
         activeTeamId = team.id;
-        renderTeamsInModal(); // refresh highlight
-        fillTeamEditFields();
-        syncTeamEditorVisibility();
+        renderTeams();
+        fillTeamEditor();
+        syncTeamEditor();
       });
 
       const logo = document.createElement("div");
@@ -1210,18 +939,14 @@
       logo.innerHTML = "";
       if (team.logoDataUrl){
         const img = document.createElement("img");
-        img.src = team.logoDataUrl;
-        img.alt = "team logo";
+        img.src = team.logoDataUrl; img.alt = "team logo";
         logo.appendChild(img);
       }else{
         logo.textContent = "T";
       }
 
       const txt = document.createElement("div");
-      txt.style.minWidth = "0";
-      txt.style.display = "flex";
-      txt.style.flexDirection = "column";
-      txt.style.gap = "2px";
+      txt.className = "teamTxt";
 
       const nm = document.createElement("div");
       nm.className = "teamName";
@@ -1229,7 +954,7 @@
 
       const hint = document.createElement("div");
       hint.className = "teamHint";
-      hint.textContent = team.comment ? "コメントあり" : `Team ${idx + 1}`;
+      hint.textContent = team.comment ? "コメントあり" : `Team ${i + 1}`;
 
       txt.appendChild(nm);
       txt.appendChild(hint);
@@ -1249,8 +974,7 @@
         if (activeTeamId === team.id) activeTeamId = null;
         persist();
         render();
-        renderTeamsInModal();
-        syncTeamEditorVisibility();
+        renderTeams();
         toast("チームを削除しました");
       });
 
@@ -1258,36 +982,24 @@
       row.appendChild(del);
 
       el.teamList.appendChild(row);
-    });
-
-    if (activeTeamId){
-      fillTeamEditFields();
     }
-    syncTeamEditorVisibility();
+
+    if (activeTeamId) fillTeamEditor();
+    syncTeamEditor();
   }
 
-  function fillTeamEditFields(){
+  function fillTeamEditor(){
     const team = getActiveTeam();
     const league = getActiveLeague();
     if (!team || !league) return;
-
     el.teamEditName.value = team.name;
     el.teamEditComment.value = team.comment || "";
-    syncTeamEditMeta();
-  }
-
-  function syncTeamEditMeta(){
-    const team = getActiveTeam();
-    const league = getActiveLeague();
-    if (!team || !league) return;
-
     el.editingTeamMeta.textContent = `所属: ${league.name}`;
   }
 
-  function syncTeamEditorVisibility(){
-    const league = getActiveLeague();
+  function syncTeamEditor(){
     const team = getActiveTeam();
-    if (!league || !team){
+    if (!team){
       el.editingTeamMeta.textContent = "未選択";
       el.teamEditorEmpty.classList.remove("hide");
       el.teamEditorForm.classList.add("hide");
@@ -1297,7 +1009,7 @@
     el.teamEditorForm.classList.remove("hide");
   }
 
-  // ---- Helpers: state
+  // ---- Helpers
   function getActiveLeague(){
     if (!activeLeagueId) return null;
     return state.leagues.find(l => l.id === activeLeagueId) || null;
@@ -1308,71 +1020,65 @@
     return league.teams.find(t => t.id === activeTeamId) || null;
   }
 
-  // ---- Helpers: storage, ids, defaults
-  function persist(){
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  }
+  function persist(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 
   function load(){
     try{
-      // migrate from v1 if exists
-      const rawV2 = localStorage.getItem(STORAGE_KEY);
-      if (rawV2){
-        const parsed = JSON.parse(rawV2);
-        if (parsed && typeof parsed === "object" && Array.isArray(parsed.leagues)){
+      // Prefer v4
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw){
+        const parsed = JSON.parse(raw);
+        if (parsed && Array.isArray(parsed.leagues)){
           if (typeof parsed.nextLeagueNumber !== "number") parsed.nextLeagueNumber = 1;
-          // ensure fields
           parsed.leagues.forEach(l => {
             l.logoDataUrl ??= "";
             l.teams ??= [];
-            l.teams.forEach(t => {
-              t.logoDataUrl ??= "";
-              t.comment ??= "";
-            });
+            l.teams.forEach(t => { t.logoDataUrl ??= ""; t.comment ??= ""; });
           });
           return parsed;
         }
       }
-      // v1 -> v2
-      const rawV1 = localStorage.getItem("league_builder_v1");
-      if (!rawV1) return null;
-      const p1 = JSON.parse(rawV1);
-      if (!p1 || !Array.isArray(p1.leagues)) return null;
-      const migrated = {
-        nextLeagueNumber: typeof p1.nextLeagueNumber === "number" ? p1.nextLeagueNumber : 1,
-        leagues: p1.leagues.map(l => ({
-          id: l.id || uid(),
-          name: l.name || "League",
-          format: l.format || "round_robin",
-          points: l.points || "3 / 1 / 0",
-          logoDataUrl: "",
-          teams: (l.teams || []).map(t => ({
-            id: t.id || uid(),
-            name: t.name || "Team",
-            logoDataUrl: "",
-            comment: ""
+      // Migrate from older keys (v2/v3)
+      const legacyKeys = ["league_builder_v3","league_builder_v2","league_builder_v1"];
+      for (const k of legacyKeys){
+        const r = localStorage.getItem(k);
+        if (!r) continue;
+        const p = JSON.parse(r);
+        if (!p || !Array.isArray(p.leagues)) continue;
+        const migrated = {
+          nextLeagueNumber: typeof p.nextLeagueNumber === "number" ? p.nextLeagueNumber : 1,
+          leagues: p.leagues.map(l => ({
+            id: l.id || uid(),
+            name: l.name || "League",
+            format: l.format || "round_robin",
+            points: l.points || "3 / 1 / 0",
+            logoDataUrl: l.logoDataUrl || "",
+            teams: (l.teams || []).map(t => ({
+              id: t.id || uid(),
+              name: t.name || "Team",
+              logoDataUrl: t.logoDataUrl || "",
+              comment: t.comment || ""
+            }))
           }))
-        }))
-      };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
-      return migrated;
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
+        return migrated;
+      }
+      return null;
     }catch{
       return null;
     }
   }
 
-  function uid(){
-    return Math.random().toString(16).slice(2) + Date.now().toString(16);
+  function uid(){ return Math.random().toString(16).slice(2) + Date.now().toString(16); }
+  function clampInt(v, min, max){
+    const n = parseInt(v, 10);
+    if (!Number.isFinite(n)) return min;
+    return Math.max(min, Math.min(max, n));
   }
 
-  function defaultLeagueName(){
-    return `League ${state.nextLeagueNumber}`;
-  }
-
-  function refreshNextLeagueName(){
-    el.nextLeagueName.value = defaultLeagueName();
-  }
-
+  function defaultLeagueName(){ return `League ${state.nextLeagueNumber}`; }
+  function refreshNextLeagueName(){ el.nextLeagueName.value = defaultLeagueName(); }
   function bumpNextLeagueNumberOnCreate(name){
     const m = /^League\s+(\d+)$/i.exec(name.trim());
     if (!m) { state.nextLeagueNumber += 1; return; }
@@ -1380,7 +1086,6 @@
     if (Number.isFinite(n) && n >= state.nextLeagueNumber) state.nextLeagueNumber = n + 1;
     else state.nextLeagueNumber += 1;
   }
-
   function nextTeamNumber(league){
     let max = 0;
     for (const t of league.teams){
@@ -1392,20 +1097,9 @@
     }
     return max + 1;
   }
-
-  function clampInt(v, min, max){
-    const n = parseInt(v, 10);
-    if (!Number.isFinite(n)) return min;
-    return Math.max(min, Math.min(max, n));
-  }
-
-  function formatLabel(v){
-    if (v === "home_away") return "H/A";
-    return "総当たり";
-  }
+  function formatLabel(v){ return v === "home_away" ? "H/A" : "総当たり"; }
 
   async function fileToDataUrl(file){
-    // Note: DataURL size can be large. Later we can add compression if needed.
     return await new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => resolve(String(reader.result || ""));
@@ -1414,7 +1108,6 @@
     });
   }
 
-  // Toast
   function toast(msg){
     el.toast.textContent = msg;
     el.toast.classList.add("show");
