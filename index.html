@@ -1,0 +1,850 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>League Builder UI (Prototype)</title>
+
+  <!-- Font: 画像っぽい “読みやすいサンセリフ” の雰囲気 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      /* ======= Base tokens (画像の雰囲気に寄せた配色) ======= */
+      --bg-0: #070A12;
+      --bg-1: #0B1020;
+      --panel: rgba(16, 22, 45, .92);
+      --panel-2: rgba(12, 16, 35, .92);
+      --stroke: rgba(255,255,255,.09);
+      --stroke-2: rgba(255,255,255,.06);
+
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.64);
+      --faint: rgba(255,255,255,.42);
+
+      --accent: #B04BFF;     /* 紫ボタン */
+      --accent-2: #7A3CFF;   /* 濃い紫 */
+      --good: #4BE38B;       /* 緑 */
+      --warn: #FFB84D;       /* 黄 */
+      --bad:  #FF4D6D;       /* 赤 */
+
+      --r-lg: 16px;
+      --r-md: 12px;
+
+      --shadow: 0 14px 35px rgba(0,0,0,.45);
+      --shadow-soft: 0 10px 24px rgba(0,0,0,.32);
+
+      --font: Inter, "Noto Sans JP", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body{
+      margin: 0;
+      font-family: var(--font);
+      color: var(--text);
+      background:
+        radial-gradient(1200px 600px at 72% 16%, rgba(176,75,255,.22), transparent 55%),
+        radial-gradient(900px 520px at 20% 12%, rgba(122,60,255,.12), transparent 60%),
+        radial-gradient(700px 500px at 26% 92%, rgba(75,227,139,.08), transparent 55%),
+        linear-gradient(180deg, var(--bg-0), var(--bg-1));
+      overflow-x: hidden;
+    }
+
+    .app{
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 22px 18px 34px;
+    }
+
+    /* ===== Header ===== */
+    .topbar{
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border: 1px solid var(--stroke);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border-radius: var(--r-lg);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(10px);
+    }
+
+    .brand{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 220px;
+    }
+    .logo{
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background:
+        radial-gradient(16px 16px at 30% 30%, rgba(255,255,255,.35), transparent 60%),
+        linear-gradient(135deg, rgba(176,75,255,.95), rgba(122,60,255,.55));
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: 0 10px 20px rgba(176,75,255,.12);
+    }
+    .brand h1{
+      font-size: 14px;
+      line-height: 1.1;
+      margin: 0;
+      letter-spacing: .2px;
+    }
+    .brand p{
+      margin: 2px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .actions{
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .pill{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(0,0,0,.18);
+      color: var(--muted);
+      font-size: 12px;
+      user-select: none;
+    }
+    .dot{
+      width: 8px; height: 8px; border-radius: 99px;
+      background: var(--good);
+      box-shadow: 0 0 0 4px rgba(75,227,139,.12);
+    }
+
+    .btn{
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+      transition: transform .06s ease, background .16s ease, border-color .16s ease;
+      white-space: nowrap;
+    }
+    .btn:hover{ background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.16); }
+    .btn:active{ transform: translateY(1px); }
+
+    .btn.primary{
+      border-color: rgba(176,75,255,.35);
+      background: linear-gradient(135deg, rgba(176,75,255,.92), rgba(122,60,255,.72));
+      box-shadow: 0 10px 22px rgba(176,75,255,.18);
+    }
+    .btn.primary:hover{ filter: brightness(1.04); }
+
+    /* ===== Layout ===== */
+    .grid{
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: 1.45fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 980px){
+      .grid{ grid-template-columns: 1fr; }
+      .brand{ min-width: auto; }
+    }
+
+    .card{
+      border: 1px solid var(--stroke);
+      border-radius: var(--r-lg);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+    }
+
+    .cardHead{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--stroke-2);
+      background: linear-gradient(180deg, rgba(0,0,0,.12), transparent);
+    }
+
+    .cardHead .title{
+      display:flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .cardHead h2{
+      margin: 0;
+      font-size: 13px;
+      letter-spacing: .2px;
+    }
+    .cardHead p{
+      margin: 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .cardBody{
+      padding: 14px 16px 16px;
+    }
+
+    /* ===== Form ===== */
+    .form{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 720px){
+      .form{ grid-template-columns: 1fr; }
+    }
+
+    .field{
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .label{
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .input, .select{
+      height: 40px;
+      padding: 0 12px;
+      border-radius: 12px;
+      border: 1px solid var(--stroke);
+      background: rgba(0,0,0,.22);
+      color: var(--text);
+      outline: none;
+      font-size: 13px;
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+    .input:focus, .select:focus{
+      border-color: rgba(176,75,255,.45);
+      box-shadow: 0 0 0 4px rgba(176,75,255,.12);
+    }
+    .hint{
+      font-size: 11px;
+      color: var(--faint);
+      line-height: 1.35;
+    }
+
+    .row{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .danger{
+      border-color: rgba(255,77,109,.28) !important;
+      background: rgba(255,77,109,.10) !important;
+    }
+
+    /* ===== List ===== */
+    .list{
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .leagueItem{
+      border: 1px solid var(--stroke);
+      border-radius: var(--r-lg);
+      background: rgba(0,0,0,.16);
+      overflow: hidden;
+    }
+
+    .leagueTop{
+      display:flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 12px;
+      border-bottom: 1px solid var(--stroke-2);
+      gap: 10px;
+    }
+
+    .leagueName{
+      display:flex;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 240px;
+    }
+    .leagueName strong{
+      font-size: 13px;
+      letter-spacing: .2px;
+    }
+    .meta{
+      font-size: 12px;
+      color: var(--muted);
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.05);
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .badge .bDot{
+      width: 6px; height: 6px; border-radius: 99px;
+      background: var(--accent);
+      box-shadow: 0 0 0 3px rgba(176,75,255,.12);
+    }
+
+    .leagueControls{
+      display:flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .miniBtn{
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 12px;
+    }
+    .miniBtn:hover{ background: rgba(255,255,255,.08); }
+    .miniBtn.primary{
+      border-color: rgba(176,75,255,.35);
+      background: linear-gradient(135deg, rgba(176,75,255,.88), rgba(122,60,255,.64));
+    }
+
+    .leagueBody{
+      padding: 10px 12px 12px;
+    }
+
+    .teamsHeader{
+      display:flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .teamsHeader .left{
+      display:flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .teamsHeader .left span{
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .teams{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 8px;
+    }
+    @media (max-width: 720px){
+      .teams{ grid-template-columns: 1fr; }
+    }
+
+    .team{
+      display:flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 10px 10px;
+      border-radius: 14px;
+      border: 1px solid var(--stroke-2);
+      background: rgba(255,255,255,.03);
+    }
+    .team input{
+      width: 100%;
+      height: 34px;
+      border-radius: 10px;
+      border: 1px solid var(--stroke);
+      background: rgba(0,0,0,.22);
+      color: var(--text);
+      padding: 0 10px;
+      outline: none;
+      font-size: 13px;
+    }
+    .team input:focus{
+      border-color: rgba(176,75,255,.45);
+      box-shadow: 0 0 0 3px rgba(176,75,255,.10);
+    }
+    .trash{
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,77,109,.26);
+      background: rgba(255,77,109,.08);
+      color: rgba(255,255,255,.88);
+      cursor: pointer;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .trash:hover{ filter: brightness(1.05); }
+
+    .footer{
+      margin-top: 14px;
+      color: var(--faint);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,.55);
+      border: 1px solid var(--stroke);
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--text);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .18s ease, transform .18s ease;
+    }
+    .toast.show{
+      opacity: 1;
+      transform: translateX(-50%) translateY(-2px);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>League Builder</h1>
+          <p>リーグ作成UI（プロトタイプ）</p>
+        </div>
+      </div>
+
+      <div class="actions">
+        <div class="pill"><span class="dot" aria-hidden="true"></span> ローカル保存: ON</div>
+        <button class="btn" id="btnReset">全消去</button>
+      </div>
+    </header>
+
+    <main class="grid">
+      <!-- Left: Create League -->
+      <section class="card">
+        <div class="cardHead">
+          <div class="title">
+            <h2>リーグを作成</h2>
+            <p>追加時は League 1 / League 2 … を自動生成（編集OK）</p>
+          </div>
+          <button class="btn primary" id="btnCreateLeague">リーグ追加</button>
+        </div>
+
+        <div class="cardBody">
+          <div class="form">
+            <div class="field">
+              <div class="label">次に作るリーグ名（初期値）</div>
+              <input class="input" id="nextLeagueName" />
+              <div class="hint">「固有名詞 + 番号」の形式にしたい場合、ここをそのまま使ってOK（例: League 3）。</div>
+            </div>
+
+            <div class="field">
+              <div class="label">リーグ形式（仮）</div>
+              <select class="select" id="format">
+                <option value="round_robin">総当たり</option>
+                <option value="home_away">H/A（2回戦）</option>
+              </select>
+              <div class="hint">※ 今はUIだけ。試合生成などは次のステップで追加。</div>
+            </div>
+
+            <div class="field">
+              <div class="label">勝ち点（勝/分/負）</div>
+              <input class="input" id="points" placeholder="3 / 1 / 0" value="3 / 1 / 0" />
+              <div class="hint">※ ここも現段階は保存のみ。</div>
+            </div>
+
+            <div class="field">
+              <div class="label">チーム初期数（作成時に自動で追加）</div>
+              <input class="input" id="initialTeams" type="number" min="0" max="40" value="12" />
+              <div class="hint">作成したら Team 1 / Team 2 … を自動で入れる。</div>
+            </div>
+          </div>
+
+          <div class="row">
+            <button class="btn" id="btnExport">JSONを書き出し</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right: Existing leagues -->
+      <section class="card">
+        <div class="cardHead">
+          <div class="title">
+            <h2>作成済みリーグ</h2>
+            <p>リーグ名・チーム名を編集、チーム追加/削除</p>
+          </div>
+          <div class="badge"><span class="bDot" aria-hidden="true"></span><span id="leagueCount">0 leagues</span></div>
+        </div>
+
+        <div class="cardBody">
+          <div class="list" id="leagueList"></div>
+          <div class="footer">データはブラウザ内に保存（localStorage）。</div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+(() => {
+  const STORAGE_KEY = "league_builder_v1";
+
+  /** @type {{ leagues: Array<{id:string,name:string,format:string,points:string,teams:Array<{id:string,name:string}>}> , nextLeagueNumber:number }} */
+  let state = load() ?? { leagues: [], nextLeagueNumber: 1 };
+
+  // ---- DOM
+  const el = {
+    nextLeagueName: document.getElementById("nextLeagueName"),
+    format: document.getElementById("format"),
+    points: document.getElementById("points"),
+    initialTeams: document.getElementById("initialTeams"),
+    btnCreateLeague: document.getElementById("btnCreateLeague"),
+    btnReset: document.getElementById("btnReset"),
+    btnExport: document.getElementById("btnExport"),
+    leagueList: document.getElementById("leagueList"),
+    leagueCount: document.getElementById("leagueCount"),
+    toast: document.getElementById("toast"),
+  };
+
+  // Init input default
+  refreshNextLeagueName();
+
+  // ---- Events
+  el.btnCreateLeague.addEventListener("click", () => {
+    const name = (el.nextLeagueName.value || "").trim() || defaultLeagueName();
+    const format = el.format.value;
+    const points = (el.points.value || "").trim() || "3 / 1 / 0";
+
+    const initialTeams = clampInt(el.initialTeams.value, 0, 40);
+    const league = {
+      id: uid(),
+      name,
+      format,
+      points,
+      teams: []
+    };
+
+    for (let i = 0; i < initialTeams; i++){
+      league.teams.push({ id: uid(), name: `Team ${i + 1}` });
+    }
+
+    state.leagues.unshift(league);
+    // increment nextLeagueNumber if name matched default pattern "League N"
+    bumpNextLeagueNumberOnCreate(name);
+
+    persist();
+    render();
+    refreshNextLeagueName();
+    toast(`「${name}」を追加しました`);
+  });
+
+  el.btnReset.addEventListener("click", () => {
+    const ok = confirm("全リーグを削除します。よろしいですか？");
+    if (!ok) return;
+    state = { leagues: [], nextLeagueNumber: 1 };
+    persist();
+    render();
+    refreshNextLeagueName();
+    toast("全データを削除しました");
+  });
+
+  el.btnExport.addEventListener("click", async () => {
+    const data = JSON.stringify(state, null, 2);
+    try{
+      await navigator.clipboard.writeText(data);
+      toast("JSONをクリップボードにコピーしました");
+    }catch{
+      // fallback: download file
+      const blob = new Blob([data], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "league_builder_export.json";
+      a.click();
+      URL.revokeObjectURL(a.href);
+      toast("JSONをダウンロードしました");
+    }
+  });
+
+  // ---- Render
+  function render(){
+    el.leagueCount.textContent = `${state.leagues.length} leagues`;
+    el.leagueList.innerHTML = "";
+
+    if (state.leagues.length === 0){
+      el.leagueList.innerHTML = emptyState();
+      return;
+    }
+
+    for (const league of state.leagues){
+      el.leagueList.appendChild(renderLeague(league));
+    }
+  }
+
+  function renderLeague(league){
+    const wrap = document.createElement("div");
+    wrap.className = "leagueItem";
+
+    const top = document.createElement("div");
+    top.className = "leagueTop";
+
+    const left = document.createElement("div");
+    left.className = "leagueName";
+
+    const nameStrong = document.createElement("strong");
+    nameStrong.textContent = league.name;
+
+    const meta = document.createElement("div");
+    meta.className = "meta";
+    meta.innerHTML = `
+      <span>形式: ${formatLabel(league.format)}</span>
+      <span>勝ち点: ${escapeHtml(league.points)}</span>
+      <span>チーム: ${league.teams.length}</span>
+    `;
+
+    left.appendChild(nameStrong);
+    left.appendChild(meta);
+
+    const controls = document.createElement("div");
+    controls.className = "leagueControls";
+
+    const btnRename = miniBtn("名前変更");
+    btnRename.addEventListener("click", () => {
+      const next = prompt("リーグ名を入力", league.name);
+      if (next == null) return;
+      const v = next.trim();
+      if (!v) return toast("リーグ名が空です");
+      league.name = v;
+      persist();
+      render();
+      toast("リーグ名を更新しました");
+    });
+
+    const btnAddTeam = miniBtn("チーム追加", true);
+    btnAddTeam.classList.add("primary");
+    btnAddTeam.addEventListener("click", () => {
+      const num = nextTeamNumber(league);
+      league.teams.push({ id: uid(), name: `Team ${num}` });
+      persist();
+      render();
+      toast("チームを追加しました");
+    });
+
+    const btnDelete = miniBtn("削除");
+    btnDelete.classList.add("danger");
+    btnDelete.addEventListener("click", () => {
+      const ok = confirm(`「${league.name}」を削除します。よろしいですか？`);
+      if (!ok) return;
+      state.leagues = state.leagues.filter(l => l.id !== league.id);
+      persist();
+      render();
+      toast("リーグを削除しました");
+    });
+
+    controls.appendChild(btnRename);
+    controls.appendChild(btnAddTeam);
+    controls.appendChild(btnDelete);
+
+    top.appendChild(left);
+    top.appendChild(controls);
+
+    const body = document.createElement("div");
+    body.className = "leagueBody";
+
+    const teamsHeader = document.createElement("div");
+    teamsHeader.className = "teamsHeader";
+    teamsHeader.innerHTML = `
+      <div class="left">
+        <span>チーム名（クリックして編集）</span>
+      </div>
+      <div class="right"></div>
+    `;
+
+    const teams = document.createElement("div");
+    teams.className = "teams";
+
+    league.teams.forEach((team, idx) => {
+      const t = document.createElement("div");
+      t.className = "team";
+
+      const input = document.createElement("input");
+      input.value = team.name;
+      input.placeholder = `Team ${idx + 1}`;
+      input.addEventListener("change", () => {
+        team.name = input.value.trim() || input.placeholder;
+        persist();
+        toast("チーム名を更新しました");
+      });
+
+      const trash = document.createElement("button");
+      trash.className = "trash";
+      trash.title = "削除";
+      trash.textContent = "×";
+      trash.addEventListener("click", () => {
+        const ok = confirm(`「${team.name}」を削除しますか？`);
+        if (!ok) return;
+        league.teams = league.teams.filter(x => x.id !== team.id);
+        persist();
+        render();
+        toast("チームを削除しました");
+      });
+
+      t.appendChild(input);
+      t.appendChild(trash);
+      teams.appendChild(t);
+    });
+
+    body.appendChild(teamsHeader);
+    body.appendChild(teams);
+
+    wrap.appendChild(top);
+    wrap.appendChild(body);
+
+    return wrap;
+  }
+
+  function emptyState(){
+    return `
+      <div style="
+        border:1px dashed rgba(255,255,255,.14);
+        border-radius:16px;
+        padding:14px 12px;
+        color:rgba(255,255,255,.62);
+        background:rgba(0,0,0,.14);
+        ">
+        まだリーグがありません。左の「リーグ追加」から作成できます。
+      </div>
+    `;
+  }
+
+  // ---- Helpers
+  function persist(){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+  function load(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed !== "object") return null;
+      if (!Array.isArray(parsed.leagues)) return null;
+      if (typeof parsed.nextLeagueNumber !== "number") parsed.nextLeagueNumber = 1;
+      return parsed;
+    }catch{
+      return null;
+    }
+  }
+
+  function uid(){
+    return Math.random().toString(16).slice(2) + Date.now().toString(16);
+  }
+
+  function defaultLeagueName(){
+    return `League ${state.nextLeagueNumber}`;
+  }
+
+  function refreshNextLeagueName(){
+    el.nextLeagueName.value = defaultLeagueName();
+  }
+
+  function bumpNextLeagueNumberOnCreate(name){
+    // If user used the exact pattern "League N", keep numbering aligned.
+    const m = /^League\s+(\d+)$/i.exec(name.trim());
+    if (!m) {
+      // still bump by 1 to keep "League N" unique by default
+      state.nextLeagueNumber += 1;
+      return;
+    }
+    const n = parseInt(m[1], 10);
+    if (Number.isFinite(n) && n >= state.nextLeagueNumber){
+      state.nextLeagueNumber = n + 1;
+    } else {
+      state.nextLeagueNumber += 1;
+    }
+  }
+
+  function nextTeamNumber(league){
+    // Find max Team N within the league and return +1
+    let max = 0;
+    for (const t of league.teams){
+      const m = /^Team\s+(\d+)$/i.exec((t.name || "").trim());
+      if (m){
+        const n = parseInt(m[1], 10);
+        if (Number.isFinite(n)) max = Math.max(max, n);
+      }
+    }
+    return max + 1;
+  }
+
+  function clampInt(v, min, max){
+    const n = parseInt(v, 10);
+    if (!Number.isFinite(n)) return min;
+    return Math.max(min, Math.min(max, n));
+  }
+
+  function miniBtn(label){
+    const b = document.createElement("button");
+    b.className = "miniBtn";
+    b.textContent = label;
+    return b;
+  }
+
+  function formatLabel(v){
+    if (v === "home_away") return "H/A";
+    return "総当たり";
+  }
+
+  function toast(msg){
+    el.toast.textContent = msg;
+    el.toast.classList.add("show");
+    window.clearTimeout(toast._t);
+    toast._t = window.setTimeout(() => el.toast.classList.remove("show"), 1600);
+  }
+
+  function escapeHtml(str){
+    return String(str)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  // First render
+  render();
+})();
+</script>
+</body>
+</html>
