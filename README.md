@@ -1,24 +1,13 @@
-# League UI Prototype
+# League UI (GitHub Pages)
 
-GitHubにアップロードするだけで動く、サッカーリーグ作成UIのプロトタイプです。
+このフォルダをそのままGitHubリポジトリ直下に置くと動きます（ビルド不要）。
 
 ## できること
-- リーグの追加（League 1, League 2… 自動連番）
-- チームの追加・編集・削除（Team 1, Team 2…）
-- UIはダークテーマ＋紫アクセント
-- localStorage保存（ブラウザ内）
+- リーグ作成（League 1 / League 2 … 自動連番）
+- リーグ一覧はコンパクト表示（「管理」ボタンでそのリーグを管理）
+- リーグロゴ編集（写真から選択 / 角丸の四角で表示）
+- 登録チーム作成（Team 1 / Team 2 …）
+- チーム一覧でチームを押す → チーム名 / ロゴ / コメント編集
 
-## 使い方（GitHub Pages）
-1. このリポジトリをGitHubにアップロード
-2. Settings → Pages
-3. Branch: main / root を選択
-4. 表示されたURLにアクセス
-
-## ファイル構成
-- index.html : UI本体（これだけで動作）
-
-次のステップで、
-- 順位表
-- 試合日程生成
-- 結果入力
-などを追加可能です。
+## GitHub Pages
+Settings → Pages → Branch: main / root を選択。
