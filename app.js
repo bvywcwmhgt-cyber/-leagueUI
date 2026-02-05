@@ -815,7 +815,51 @@
     location.hash = `#season:${encodeURIComponent(String(leagueId||""))}:${encodeURIComponent(String(seasonId||""))}`;
     setTimeout(()=>{ __suppressHash = false; }, 0);
   }
-  function applyRoute(){})()
+  function applyRoute(){
+    if (__suppressHash) return;
+    const h = location.hash || "";
+    if (h.startsWith("#season:")){
+      const rest = h.slice("#season:".length);
+      const parts = rest.split(":").map(s => decodeURIComponent(s));
+      const leagueId = parts[0] || "";
+      const seasonId = parts[1] || "";
+      if (leagueId && seasonId){
+        const league = state.leagues.find(l => l.id === leagueId);
+        if (league){
+          state.activeLeagueId = leagueId;
+          state.activeSeasonId = seasonId;
+          persist();
+          renderSeason();
+          showSeason();
+          return;
+        }
+      }
+    }
+    state.activeSeasonId = null;
+    persist();
+    renderHome();
+    showHome();
+  }
+
+  function openSeasonView(leagueId, seasonId){
+    state.activeLeagueId = leagueId;
+    state.activeSeasonId = seasonId;
+    persist();
+    setRouteSeason(leagueId, seasonId);
+    renderSeason();
+    showSeason();
+  }
+
+  function closeSeasonView(){
+    state.activeSeasonId = null;
+    persist();
+    setRouteHome();
+    renderHome();
+    showHome();
+  }
+
+  window.addEventListener("hashchange", applyRoute);
+  setTimeout(applyRoute, 0);
 function showHome(){
   el.seasonView.classList.remove("show");
   el.seasonView.style.display = "none";
@@ -834,3 +878,5 @@ function showSeason(){
   el.seasonView.setAttribute("aria-hidden","false");
 }
 ;
+})();
+
