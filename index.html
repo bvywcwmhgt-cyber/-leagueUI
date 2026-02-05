@@ -382,6 +382,8 @@
       backdrop-filter: blur(12px);
     }
     .seasonView.show{ display:flex; }
+    body.season-open #homeApp{ display:none; }
+
 
     .seasonTop{ max-width: 1200px; width: 100%; margin: 0 auto; padding: 16px 18px 10px; }
     .seasonTopInner{
@@ -1717,6 +1719,13 @@
   refreshNextLeagueName();
   renderHome();
 
+  // handle direct links / reloads
+  applyRoute();
+  window.addEventListener('hashchange', () => {
+    if (__suppressHash) return;
+    applyRoute();
+  });
+
   el.btnCreateLeague.addEventListener("click", () => {
     const name = (el.nextLeagueName.value || "").trim() || defaultLeagueName();
     const league = {
@@ -2103,6 +2112,9 @@
   });
 
   function renderHome(){
+  // ensure we are in Home view
+  el.homeApp.style.display = "block";
+  el.seasonView.classList.remove("show");
     el.leagueCount.textContent = `${state.leagues.length} leagues`;
     el.leagueList.innerHTML = "";
     if (state.leagues.length === 0){
@@ -2390,19 +2402,59 @@
     el.teamEditorForm.classList.remove("hide");
   }
 
-  function openSeasonView(leagueId, seasonId){
+  // ---- simple hash router (prevents iOS reload/back issues) ----
+  let __suppressHash = false;
+  function setRouteHome(){
+    __suppressHash = true;
+    location.hash = "";
+    setTimeout(()=>{ __suppressHash = false; }, 0);
+  }
+  function setRouteSeason(leagueId, seasonId){
+    __suppressHash = true;
+    location.hash = `#season:${encodeURIComponent(String(leagueId||""))}:${encodeURIComponent(String(seasonId||""))}`;
+    setTimeout(()=>{ __suppressHash = false; }, 0);
+  }
+  function applyRoute(){
+    if(__suppressHash) return;
+    const h = (location.hash||"").replace(/^#/,"");
+    if(!h){
+      // default: home
+      closeSeasonView(true);
+      return;
+    }
+    if(h.startsWith("season:")){
+      const parts = h.split(":");
+      const leagueId = decodeURIComponent(parts[1]||"");
+      const seasonId = decodeURIComponent(parts[2]||"");
+      // open without rewriting hash
+      openSeasonView(leagueId, seasonId, { fromRoute: true });
+    }
+  }
+
+  function openSeasonView(leagueId, seasonId, opts = {}){
+    // persist navigation (so reload/back returns to the same season)
+    if (!opts.fromRoute) setRouteSeason(leagueId, seasonId);
     activeLeagueId = leagueId;
     activeSeasonId = seasonId;
     editingDivisionId = "";
 
     const league = getActiveLeague();
-    if (!league) return;
+    if (!league){
+      showToast('リーグが見つかりません');
+      if (!opts.fromRoute) setRouteHome();
+      return;
+    }
     normalizeLeague(league);
 
-    const season = league.seasons.find(s => s.id === seasonId) || league.seasons[0];
-    if (!season) return;
+    const season = (league.seasons || []).find(s => String(s.id) === String(seasonId)) || (league.seasons || [])[0];
+    if (!season){
+      showToast('シーズンが見つかりません');
+      if (!opts.fromRoute) setRouteHome();
+      return;
+    }
     normalizeSeason(season);
 
+    // only close modal after we confirmed the target exists
     closeLeagueModal();
 
     el.seasonHeaderLeague.textContent = league.name;
@@ -2439,12 +2491,16 @@
     activeRoundIndex = 0;
     syncSeasonSection();
 
+    el.homeApp.style.display = "none";
     el.seasonView.classList.add("show");
+      document.body.classList.add("season-open");
     el.seasonView.setAttribute("aria-hidden","false");
   }
 
   function closeSeasonView(){
+    setRouteHome();
     el.seasonView.classList.remove("show");
+      document.body.classList.remove("season-open");
     el.seasonView.setAttribute("aria-hidden","true");
   }
 
