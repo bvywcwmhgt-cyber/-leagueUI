@@ -1,0 +1,53 @@
+
+body {
+  background:#0b0b14;
+  color:#fff;
+  font-family: system-ui, sans-serif;
+}
+.container {
+  padding:40px;
+}
+.card-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap:16px;
+}
+.match-card {
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:12px;
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  background:rgba(255,255,255,.03);
+}
+.team {
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.team.home { justify-content:flex-start; }
+.team.away { justify-content:flex-start; }
+.badge {
+  font-size:11px;
+  padding:2px 6px;
+  border-radius:6px;
+}
+.badge.home { background:#7a2d2d; }
+.badge.away { background:#2d4a7a; }
+.score {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+}
+.score input {
+  width:36px;
+  text-align:center;
+  background:#111;
+  border:1px solid rgba(255,255,255,.2);
+  color:#fff;
+  border-radius:6px;
+}
+.score .h { color:#ff6b6b; font-size:12px; }
+.score .a { color:#6bb1ff; font-size:12px; }
