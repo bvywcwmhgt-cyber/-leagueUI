@@ -597,6 +597,28 @@
       text-align:center;
     }
 
+  
+    /* v16: unify heights across team boxes + score area */
+    .matchRow{ padding: 12px 12px; }
+    .matchGrid{ height: 72px; } /* stable row height (inside existing card row) */
+    .teamBox{ height: 72px; }   /* same as grid */
+    .teamInner{ height: 100%; }
+    .teamName{
+      line-height: 1;
+      display:flex;
+      align-items:center;
+      height: 100%;
+    }
+    .scoreFixed{
+      height: 72px;             /* match row height */
+      align-items:center;
+    }
+    .scoreFixed input{
+      height: 44px;
+      line-height: 44px;
+      padding: 0;
+    }
+
   </style>
 </head>
 
