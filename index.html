@@ -3,73 +3,3097 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Schedule – One Line List UI</title>
-  <link rel="stylesheet" href="./style.css" />
+  <title>League Builder UI</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg-0:#070A12; --bg-1:#0B1020;
+      --stroke:rgba(255,255,255,.09); --stroke-2:rgba(255,255,255,.06);
+      --text:rgba(255,255,255,.92); --muted:rgba(255,255,255,.64); --faint:rgba(255,255,255,.42);
+      --accent:#B04BFF; --good:#4BE38B; --bad:#FF4D6D;
+      --shadow:0 14px 35px rgba(0,0,0,.45); --shadow-soft:0 10px 24px rgba(0,0,0,.32);
+      --font: Inter, "Noto Sans JP", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
+      --r-xl:18px;
+    }
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0; font-family:var(--font); color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 72% 16%, rgba(176,75,255,.22), transparent 55%),
+        radial-gradient(900px 520px at 20% 12%, rgba(122,60,255,.12), transparent 60%),
+        radial-gradient(700px 500px at 26% 92%, rgba(75,227,139,.08), transparent 55%),
+        linear-gradient(180deg, var(--bg-0), var(--bg-1));
+      overflow-x:hidden;
+    }
+    .app{ max-width:1200px; margin:0 auto; padding:22px 18px 34px; }
+
+    .topbar{
+      display:flex; gap:12px; align-items:center; justify-content:space-between;
+      padding:14px 16px; border:1px solid var(--stroke);
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border-radius:var(--r-xl); box-shadow:var(--shadow-soft);
+      backdrop-filter: blur(10px);
+      position: sticky; top: 10px; z-index: 3;
+    }
+    .brand{ display:flex; align-items:center; gap:10px; min-width:220px; }
+    .logoMark{
+      width:38px; height:38px; border-radius:12px;
+      background:
+        radial-gradient(16px 16px at 30% 30%, rgba(255,255,255,.35), transparent 60%),
+        linear-gradient(135deg, rgba(176,75,255,.95), rgba(122,60,255,.55));
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow: 0 10px 20px rgba(176,75,255,.12);
+    }
+    .brand h1{ margin:0; font-size:14px; line-height:1.1; letter-spacing:.2px; }
+    .brand p{ margin:2px 0 0; font-size:12px; color:var(--muted); }
+    .actions{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end; }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px; border-radius:999px; border:1px solid var(--stroke);
+      background: rgba(0,0,0,.18);
+      color:var(--muted); font-size:12px; user-select:none;
+    }
+    .dot{ width:8px; height:8px; border-radius:99px; background:var(--good); box-shadow:0 0 0 4px rgba(75,227,139,.12); }
+
+    .btn{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      padding:10px 12px; border-radius:12px;
+      cursor:pointer; font-weight:800; font-size:13px;
+      transition: transform .06s ease, background .16s ease, border-color .16s ease, filter .16s ease;
+      white-space:nowrap;
+    }
+    .btn:hover{ background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.16); }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{
+      border-color: rgba(176,75,255,.35);
+      background: linear-gradient(135deg, rgba(176,75,255,.92), rgba(122,60,255,.72));
+      box-shadow: 0 10px 22px rgba(176,75,255,.18);
+    }
+    .btn.primary:hover{ filter: brightness(1.04); }
+    .btn.danger{ border-color: rgba(255,77,109,.26); background: rgba(255,77,109,.08); }
+    .btn.ghost{ background: rgba(0,0,0,.20); border-color: rgba(255,255,255,.10); }
+    .btn.small{ padding:8px 10px; border-radius:11px; font-size:12px; }
+
+    .grid{ margin-top:16px; display:grid; grid-template-columns: 1fr 1fr; gap:16px; align-items:start; }
+    @media (max-width:980px){ .grid{ grid-template-columns:1fr; } .brand{ min-width:auto; } }
+
+    .card{
+      border:1px solid var(--stroke);
+      border-radius:var(--r-xl);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      overflow:hidden;
+    }
+    .cardHead{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:12px 14px;
+      border-bottom:1px solid var(--stroke-2);
+      background: linear-gradient(180deg, rgba(0,0,0,.12), transparent);
+      gap:10px;
+    }
+    .cardHead .title{ display:flex; flex-direction:column; gap:2px; min-width:0;}
+    .cardHead h2{ margin:0; font-size:13px; letter-spacing:.2px; }
+    .cardHead p{ margin:0; font-size:12px; color:var(--muted); }
+    .cardBody{ padding:12px 14px 14px; }
+
+    .field{ display:flex; flex-direction:column; gap:6px; }
+    .label{ font-size:12px; color:var(--muted); }
+    .input,.select,.textarea{
+      width:100%;
+      min-height:40px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.22);
+      color:var(--text);
+      outline:none;
+      font-size:13px;
+      transition: border-color .15s ease, box-shadow .15s ease;
+      resize: vertical;
+    }
+    .input{ height:40px; padding:0 12px; }
+    .input:focus,.select:focus,.textarea:focus{
+      border-color: rgba(176,75,255,.45);
+      box-shadow: 0 0 0 4px rgba(176,75,255,.12);
+    }
+    .hint{ font-size:11px; color:var(--faint); line-height:1.35; }
+    .row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; align-items:center; justify-content:flex-end; }
+
+    details{
+      border:1px solid var(--stroke-2);
+      border-radius: 16px;
+      background: rgba(0,0,0,.16);
+      padding: 10px 10px;
+    }
+    summary{
+      cursor:pointer;
+      list-style:none;
+      user-select:none;
+      display:flex; align-items:center; justify-content:space-between;
+      font-weight:900;
+      color: rgba(255,255,255,.88);
+      font-size: 12px;
+    }
+    summary::-webkit-details-marker{ display:none; }
+
+    .list{ display:flex; flex-direction:column; gap:10px; }
+    .leagueCard{
+      border:1px solid var(--stroke);
+      border-radius:var(--r-xl);
+      background: rgba(0,0,0,.16);
+      overflow:hidden;
+    }
+    .leagueTop{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px; }
+    .leagueLeft{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .sqLogo{
+      width:42px; height:42px; border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background:
+        radial-gradient(16px 16px at 30% 30%, rgba(255,255,255,.18), transparent 60%),
+        linear-gradient(135deg, rgba(176,75,255,.38), rgba(0,0,0,.2));
+      overflow:hidden; flex:0 0 auto;
+      display:flex; align-items:center; justify-content:center;
+      color:rgba(255,255,255,.7); font-weight:900; font-size:12px;
+    }
+    .sqLogo img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .leagueInfo{ min-width:0; display:flex; flex-direction:column; gap:2px; }
+    .leagueName{
+      font-size:13px; font-weight:900; letter-spacing:.2px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      max-width: 340px;
+    }
+    .leagueMeta{ font-size:12px; color:var(--muted); display:flex; gap:10px; flex-wrap:wrap; }
+    .badge{
+      display:inline-flex; align-items:center; gap:6px;
+      padding:6px 10px; border-radius:999px; border:1px solid var(--stroke);
+      background: rgba(255,255,255,.05);
+      font-size:12px; color:var(--muted);
+    }
+    .badge .bDot{ width:6px; height:6px; border-radius:99px; background:var(--accent); box-shadow:0 0 0 3px rgba(176,75,255,.12); }
+
+    /* overlay modal */
+    .overlay{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.55);
+      backdrop-filter: blur(10px);
+      display:none; align-items:center; justify-content:center;
+      z-index:20; padding:18px;
+    }
+    .overlay.show{ display:flex; }
+    .modal{
+      width: min(1040px, 100%);
+      border:1px solid var(--stroke);
+      border-radius:20px;
+      background: linear-gradient(180deg, rgba(16, 22, 45, .92), rgba(12, 16, 35, .90));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      max-height: calc(100vh - 36px);
+      display:flex; flex-direction:column;
+    }
+    .modalHead{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px; gap:10px;
+      border-bottom:1px solid var(--stroke-2);
+      background: linear-gradient(180deg, rgba(0,0,0,.12), transparent);
+      flex: 0 0 auto;
+    }
+    .modalTitle{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .modalTitle .txt{ min-width:0; display:flex; flex-direction:column; gap:2px; }
+    .modalTitle h3{ margin:0; font-size:13px; letter-spacing:.2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .modalTitle p{ margin:0; font-size:12px; color:var(--muted); }
+    .modalBody{ padding:12px 14px 14px; overflow:auto; flex: 1 1 auto; }
+
+    .tabs{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+    .tab{
+      padding:9px 10px;
+      border-radius:999px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.18);
+      color:var(--muted);
+      font-size:12px;
+      cursor:pointer;
+      font-weight:900;
+    }
+    .tab.active{
+      color: rgba(255,255,255,.92);
+      border-color: rgba(176,75,255,.34);
+      background: rgba(176,75,255,.16);
+      box-shadow: 0 0 0 4px rgba(176,75,255,.08);
+    }
+
+    .split{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; align-items:start; }
+    @media (max-width:860px){ .split{ grid-template-columns:1fr; } }
+
+    .panel{
+      border:1px solid var(--stroke);
+      border-radius:18px;
+      background: rgba(0,0,0,.16);
+      overflow:hidden;
+      display:flex; flex-direction:column;
+      min-height: 220px;
+    }
+    .panelHead{
+      padding:12px;
+      border-bottom:1px solid var(--stroke-2);
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      flex: 0 0 auto;
+    }
+    .panelHead strong{ font-size:13px; letter-spacing:.2px; }
+    .panelHead span{ font-size:12px; color:var(--muted); }
+    .panelBody{ padding:12px; flex: 1 1 auto; }
+    .scrollY{ overflow:auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+
+    .seasonList{ display:flex; flex-direction:column; gap:10px; }
+    .seasonRow{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding:10px 10px;
+      border-radius:16px;
+      border:1px solid var(--stroke-2);
+      background: rgba(255,255,255,.03);
+    }
+    .seasonRow:hover{ border-color: rgba(176,75,255,.22); background: rgba(176,75,255,.06); }
+    .seasonRow .left{ display:flex; flex-direction:column; gap:2px; min-width:0; }
+    .seasonRow .name{ font-weight:900; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .seasonRow .meta{ font-size:11px; color: var(--muted); }
+    .seasonBtns{ display:flex; gap:8px; align-items:center; }
+    .miniIconBtn{
+      width:34px; height:34px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+      color: rgba(255,255,255,.82);
+      cursor:pointer; font-weight:900;
+    }
+    .miniIconBtn.danger{ border-color: rgba(255,77,109,.26); background: rgba(255,77,109,.10); }
+
+    .teamList{ display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    @media (max-width: 820px){ .teamList{ grid-template-columns: 1fr; } }
+    .teamCard{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
+      padding:10px 10px;
+      border-radius:16px;
+      border:1px solid var(--stroke-2);
+      background: rgba(255,255,255,.03);
+    }
+    .teamCard:hover{ border-color: rgba(176,75,255,.22); background: rgba(176,75,255,.06); }
+    .teamCard.selected{
+      border-color: rgba(176,75,255,.38);
+      background: rgba(176,75,255,.10);
+      box-shadow: 0 0 0 4px rgba(176,75,255,.08);
+    }
+    .pick{
+      all: unset;
+      cursor:pointer;
+      display:flex; align-items:center; gap:10px;
+      min-width:0; flex: 1 1 auto;
+    }
+    .teamTxt{ min-width:0; display:flex; flex-direction:column; gap:2px; }
+    .teamName{ font-size:13px; font-weight:900; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .teamHint{ font-size:11px; color:var(--muted); }
+    .xBtn{
+      width:34px; height:34px;
+      border-radius:12px;
+      border:1px solid rgba(255,77,109,.26);
+      background: rgba(255,77,109,.08);
+      color: rgba(255,255,255,.88);
+      cursor:pointer; font-weight:900; line-height:1;
+      flex:0 0 auto;
+    }
+
+    .fileBtn{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding:10px 12px; border-radius:12px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.22);
+    }
+    .fileBtn input[type="file"]{ width:100%; color:var(--muted); font-size:12px; }
+
+    /* Division UI */
+    .chipScroller{
+      display:flex; gap:10px; align-items:center;
+      overflow:auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain;
+      max-width: min(720px, 56vw);
+      padding-bottom: 2px;
+    }
+    .divBtn{
+      display:flex; align-items:center; gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(0,0,0,.20);
+      color: rgba(255,255,255,.86);
+      font-weight: 900;
+      font-size: 12px;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .divBtn.active{
+      border-color: rgba(176,75,255,.34);
+      background: rgba(176,75,255,.16);
+      box-shadow: 0 0 0 4px rgba(176,75,255,.08);
+    }
+    .divIcon{
+      width:22px; height:22px; border-radius: 10px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      overflow:hidden;
+      display:flex; align-items:center; justify-content:center;
+      font-weight: 950;
+      color: rgba(255,255,255,.70);
+      flex: 0 0 auto;
+      font-size: 11px;
+    }
+    .divIcon img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+    .checkList{ display:flex; flex-direction:column; gap:8px; }
+    .checkItem{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding:10px 10px;
+      border-radius:16px;
+      border:1px solid var(--stroke-2);
+      background: rgba(255,255,255,.03);
+    }
+    .checkLeft{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .checkLeft .nm{ font-weight:900; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .checkLeft .sub{ font-size:11px; color:var(--muted); }
+    .toggle{ width:18px; height:18px; accent-color: var(--accent); }
+
+    .small{ font-size:11px; color:var(--faint); line-height:1.35; }
+    .hide{ display:none !important; }
+    .footer{ margin-top:14px; color:var(--faint); font-size:12px; text-align:center; }
+
+    /* season full screen */
+    .seasonView{
+      position: fixed; inset: 0; z-index: 40;
+      display: none; flex-direction: column;
+      background:
+        radial-gradient(1200px 600px at 72% 16%, rgba(176,75,255,.18), transparent 55%),
+        radial-gradient(700px 500px at 26% 92%, rgba(75,227,139,.06), transparent 55%),
+        linear-gradient(180deg, rgba(7,10,18,.98), rgba(11,16,32,.98));
+      backdrop-filter: blur(12px);
+    }
+    .seasonView.show{ display:flex; }
+
+    .seasonTop{ max-width: 1200px; width: 100%; margin: 0 auto; padding: 16px 18px 10px; }
+    .seasonTopInner{
+      display:flex; align-items:center; justify-content: space-between; gap: 10px;
+      padding: 12px 12px;
+      border-radius: 18px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.20);
+      box-shadow: var(--shadow-soft);
+    }
+    .seasonTitle{ display:flex; align-items:center; gap:10px; min-width: 0; }
+    .seasonTitle .t{ min-width:0; display:flex; flex-direction: column; gap: 2px; }
+    .seasonTitle .t .l1{ font-weight: 950; font-size: 13px; white-space: nowrap; overflow:hidden; text-overflow: ellipsis; max-width: 42vw; }
+    .seasonTitle .t .l2{ font-size: 12px; color: var(--muted); white-space: nowrap; overflow:hidden; text-overflow: ellipsis; max-width: 42vw; }
+    .seasonTopRight{ display:flex; gap:8px; align-items:center; justify-content:flex-end; flex-wrap:wrap; }
+    .chipBar{ display:flex; gap:8px; align-items:center; max-width: 56vw; }
+    .chipToggle{ font-weight:950; }
+    .chipWrap{
+      display:flex; gap:8px; align-items:center;
+      overflow:auto; max-width: min(740px, 56vw);
+      -webkit-overflow-scrolling: touch; overscroll-behavior: contain;
+      padding-bottom: 2px;
+    }
+    .seasonChip{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.22);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 950;
+      cursor: pointer;
+      white-space: nowrap;
+      display:flex; align-items:center; gap:8px;
+    }
+    .seasonChip.active{
+      color: rgba(255,255,255,.92);
+      border-color: rgba(176,75,255,.34);
+      background: rgba(176,75,255,.16);
+      box-shadow: 0 0 0 4px rgba(176,75,255,.08);
+    }
+    .chipDot{ width:6px; height:6px; border-radius:99px; background: rgba(255,255,255,.55); }
+
+    .seasonBody{ max-width: 1200px; width: 100%; margin: 0 auto; padding: 6px 18px 22px; flex: 1 1 auto; overflow: auto; }
+
+    .toast{
+      position:fixed; left:50%; bottom:18px;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,.55);
+      border:1px solid var(--stroke);
+      padding:10px 12px;
+      border-radius:999px;
+      font-size:12px;
+      color:var(--text);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(10px);
+      opacity:0; pointer-events:none;
+      transition: opacity .18s ease, transform .18s ease;
+      z-index:50;
+    }
+    .toast.show{ opacity:1; transform: translateX(-50%) translateY(-2px); }
+  
+    .sectionTabs{
+      display:flex; gap:10px; align-items:center; justify-content:flex-start;
+      flex-wrap:wrap;
+      padding: 0;
+    }
+    .sectionBtn{
+      padding: 9px 12px;
+      border-radius: 14px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.20);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 950;
+      cursor:pointer;
+      display:flex; align-items:center; gap:8px;
+      white-space:nowrap;
+    }
+    .sectionBtn.active{
+      color: rgba(255,255,255,.92);
+      border-color: rgba(176,75,255,.34);
+      background: rgba(176,75,255,.16);
+      box-shadow: 0 0 0 4px rgba(176,75,255,.08);
+    }
+    .sectionIcon{
+      width:22px; height:22px; border-radius: 11px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      display:flex; align-items:center; justify-content:center;
+      font-weight: 950;
+      color: rgba(255,255,255,.72);
+      flex:0 0 auto;
+      font-size: 11px;
+    }
+    .matchList{ display:flex; flex-direction:column; gap:10px; }
+    .matchRow{
+      padding:12px 12px;
+      border-radius:16px;
+      border:1px solid var(--stroke-2);
+      background: rgba(255,255,255,.03);
+    }
+    .matchRow:hover{ border-color: rgba(176,75,255,.22); background: rgba(176,75,255,.06); }
+
+    .matchCenter{
+      display:grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap:12px;
+      align-items:center;
+      width:100%;
+    }
+
+    .teamBox{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.14);
+      min-width:0;
+    }
+    .teamBox.left{ justify-content:flex-start; }
+    .teamBox.right{ justify-content:flex-end; }
+
+    .teamBox .text{
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+      min-width:0;
+    }
+    .teamBox.left .text{ align-items:flex-start; text-align:left; }
+    .teamBox.right .text{ align-items:flex-end; text-align:right; }
+
+    .teamBox .tag{
+      font-size:10px;
+      letter-spacing:.14em;
+      font-weight: 950;
+      line-height: 1;
+      opacity:.95;
+    }
+    .teamBox .tag.home{ color: rgba(255,90,90,.92); }
+    .teamBox .tag.away{ color: rgba(95,170,255,.92); }
+
+    .teamBox .name{
+      font-weight: 950;
+      font-size: 13px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 100%;
+    }
+
+    .scoreBox{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:16px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.18);
+      flex:0 0 auto;
+    }
+    .scoreBox input{
+      width:46px; height:34px;
+      border-radius:12px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.22);
+      color: rgba(255,255,255,.92);
+      font-weight: 950;
+      text-align:center;
+      outline:none;
+    }
+
+    @media (max-width: 760px){
+      .matchCenter{ grid-template-columns: 1fr; }
+      .scoreBox{ justify-content:flex-start; }
+      .teamBox.right{ justify-content:flex-start; }
+      .teamBox.right .text{ align-items:flex-start; text-align:left; }
+    }
+    .matchRight{ display:flex; align-items:center; gap:8px; justify-content:flex-end; flex: 0 0 auto; }
+    .roundScroller{
+      display:flex; gap:8px; align-items:center;
+      overflow:auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain;
+      padding-bottom:2px;
+      max-width: 100%;
+    }
+    .roundBtn{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.22);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 950;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .roundBtn.active{
+      color: rgba(255,255,255,.92);
+      border-color: rgba(176,75,255,.34);
+      background: rgba(176,75,255,.16);
+      box-shadow: 0 0 0 4px rgba(176,75,255,.08);
+    }
+
+  
+    
+  
+    
+  
+    /* v16: unify heights across team boxes + score area */
+    .matchRow{ padding: 12px 12px; }
+    .matchGrid{ height: 72px; } /* stable row height (inside existing card row) */
+    .teamBox{ height: 72px; }   /* same as grid */
+    .teamInner{ height: 100%; }
+    .teamName{
+      line-height: 1;
+      display:flex;
+      align-items:center;
+      height: 100%;
+    }
+    .scoreFixed{
+      height: 72px;             /* match row height */
+      align-items:center;
+    }
+    .scoreFixed input{
+      height: 44px;
+      line-height: 44px;
+      padding: 0;
+    }
+
+  
+    /* v19: one-row match layout (no vertical overlap) */
+    .matchRow{
+      padding: 10px 10px;
+      flex-wrap: nowrap;
+    }
+    .matchLine{
+      display: grid;
+      grid-template-columns: minmax(280px, 1fr) 160px minmax(280px, 1fr);
+      gap: 14px;
+      align-items: center;
+      width: 100%;
+      min-width: 0;
+    }
+    @media (max-width: 860px){
+      .matchLine{ grid-template-columns: 1fr 150px 1fr; gap: 10px; }
+    }
+    .teamCell{
+      height: 64px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.02);
+      padding: 0 14px;
+      display:flex;
+      align-items:center;
+      min-width: 0;
+      overflow: hidden; /* prevent wrapping */
+    }
+    .teamCell.left{ justify-content:flex-start; }
+    .teamCell.right{ justify-content:flex-end; }
+
+    .teamCellInner{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      width: 100%;
+      min-width: 0;
+      flex-wrap: nowrap; /* important */
+    }
+    .teamCell.right .teamCellInner{ flex-direction: row-reverse; }
+
+    .teamName2{
+      font-weight: 950;
+      font-size: 13px;
+      white-space: nowrap;        /* no multi-line */
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
+    }
+
+    .scoreCell{
+      height: 64px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap: 10px;
+      flex-wrap: nowrap; /* no wrap */
+    }
+    .scoreCell input{
+      width: 54px;
+      height: 40px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.03);
+      color: rgba(255,255,255,.88);
+      font-weight: 950;
+      text-align:center;
+      outline:none;
+      padding: 0;
+    }
+    .scoreDash2{
+      width: 18px;
+      text-align:center;
+      font-weight: 950;
+      color: rgba(255,255,255,.70);
+      user-select:none;
+    }
+
+  
+    /* v21: New Match UI (design-first) */
+    .matchNewWrap{
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+    }
+    .matchNewHeader{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .roundScroller{
+      display:flex;
+      gap: 8px;
+      overflow-x:auto;
+      padding-bottom: 6px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .roundScroller::-webkit-scrollbar{ height: 6px; }
+    .roundScroller::-webkit-scrollbar-thumb{ background: rgba(255,255,255,.10); border-radius: 999px; }
+    .roundChip{
+      flex: 0 0 auto;
+      height: 34px;
+      padding: 0 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.03);
+      color: rgba(255,255,255,.82);
+      font-weight: 900;
+      font-size: 12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      user-select:none;
+    }
+    .roundChip.active{
+      border-color: rgba(178,98,255,.55);
+      background: rgba(178,98,255,.18);
+      box-shadow: 0 0 0 1px rgba(178,98,255,.18) inset;
+    }
+
+    .matchBoard{
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+
+    .mRow{
+      width: 100%;
+      padding: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.02);
+    }
+
+    .mGrid{
+      display:grid;
+      grid-template-columns: minmax(260px,1fr) 160px minmax(260px,1fr);
+      gap: 12px;
+      align-items:center;
+      width: 100%;
+      min-width: 0;
+    }
+    @media (max-width: 860px){
+      .mGrid{ grid-template-columns: 1fr 150px 1fr; gap: 10px; }
+    }
+
+    .mTeam{
+      height: 64px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.14);
+      display:flex;
+      align-items:center;
+      padding: 0 12px;
+      min-width: 0;
+      overflow:hidden;
+    }
+    .mTeam.left{ justify-content:flex-start; }
+    .mTeam.right{ justify-content:flex-end; }
+
+    .mTeamInner{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      width: 100%;
+      min-width: 0;
+      flex-wrap: nowrap;
+    }
+    .mTeam.right .mTeamInner{ flex-direction: row-reverse; }
+
+    .mName{
+      font-weight: 950;
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
+      color: rgba(255,255,255,.92);
+    }
+    .mSub{
+      margin-top: 2px;
+      font-size: 11px;
+      color: rgba(255,255,255,.55);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
+    }
+    .mNameWrap{
+      display:flex;
+      flex-direction:column;
+      min-width: 0;
+    }
+
+    .mScore{
+      height: 64px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.03);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap: 10px;
+      flex-wrap: nowrap;
+    }
+    .mScore input{
+      width: 54px;
+      height: 40px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      color: rgba(255,255,255,.92);
+      font-weight: 950;
+      text-align:center;
+      outline:none;
+      padding: 0;
+    }
+    .mDash{
+      width: 18px;
+      text-align:center;
+      font-weight: 950;
+      color: rgba(255,255,255,.70);
+      user-select:none;
+    }
+
+    .mEmpty{
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px dashed rgba(255,255,255,.14);
+      color: rgba(255,255,255,.58);
+      font-size: 12px;
+    }
+
+  
+    /* v22: fixed-size team boxes + left aligned board */
+    .matchBoard{
+      align-items: flex-start;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 6px;
+    }
+    .matchBoard::-webkit-scrollbar{ height: 6px; }
+    .matchBoard::-webkit-scrollbar-thumb{ background: rgba(255,255,255,.10); border-radius: 999px; }
+
+    .mRow{
+      width: fit-content;
+      max-width: 100%;
+    }
+
+    /* Fixed pixel boxes (same size) */
+    .mGrid{
+      grid-template-columns: 320px 160px 320px;
+      justify-content: start;   /* left aligned */
+      width: fit-content;       /* don't stretch to full */
+      max-width: 100%;
+    }
+    .mTeam{
+      width: 320px;             /* same width for both */
+      height: 64px;             /* same height */
+    }
+    .mScore{
+      width: 160px;
+      height: 64px;
+    }
+
+    /* Make the inside layout stable */
+    .mTeamInner{ width: 100%; }
+    .mNameWrap{ min-width: 0; }
+
+  
+    /* v25: merge fresh schedule UI styles into main */
+
+    /* v26: match list horizontal grid (max 5 columns) */
+    .matchList{
+      display:grid !important;
+      grid-template-columns: repeat(5, minmax(260px, 1fr));
+      gap:12px;
+      align-items:stretch;
+      justify-items:start;
+    }
+    .match{
+      display:grid;
+      grid-template-columns: 1fr 128px 1fr;
+      gap:10px;
+      align-items:center;
+      width:100%;
+      min-width:260px;
+    }
+    .teamBox, .scoreBox{
+      height:72px;
+    }
+    .teamMeta{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      min-width:0;
+    }
+    .haTag{
+      font-size:10px;
+      font-weight:900;
+      letter-spacing:.06em;
+      opacity:.9;
+    }
+    .haHome{ color: rgba(255, 90, 90, 0.95); }
+    .haAway{ color: rgba(110, 170, 255, 0.95); }
+    .scoreSideTag{
+      font-size:10px;
+      font-weight:900;
+      width:14px;
+      text-align:center;
+      opacity:.9;
+    }
+    .scoreSideTag.h{ color: rgba(255, 90, 90, 0.95); }
+    .scoreSideTag.a{ color: rgba(110, 170, 255, 0.95); }
+    @media (max-width: 1400px){
+      .matchList{ grid-template-columns: repeat(4, minmax(240px, 1fr)); }
+    }
+    @media (max-width: 1100px){
+      .matchList{ grid-template-columns: repeat(3, minmax(240px, 1fr)); }
+    }
+    @media (max-width: 820px){
+      .matchList{ grid-template-columns: repeat(2, minmax(220px, 1fr)); }
+      .teamBox, .scoreBox{ height:68px; }
+    }
+    @media (max-width: 520px){
+      .matchList{ grid-template-columns: 1fr; }
+    }
+
+    .matchList{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      align-items:flex-start; /* left align */
+    }
+    .match{
+      display:grid;
+      grid-template-columns: 280px 140px 280px;
+      gap:12px;
+      align-items:center;
+      width: fit-content;
+    }
+    .teamBox, .scoreBox{
+      height:60px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.18);
+      display:flex;
+      align-items:center;
+      padding:0 12px;
+      box-sizing:border-box;
+    }
+    .teamBox{
+      background:rgba(255,255,255,.02);
+      overflow:hidden;
+    }
+    .teamBox.left{ justify-content:flex-start; }
+    .teamBox.right{ justify-content:flex-end; }
+    .teamInner{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      width:100%;
+      min-width:0;
+      flex-wrap:nowrap;
+    }
+    .teamBox.right .teamInner{ flex-direction: row-reverse; }
+    .teamName{
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      font-weight:900;
+      font-size:13px;
+      min-width:0;
+    }
+    .scoreBox{
+      justify-content:center;
+      background:rgba(0,0,0,.25);
+      gap:8px;
+      flex-wrap:nowrap;
+    }
+    .scoreBox input{
+      width:48px;
+      height:36px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.05);
+      color:#fff;
+      font-weight:900;
+      text-align:center;
+      padding:0;
+      outline:none;
+    }
+    .scoreDash{
+      color: rgba(255,255,255,.78);
+      font-weight: 900;
+      width: 14px;
+      text-align:center;
+      user-select:none;
+    }
+    @media (max-width: 860px){
+      .match{ grid-template-columns: 240px 120px 240px; gap:10px; }
+      .teamBox, .scoreBox{ height:58px; }
+    }
+
+  </style>
 </head>
+
 <body>
-  <div class="page">
-    <div class="panel">
-      <div class="panelHeader">
-        <div class="title">日程 / 結果（1行リスト）</div>
-        <div class="sub">HOME=赤 / AWAY=青、スコアは中央固定</div>
+  <div class="app" id="homeApp">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logoMark" aria-hidden="true"></div>
+        <div>
+          <h1>League Builder</h1>
+          <p>リーグ作成 / 管理 UI</p>
+        </div>
+      </div>
+      <div class="actions">
+        <div class="pill"><span class="dot" aria-hidden="true"></span> ローカル保存: ON</div>
+        <button class="btn" id="btnReset">全消去</button>
+      </div>
+    </header>
+
+    <main class="grid">
+      <section class="card">
+        <div class="cardHead">
+          <div class="title">
+            <h2>リーグを作成</h2>
+            <p>コンパクト（詳細は開いて設定）</p>
+          </div>
+          <button class="btn primary" id="btnCreateLeague">リーグ追加</button>
+        </div>
+
+        <div class="cardBody">
+          <div class="field">
+            <div class="label">リーグ名（初期値）</div>
+            <input class="input" id="nextLeagueName" />
+            <div class="hint">基本は「固有名詞 + 番号」（例: League 3）。</div>
+          </div>
+
+          <div style="margin-top:10px;">
+            <details>
+              <summary>詳細設定 <span style="color:var(--muted); font-weight:950;">▾</span></summary>
+              <div style="margin-top:10px; display:grid; gap:12px;">
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;" class="form">
+                  <div class="field">
+                    <div class="label">リーグ形式（仮）</div>
+                    <select class="select" id="format">
+                      <option value="round_robin">総当たり</option>
+                      <option value="home_away">H/A（2回戦）</option>
+                    </select>
+                    <div class="hint">※ 今はUI/保存まで。試合生成は次ステップ。</div>
+                  </div>
+
+                  <div class="field">
+                    <div class="label">勝ち点（勝/分/負）</div>
+                    <input class="input" id="points" placeholder="3 / 1 / 0" value="3 / 1 / 0" />
+                    <div class="hint">※ 現段階は保存のみ。</div>
+                  </div>
+
+                  <div class="field">
+                    <div class="label">チーム初期数（作成時に自動で追加）</div>
+                    <input class="input" id="initialTeams" type="number" min="0" max="60" value="12" />
+                    <div class="hint">作成したら Team 1 / Team 2 … を自動で入れる。</div>
+                  </div>
+
+                  <div class="field">
+                    <div class="label">初期シーズン名（任意）</div>
+                    <input class="input" id="initialSeasonName" placeholder="例：2025-26 / Season 1 など" />
+                    <div class="hint">空なら Season 1 にします。</div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <button class="btn" id="btnExport">JSONを書き出し</button>
+                </div>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="cardHead">
+          <div class="title">
+            <h2>作成済みリーグ</h2>
+            <p>コンパクト表示 → 管理ボタンで編集</p>
+          </div>
+          <div class="badge"><span class="bDot" aria-hidden="true"></span><span id="leagueCount">0 leagues</span></div>
+        </div>
+
+        <div class="cardBody">
+          <div class="list" id="leagueList"></div>
+          <div class="footer">データはブラウザ内に保存（localStorage）。</div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- League modal -->
+  <div class="overlay" id="leagueOverlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modalHead">
+        <div class="modalTitle">
+          <div class="sqLogo" id="leagueModalLogo" aria-hidden="true">L</div>
+          <div class="txt">
+            <h3 id="leagueModalTitle">リーグ管理</h3>
+            <p id="leagueModalSub">設定・チーム管理・シーズン</p>
+          </div>
+        </div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button class="btn danger" id="btnDeleteLeague">リーグ削除</button>
+          <button class="btn" id="btnCloseLeague">閉じる</button>
+        </div>
       </div>
 
-      <div class="matchList" role="list">
-        <!-- Sample rows (UI only) -->
-        <div class="matchRow" role="listitem">
-          <div class="side sideHome">
-            <div class="logo">T</div>
-            <div class="meta">
-              <div class="tag tagHome">HOME</div>
-              <div class="name">横浜F・マリノス</div>
-            </div>
-          </div>
+      <div class="modalBody">
+        <div class="tabs">
+          <button class="tab active" data-tab="league">リーグ設定</button>
+          <button class="tab" data-tab="seasons">シーズン</button>
+          <button class="tab" data-tab="teams">チーム管理</button>
+        </div>
 
-          <div class="scoreBox">
-            <div class="scoreTag h">H</div>
-            <input class="scoreInput" inputmode="numeric" placeholder="-" />
-            <div class="dash">-</div>
-            <input class="scoreInput" inputmode="numeric" placeholder="-" />
-            <div class="scoreTag a">A</div>
-          </div>
+        <div id="tab_league">
+          <div class="split">
+            <div class="panel">
+              <div class="panelHead">
+                <strong>基本情報</strong>
+                <span id="leagueInfoMeta"></span>
+              </div>
+              <div class="panelBody scrollY">
+                <div class="field">
+                  <div class="label">リーグ名</div>
+                  <input class="input" id="leagueEditName" />
+                </div>
 
-          <div class="side sideAway">
-            <div class="meta metaRight">
-              <div class="tag tagAway">AWAY</div>
-              <div class="name nameRight">鹿島アントラーズ</div>
+                <div class="field" style="margin-top:10px;">
+                  <div class="label">リーグロゴ（写真から選択）</div>
+                  <div class="fileBtn">
+                    <input id="leagueLogoFile" type="file" accept="image/*" />
+                  </div>
+                  <div class="small">ロゴ表示は角丸の四角です。</div>
+                </div>
+
+                <div class="row">
+                  <button class="btn" id="btnClearLeagueLogo">ロゴ削除</button>
+                  <button class="btn primary" id="btnSaveLeague">保存</button>
+                </div>
+              </div>
             </div>
-            <div class="logo">T</div>
+
+            <div class="panel">
+              <div class="panelHead">
+                <strong>ルール（保存のみ）</strong>
+                <span class="muted">試合生成は次</span>
+              </div>
+              <div class="panelBody scrollY">
+                <div class="field">
+                  <div class="label">リーグ形式</div>
+                  <select class="select" id="leagueEditFormat">
+                    <option value="round_robin">総当たり</option>
+                    <option value="home_away">H/A（2回戦）</option>
+                  </select>
+                </div>
+
+                <div class="field" style="margin-top:10px;">
+                  <div class="label">勝ち点（勝/分/負）</div>
+                  <input class="input" id="leagueEditPoints" placeholder="3 / 1 / 0" />
+                </div>
+
+                <div class="row">
+                  <button class="btn" id="btnToSeasons">シーズンへ</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="matchRow" role="listitem">
-          <div class="side sideHome">
-            <div class="logo">T</div>
-            <div class="meta">
-              <div class="tag tagHome">HOME</div>
-              <div class="name">川崎フロンターレ</div>
-            </div>
-          </div>
+        <div id="tab_seasons" class="hide">
+          <div class="split">
+            <div class="panel">
+              <div class="panelHead">
+                <strong>シーズン一覧</strong>
+                <span id="seasonCount" class="muted"></span>
+              </div>
+              <div class="panelBody" style="display:flex; flex-direction:column; gap:10px;">
+                <div class="field">
+                  <div class="label">次シーズン名（任意）</div>
+                  <input class="input" id="newSeasonName" placeholder="例：2026-27 / Season 2 など" />
+                  <div class="hint">空なら Season + 番号 で作成します。</div>
+                </div>
+                <div class="row" style="justify-content:flex-start; margin-top:0;">
+                  <button class="btn primary" id="btnCreateSeason">次シーズン作成</button>
+                </div>
 
-          <div class="scoreBox">
-            <div class="scoreTag h">H</div>
-            <input class="scoreInput" inputmode="numeric" placeholder="-" />
-            <div class="dash">-</div>
-            <input class="scoreInput" inputmode="numeric" placeholder="-" />
-            <div class="scoreTag a">A</div>
-          </div>
+                <div class="scrollY" style="max-height: 420px; padding-right: 2px;">
+                  <div class="seasonList" id="seasonList"></div>
+                </div>
 
-          <div class="side sideAway">
-            <div class="meta metaRight">
-              <div class="tag tagAway">AWAY</div>
-              <div class="name nameRight">柏レイソル</div>
+                <div class="small">シーズンを「開く」で、そのシーズン画面に全画面で切り替え。</div>
+              </div>
             </div>
-            <div class="logo">T</div>
+
+            <div class="panel">
+              <div class="panelHead">
+                <strong>メモ</strong>
+                <span class="muted">（ここは後で拡張）</span>
+              </div>
+              <div class="panelBody scrollY">
+                <div class="small">今は「シーズン作成 / 切り替え」の土台だけ入れています。次ステップで、順位表・日程・結果入力をシーズン単位で持たせます。</div>
+              </div>
+            </div>
           </div>
         </div>
 
+        <div id="tab_teams" class="hide">
+          <div class="split">
+            <div class="panel">
+              <div class="panelHead">
+                <strong>登録チーム</strong>
+                <span id="teamCount"></span>
+              </div>
+              <div class="panelBody" style="display:flex; flex-direction:column; gap:10px;">
+                <div class="row" style="justify-content:flex-start; margin-top:0;">
+                  <button class="btn primary" id="btnAddTeam">チーム追加</button>
+                </div>
+
+                <div class="scrollY" style="max-height: 520px; padding-right:2px;">
+                  <div class="teamList" id="teamList"></div>
+                </div>
+
+                <div class="small">チームをタップすると右側に詳細が出ます。</div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panelHead">
+                <strong>チーム詳細</strong>
+                <span id="editingTeamMeta">未選択</span>
+              </div>
+              <div class="panelBody scrollY">
+                <div id="teamEditorEmpty" style="border:1px dashed rgba(255,255,255,.14); border-radius:16px; padding:12px; color:rgba(255,255,255,.62); background:rgba(0,0,0,.12);">
+                  左のチーム一覧からチームを選択してください。
+                </div>
+
+                <div id="teamEditorForm" class="hide">
+                  <div class="field">
+                    <div class="label">チーム名</div>
+                    <input class="input" id="teamEditName" />
+                  </div>
+
+                  <div class="field" style="margin-top:10px;">
+                    <div class="label">チームロゴ（写真から選択）</div>
+                    <div class="fileBtn">
+                      <input id="teamLogoFile" type="file" accept="image/*" />
+                    </div>
+                    <div class="small">ロゴ表示は角丸の四角です。</div>
+                  </div>
+
+                  <div class="field" style="margin-top:10px;">
+                    <div class="label">コメント</div>
+                    <textarea class="textarea" id="teamEditComment" rows="6" placeholder="例：スタイル、目標、メモなど"></textarea>
+                  </div>
+
+                  <div class="row">
+                    <button class="btn" id="btnClearTeamLogo">ロゴ削除</button>
+                    <button class="btn primary" id="btnSaveTeam">保存</button>
+                    <button class="btn danger" id="btnDeleteTeam">チーム削除</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- modalBody -->
+    </div><!-- modal -->
+  </div><!-- overlay -->
+
+  <!-- Fullscreen Season View -->
+  <div class="seasonView" id="seasonView" aria-hidden="true">
+    <div class="seasonTop">
+      <div class="seasonTopInner">
+        <div class="seasonTitle">
+          <div class="sqLogo" id="seasonLeagueLogo" aria-hidden="true">L</div>
+          <div class="t">
+            <div class="l1" id="seasonHeaderLeague">League</div>
+            <div class="l2" id="seasonHeaderSeason">Season</div>
+          </div>
+        </div>
+
+        <div class="seasonTopRight">
+          <button class="btn ghost small" id="btnSeasonHome">ホーム</button>
+          <button class="btn ghost small chipToggle" id="btnToggleSeasonChips">シーズン ▾</button>
+          <div class="chipBar hide" id="seasonChipBar">
+            <div class="chipWrap" id="seasonChips"></div>
+          </div>
+        </div>
       </div>
     </div>
+
+    <div class="seasonBody" id="seasonBody">
+      <!-- Division manage (collapsible) -->
+      <div class="card">
+        <div class="cardBody">
+          <details id="divisionDetails" open>
+            <summary>ディビジョン編集 <span style="color:var(--muted); font-weight:950;">▾</span></summary>
+
+            <div style="margin-top:12px; display:grid; gap:12px;">
+              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+                <div class="field">
+                  <div class="label">ディビジョン名（任意）</div>
+                  <input class="input" id="newDivisionName" placeholder="例：Division A / East など" />
+                  <div class="hint">空なら Division + 番号 で作成します。</div>
+                </div>
+                <div class="field">
+                  <div class="label">ディビジョンロゴ（写真から選択）</div>
+                  <div class="fileBtn">
+                    <input id="newDivisionLogoFile" type="file" accept="image/*" />
+                  </div>
+                  <div class="small">ロゴ表示は角丸の四角です。</div>
+                </div>
+              </div>
+
+              <div class="row" style="justify-content:flex-start; margin-top:0;">
+                <button class="btn primary" id="btnCreateDivision">ディビジョン追加</button>
+              </div>
+
+              <div class="small">下のディビジョンボタンを押すと、そのディビジョンを開いて編集できます。</div>
+
+              <div class="scrollY" style="max-height: 220px; padding-right:2px;">
+                <div class="seasonList" id="divisionButtonList"></div>
+              </div>
+
+              <div class="card" style="border-radius:18px; border:1px solid var(--stroke-2); background:rgba(0,0,0,.14);">
+                <div class="cardHead" style="border-bottom:1px solid var(--stroke-2);">
+                  <div class="title">
+                    <h2>ディビジョン詳細</h2>
+                    <p class="muted" id="divisionEditingMeta">未選択</p>
+                  </div>
+                  <div style="display:flex; gap:8px; align-items:center;">
+                    <button class="btn danger small" id="btnDeleteDivision" disabled>削除</button>
+                  </div>
+                </div>
+                <div class="cardBody">
+                  <div id="divisionEditorEmpty" style="border:1px dashed rgba(255,255,255,.14); border-radius:16px; padding:12px; color:rgba(255,255,255,.62); background:rgba(0,0,0,.12);">
+                    上のディビジョンボタンから選択してください。
+                  </div>
+
+                  <div id="divisionEditor" class="hide" style="display:grid; gap:12px;">
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+                      <div class="field">
+                        <div class="label">ディビジョン名</div>
+                        <input class="input" id="divisionEditName" />
+                      </div>
+                      <div class="field">
+                        <div class="label">ディビジョンロゴ（写真から選択）</div>
+                        <div class="fileBtn">
+                          <input id="divisionEditLogoFile" type="file" accept="image/*" />
+                        </div>
+                        <div class="row" style="justify-content:flex-start; margin-top:0;">
+                          <button class="btn small" id="btnClearDivisionLogo">ロゴ削除</button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="field">
+                      <div class="label">参加チーム（チェックで選択）</div>
+                      <div class="scrollY" style="max-height: 260px; padding-right:2px;">
+                        <div class="checkList" id="divisionTeamChecklist"></div>
+                      </div>
+                      <div class="small">リーグで登録済みのチームから選べます。</div>
+                    </div>
+
+                    <div class="row">
+                      <button class="btn primary" id="btnSaveDivision">保存</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div style="height:12px;"></div>
+
+      <!-- Season area + Division buttons moved here -->
+      
+      <div class="card">
+        <div class="cardHead">
+          <div class="title">
+            <h2 id="seasonPageTitle">Season</h2>
+            <p class="muted">ここに順位表 / 日程 / 結果入力を追加していく</p>
+          </div>
+          <div class="chipScroller" id="divisionChipsInSeason"></div>
+        </div>
+        <div class="cardBody">
+          <div class="small" id="seasonBodyHint">
+            次ステップで、シーズン/ディビジョンに紐づく順位表・試合日程・結果を保存します。
+          </div>
+
+          <div style="height:12px;"></div>
+
+          <div class="sectionTabs" id="seasonSectionTabs">
+            <button class="sectionBtn active" data-sec="schedule"><span class="sectionIcon">🗓</span>日程/結果</button>
+            <button class="sectionBtn" data-sec="standings"><span class="sectionIcon">#</span>順位表</button>
+            <button class="sectionBtn" data-sec="teams"><span class="sectionIcon">👥</span>チーム一覧</button>
+          </div>
+
+          <div style="height:12px;"></div>
+
+          <!-- Section: schedule/results -->
+          <div id="sec_schedule">
+            <div class="panel" style="min-height: unset;">
+              <div class="panelHead">
+                <strong>ディビジョン日程 / 結果</strong>
+                <span id="schedMeta" class="muted"></span>
+              </div>
+              <div class="panelBody">
+                <div class="row" style="justify-content:flex-start; margin-top:0;">
+                  <button class="btn primary small" id="btnGenerateSchedule">日程を作成</button>
+                  <select class="select small" id="schedGenMode" style="height:32px; padding:0 10px; border-radius:12px;">
+                    <option value="single">1回総当たり</option>
+                    <option value="double">2回総当たり</option>
+                  </select>
+                  <button class="btn danger small" id="btnResetSchedule">日程リセット</button>
+                </div>
+
+                <div style="height:10px;"></div>
+
+                <div class="roundScroller" id="roundScroller"></div>
+
+                <div style="height:10px;"></div>
+
+                <div class="matchList" id="matchList"></div>
+
+                <div style="height:14px;"></div>
+
+                <div class="panel" style="min-height: unset;">
+                  <div class="panelHead">
+                    <strong>任意の試合（リーグ全体）</strong>
+                    <span class="muted">ディビジョン外</span>
+                  </div>
+                  <div class="panelBody">
+                    <div style="display:grid; grid-template-columns: 1.2fr 1fr 1fr; gap:10px;">
+                      <div class="field">
+                        <div class="label">試合名（任意）</div>
+                        <input class="input" id="customMatchName" placeholder="例：Super Cup / Friendly など" />
+                      </div>
+                      <div class="field">
+                        <div class="label">ホーム</div>
+                        <select class="select" id="customHome"></select>
+                      </div>
+                      <div class="field">
+                        <div class="label">アウェイ</div>
+                        <select class="select" id="customAway"></select>
+                      </div>
+                    </div>
+                    <div class="row" style="justify-content:flex-start;">
+                      <button class="btn primary small" id="btnAddCustomMatch">試合を追加</button>
+                    </div>
+
+                    <div class="small">※ この試合はリーグ全体の登録チームから作れます（ディビジョンに依存しません）。</div>
+
+                    <div style="height:10px;"></div>
+                    <div class="matchList" id="customMatchList"></div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- placeholders -->
+          <div id="sec_standings" class="hide">
+            <div style="border:1px dashed rgba(255,255,255,.14); border-radius:16px; padding:12px; color:rgba(255,255,255,.62); background:rgba(0,0,0,.12);">
+              順位表は次で実装します。
+            </div>
+          </div>
+
+          <div id="sec_teams" class="hide">
+            <div style="border:1px dashed rgba(255,255,255,.14); border-radius:16px; padding:12px; color:rgba(255,255,255,.62); background:rgba(0,0,0,.12);">
+              チーム一覧は次で実装します。
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+(() => {
+  const STORAGE_KEY = "league_builder_v9";
+  let state = load() ?? { leagues: [], nextLeagueNumber: 1 };
+
+  const el = {
+    nextLeagueName: document.getElementById("nextLeagueName"),
+    initialSeasonName: document.getElementById("initialSeasonName"),
+    format: document.getElementById("format"),
+    points: document.getElementById("points"),
+    initialTeams: document.getElementById("initialTeams"),
+    btnCreateLeague: document.getElementById("btnCreateLeague"),
+    btnReset: document.getElementById("btnReset"),
+    btnExport: document.getElementById("btnExport"),
+    leagueList: document.getElementById("leagueList"),
+    leagueCount: document.getElementById("leagueCount"),
+    toast: document.getElementById("toast"),
+
+    overlay: document.getElementById("leagueOverlay"),
+    btnCloseLeague: document.getElementById("btnCloseLeague"),
+    btnDeleteLeague: document.getElementById("btnDeleteLeague"),
+    leagueModalTitle: document.getElementById("leagueModalTitle"),
+    leagueModalSub: document.getElementById("leagueModalSub"),
+    leagueModalLogo: document.getElementById("leagueModalLogo"),
+    leagueInfoMeta: document.getElementById("leagueInfoMeta"),
+    tabs: Array.from(document.querySelectorAll(".tab")),
+    tabLeague: document.getElementById("tab_league"),
+    tabSeasons: document.getElementById("tab_seasons"),
+    tabTeams: document.getElementById("tab_teams"),
+
+    leagueEditName: document.getElementById("leagueEditName"),
+    leagueLogoFile: document.getElementById("leagueLogoFile"),
+    btnClearLeagueLogo: document.getElementById("btnClearLeagueLogo"),
+    leagueEditFormat: document.getElementById("leagueEditFormat"),
+    leagueEditPoints: document.getElementById("leagueEditPoints"),
+    btnSaveLeague: document.getElementById("btnSaveLeague"),
+    btnToSeasons: document.getElementById("btnToSeasons"),
+
+    seasonCount: document.getElementById("seasonCount"),
+    newSeasonName: document.getElementById("newSeasonName"),
+    btnCreateSeason: document.getElementById("btnCreateSeason"),
+    seasonList: document.getElementById("seasonList"),
+
+    teamCount: document.getElementById("teamCount"),
+    btnAddTeam: document.getElementById("btnAddTeam"),
+    teamList: document.getElementById("teamList"),
+
+    editingTeamMeta: document.getElementById("editingTeamMeta"),
+    teamEditorEmpty: document.getElementById("teamEditorEmpty"),
+    teamEditorForm: document.getElementById("teamEditorForm"),
+    teamEditName: document.getElementById("teamEditName"),
+    teamLogoFile: document.getElementById("teamLogoFile"),
+    teamEditComment: document.getElementById("teamEditComment"),
+    btnClearTeamLogo: document.getElementById("btnClearTeamLogo"),
+    btnSaveTeam: document.getElementById("btnSaveTeam"),
+    btnDeleteTeam: document.getElementById("btnDeleteTeam"),
+
+    seasonView: document.getElementById("seasonView"),
+    seasonLeagueLogo: document.getElementById("seasonLeagueLogo"),
+    seasonHeaderLeague: document.getElementById("seasonHeaderLeague"),
+    seasonHeaderSeason: document.getElementById("seasonHeaderSeason"),
+    btnSeasonHome: document.getElementById("btnSeasonHome"),
+    btnToggleSeasonChips: document.getElementById("btnToggleSeasonChips"),
+    seasonChipBar: document.getElementById("seasonChipBar"),
+    seasonChips: document.getElementById("seasonChips"),
+    seasonPageTitle: document.getElementById("seasonPageTitle"),
+    seasonBodyHint: document.getElementById("seasonBodyHint"),
+
+    // divisions
+    divisionDetails: document.getElementById("divisionDetails"),
+    newDivisionName: document.getElementById("newDivisionName"),
+    newDivisionLogoFile: document.getElementById("newDivisionLogoFile"),
+    btnCreateDivision: document.getElementById("btnCreateDivision"),
+    divisionButtonList: document.getElementById("divisionButtonList"),
+    divisionChipsInSeason: document.getElementById("divisionChipsInSeason"),
+
+    divisionEditorEmpty: document.getElementById("divisionEditorEmpty"),
+    divisionEditor: document.getElementById("divisionEditor"),
+    divisionEditingMeta: document.getElementById("divisionEditingMeta"),
+    divisionEditName: document.getElementById("divisionEditName"),
+    divisionEditLogoFile: document.getElementById("divisionEditLogoFile"),
+    btnClearDivisionLogo: document.getElementById("btnClearDivisionLogo"),
+    divisionTeamChecklist: document.getElementById("divisionTeamChecklist"),
+    btnSaveDivision: document.getElementById("btnSaveDivision"),
+    btnDeleteDivision: document.getElementById("btnDeleteDivision"),
+
+    seasonSectionTabs: document.getElementById("seasonSectionTabs"),
+    secSchedule: document.getElementById("sec_schedule"),
+    secStandings: document.getElementById("sec_standings"),
+    secTeams: document.getElementById("sec_teams"),
+    schedMeta: document.getElementById("schedMeta"),
+    btnGenerateSchedule: document.getElementById("btnGenerateSchedule"),
+    btnResetSchedule: document.getElementById("btnResetSchedule"),
+    roundScroller: document.getElementById("roundScroller"),
+    matchList: document.getElementById("matchList"),
+
+    customMatchName: document.getElementById("customMatchName"),
+    customHome: document.getElementById("customHome"),
+    customAway: document.getElementById("customAway"),
+    btnAddCustomMatch: document.getElementById("btnAddCustomMatch"),
+    customMatchList: document.getElementById("customMatchList"),
+
+  };
+
+  let activeLeagueId = null;
+  let activeTeamId = null;
+  let activeSeasonId = null;
+
+  let seasonChipsOpen = false;
+  let seasonSection = 'schedule';
+  let activeRoundIndex = 0;
+  let pendingDivisionLogoDataUrl = "";
+  let editingDivisionId = "";
+
+  refreshNextLeagueName();
+  renderHome();
+
+  el.btnCreateLeague.addEventListener("click", () => {
+    const name = (el.nextLeagueName.value || "").trim() || defaultLeagueName();
+    const league = {
+      id: uid(),
+      name,
+      format: el.format.value,
+      points: (el.points.value || "").trim() || "3 / 1 / 0",
+      logoDataUrl: "",
+      teams: [],
+      seasons: [],
+      activeSeasonId: ""
+    };
+
+    const initialTeams = clampInt(el.initialTeams.value, 0, 60);
+    for (let i = 0; i < initialTeams; i++){
+      league.teams.push({ id: uid(), name: `Team ${i + 1}`, logoDataUrl: "", comment: "" });
+    }
+
+    const seasonName = ((el.initialSeasonName.value || "").trim()) || "Season 1";
+    const s = { id: uid(), name: seasonName, createdAt: Date.now(), divisions: [], activeDivisionId: "" };
+    league.seasons.push(s);
+    league.activeSeasonId = s.id;
+
+    state.leagues.unshift(league);
+    bumpNextLeagueNumberOnCreate(name);
+    persist();
+    renderHome();
+    refreshNextLeagueName();
+    el.initialSeasonName.value = "";
+    toast(`「${name}」を追加しました`);
+  });
+
+  el.btnReset.addEventListener("click", () => {
+    const ok = confirm("全リーグを削除します。よろしいですか？");
+    if (!ok) return;
+    state = { leagues: [], nextLeagueNumber: 1 };
+    persist();
+    renderHome();
+    refreshNextLeagueName();
+    toast("全データを削除しました");
+  });
+
+  el.btnExport.addEventListener("click", async () => {
+    const data = JSON.stringify(state, null, 2);
+    try{
+      await navigator.clipboard.writeText(data);
+      toast("JSONをクリップボードにコピーしました");
+    }catch{
+      const blob = new Blob([data], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "league_builder_export.json";
+      a.click();
+      URL.revokeObjectURL(a.href);
+      toast("JSONをダウンロードしました");
+    }
+  });
+
+  el.btnCloseLeague.addEventListener("click", closeLeagueModal);
+  el.overlay.addEventListener("click", (e) => { if (e.target === el.overlay) closeLeagueModal(); });
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape"){
+      if (el.seasonView.classList.contains("show")) closeSeasonView();
+      else if (el.overlay.classList.contains("show")) closeLeagueModal();
+    }
+  });
+
+  el.tabs.forEach(t => t.addEventListener("click", () => setTab(t.getAttribute("data-tab"))));
+
+  el.btnSaveLeague.addEventListener("click", () => {
+    const league = getActiveLeague();
+    if (!league) return;
+    const name = (el.leagueEditName.value || "").trim();
+    if (!name) return toast("リーグ名が空です");
+    league.name = name;
+    league.format = el.leagueEditFormat.value;
+    league.points = (el.leagueEditPoints.value || "").trim() || "3 / 1 / 0";
+    persist();
+    renderHome();
+    syncModalHeader();
+    toast("リーグを保存しました");
+  });
+
+  el.btnClearLeagueLogo.addEventListener("click", () => {
+    const league = getActiveLeague();
+    if (!league) return;
+    league.logoDataUrl = "";
+    persist();
+    renderHome();
+    syncModalHeader();
+    toast("リーグロゴを削除しました");
+  });
+
+  el.leagueLogoFile.addEventListener("change", async () => {
+    const league = getActiveLeague();
+    if (!league) return;
+    const file = el.leagueLogoFile.files?.[0];
+    if (!file) return;
+    league.logoDataUrl = await fileToDataUrl(file);
+    persist();
+    renderHome();
+    syncModalHeader();
+    toast("リーグロゴを更新しました");
+    el.leagueLogoFile.value = "";
+  });
+
+  el.btnToSeasons.addEventListener("click", () => setTab("seasons"));
+
+  el.btnDeleteLeague.addEventListener("click", () => {
+    const league = getActiveLeague();
+    if (!league) return;
+    const ok = confirm(`「${league.name}」を削除します。よろしいですか？`);
+    if (!ok) return;
+    state.leagues = state.leagues.filter(l => l.id !== league.id);
+    persist();
+    renderHome();
+    closeLeagueModal();
+    toast("リーグを削除しました");
+  });
+
+  el.btnCreateSeason.addEventListener("click", () => {
+    const league = getActiveLeague();
+    if (!league) return;
+    normalizeLeague(league);
+    const raw = (el.newSeasonName.value || "").trim();
+    const name = raw || `Season ${nextSeasonNumber(league)}`;
+    const season = { id: uid(), name, createdAt: Date.now(), divisions: [], activeDivisionId: "" };
+    league.seasons.push(season);
+    league.activeSeasonId = season.id;
+    persist();
+    el.newSeasonName.value = "";
+    renderSeasons();
+    syncModalHeader();
+    toast(`「${name}」を作成しました`);
+  });
+
+  el.btnAddTeam.addEventListener("click", () => {
+    const league = getActiveLeague();
+    if (!league) return;
+    const num = nextTeamNumber(league);
+    league.teams.push({ id: uid(), name: `Team ${num}`, logoDataUrl: "", comment: "" });
+    persist();
+    renderTeams();
+    syncModalHeader();
+    toast("チームを追加しました");
+  });
+
+  el.btnSaveTeam.addEventListener("click", () => {
+    const team = getActiveTeam();
+    const league = getActiveLeague();
+    if (!team || !league) return;
+    const name = (el.teamEditName.value || "").trim();
+    if (!name) return toast("チーム名が空です");
+    team.name = name;
+    team.comment = (el.teamEditComment.value || "").trim();
+    persist();
+    renderHome();
+    renderTeams();
+    toast("チームを保存しました");
+  });
+
+  el.btnClearTeamLogo.addEventListener("click", () => {
+    const team = getActiveTeam();
+    if (!team) return;
+    team.logoDataUrl = "";
+    persist();
+    renderTeams();
+    toast("チームロゴを削除しました");
+  });
+
+  el.teamLogoFile.addEventListener("change", async () => {
+    const team = getActiveTeam();
+    if (!team) return;
+    const file = el.teamLogoFile.files?.[0];
+    if (!file) return;
+    team.logoDataUrl = await fileToDataUrl(file);
+    persist();
+    renderHome();
+    renderTeams();
+    toast("チームロゴを更新しました");
+    el.teamLogoFile.value = "";
+  });
+
+  el.btnDeleteTeam.addEventListener("click", () => {
+    const league = getActiveLeague();
+    const team = getActiveTeam();
+    if (!league || !team) return;
+    const ok = confirm(`「${team.name}」を削除しますか？`);
+    if (!ok) return;
+    league.teams = league.teams.filter(t => t.id !== team.id);
+    if (activeTeamId === team.id) activeTeamId = null;
+    league.seasons.forEach(s => {
+      (s.divisions || []).forEach(d => {
+        d.teamIds = (d.teamIds || []).filter(id => id !== team.id);
+      });
+    });
+    persist();
+    renderHome();
+    renderTeams();
+    toast("チームを削除しました");
+  });
+
+  // Season view
+  el.btnSeasonHome.addEventListener("click", () => {
+    closeSeasonView();
+    if (!el.overlay.classList.contains("show") && activeLeagueId) openLeagueModal(activeLeagueId);
+    setTab("seasons");
+  });
+
+  el.btnToggleSeasonChips.addEventListener("click", () => {
+    seasonChipsOpen = !seasonChipsOpen;
+    el.seasonChipBar.classList.toggle("hide", !seasonChipsOpen);
+    el.btnToggleSeasonChips.textContent = seasonChipsOpen ? "シーズン ▴" : "シーズン ▾";
+  });
+
+
+  // Season sections (日程/結果・順位表・チーム一覧)
+  if (el.seasonSectionTabs){
+    el.seasonSectionTabs.addEventListener("click", (e) => {
+      const btn = e.target.closest(".sectionBtn");
+      if (!btn) return;
+      seasonSection = btn.getAttribute("data-sec") || "schedule";
+      syncSeasonSection();
+    });
+  }
+
+  function syncSeasonSection(){
+    const btns = el.seasonSectionTabs ? Array.from(el.seasonSectionTabs.querySelectorAll(".sectionBtn")) : [];
+    btns.forEach(b => b.classList.toggle("active", b.getAttribute("data-sec") === seasonSection));
+    if (el.secSchedule) el.secSchedule.classList.toggle("hide", seasonSection !== "schedule");
+    if (el.secStandings) el.secStandings.classList.toggle("hide", seasonSection !== "standings");
+    if (el.secTeams) el.secTeams.classList.toggle("hide", seasonSection !== "teams");
+    if (seasonSection === "schedule"){
+      renderScheduleUI();
+      renderCustomMatches();
+    }
+  }
+
+  if (el.btnGenerateSchedule){
+    el.btnGenerateSchedule.addEventListener("click", () => {
+      const league = getActiveLeague();
+      const season = getActiveSeason();
+      const div = season ? (season.divisions || []).find(d => d.id === season.activeDivisionId) : null;
+      if (!league || !season || !div) return toast("ディビジョンを選択してください");
+      const teams = (div.teamIds || []).map(id => league.teams.find(t => t.id === id)).filter(Boolean);
+      if (teams.length < 2) return toast("参加チームが2つ以上必要です");
+      {
+        const mode = (el.schedGenMode && el.schedGenMode.value) ? el.schedGenMode.value : "single";
+        const base = generateRoundRobinSchedule(teams.map(t => t.id));
+        if (mode === "double"){
+          // append second leg (swap home/away)
+          const second = base.rounds.map((r, i) => {
+            const matches = (r.matches || []).map(m => ({ id: uid(), homeId: m.awayId, awayId: m.homeId, homeScore: "", awayScore: "" }));
+            return { id: uid(), name: `第${base.rounds.length + i + 1}節`, matches };
+          });
+          div.schedule = { createdAt: Date.now(), rounds: [...base.rounds, ...second] };
+        } else {
+          div.schedule = base;
+        }
+      }
+      activeRoundIndex = 0;
+      persist();
+      renderScheduleUI();
+      toast("日程を作成しました");
+    });
+  }
+
+  if (el.btnResetSchedule){
+    el.btnResetSchedule.addEventListener("click", () => {
+      const season = getActiveSeason();
+      const div = season ? (season.divisions || []).find(d => d.id === season.activeDivisionId) : null;
+      if (!season || !div) return;
+      const ok = confirm("このディビジョンの日程をリセットしますか？");
+      if (!ok) return;
+      div.schedule = null;
+      activeRoundIndex = 0;
+      persist();
+      renderScheduleUI();
+      toast("日程をリセットしました");
+    });
+  }
+
+  if (el.btnAddCustomMatch){
+    el.btnAddCustomMatch.addEventListener("click", () => {
+      const league = getActiveLeague();
+      if (!league) return;
+      league.customMatches ??= [];
+      const home = el.customHome.value;
+      const away = el.customAway.value;
+      if (!home || !away || home === away) return toast("ホーム/アウェイを正しく選んでください");
+      const name = (el.customMatchName.value || "").trim() || `Match ${league.customMatches.length + 1}`;
+      league.customMatches.unshift({
+        id: uid(),
+        name,
+        homeId: home,
+        awayId: away,
+        homeScore: "",
+        awayScore: "",
+        note: ""
+      });
+      el.customMatchName.value = "";
+      persist();
+      renderCustomMatches();
+      toast("任意の試合を追加しました");
+    });
+  }
+
+
+    // Divisions
+  el.newDivisionLogoFile.addEventListener("change", async () => {
+    const file = el.newDivisionLogoFile.files?.[0];
+    if (!file) return;
+    pendingDivisionLogoDataUrl = await fileToDataUrl(file);
+    toast("ディビジョンロゴを選択しました");
+  });
+
+  el.btnCreateDivision.addEventListener("click", () => {
+    const season = getActiveSeason();
+    const league = getActiveLeague();
+    if (!season || !league) return;
+    normalizeSeason(season);
+
+    const raw = (el.newDivisionName.value || "").trim();
+    const name = raw || `Division ${nextDivisionNumber(season)}`;
+    const div = { id: uid(), name, logoDataUrl: pendingDivisionLogoDataUrl || "", teamIds: [] };
+    season.divisions.push(div);
+    if (!season.activeDivisionId) season.activeDivisionId = div.id;
+
+    pendingDivisionLogoDataUrl = "";
+    el.newDivisionLogoFile.value = "";
+    el.newDivisionName.value = "";
+
+    persist();
+    renderDivisions();
+    toast("ディビジョンを追加しました");
+  });
+
+  el.btnSaveDivision.addEventListener("click", () => {
+    const div = getEditingDivision();
+    if (!div) return;
+    div.name = (el.divisionEditName.value || "").trim() || div.name;
+    persist();
+    renderDivisions();
+    toast("ディビジョンを保存しました");
+  });
+
+  el.divisionEditLogoFile.addEventListener("change", async () => {
+    const div = getEditingDivision();
+    if (!div) return;
+    const file = el.divisionEditLogoFile.files?.[0];
+    if (!file) return;
+    div.logoDataUrl = await fileToDataUrl(file);
+    persist();
+    renderDivisions();
+    toast("ディビジョンロゴを更新しました");
+    el.divisionEditLogoFile.value = "";
+  });
+
+  el.btnClearDivisionLogo.addEventListener("click", () => {
+    const div = getEditingDivision();
+    if (!div) return;
+    div.logoDataUrl = "";
+    persist();
+    renderDivisions();
+    toast("ディビジョンロゴを削除しました");
+  });
+
+  el.btnDeleteDivision.addEventListener("click", () => {
+    const season = getActiveSeason();
+    const div = getEditingDivision();
+    if (!season || !div) return;
+    const ok = confirm(`「${div.name}」を削除しますか？`);
+    if (!ok) return;
+    season.divisions = (season.divisions || []).filter(d => d.id !== div.id);
+    if (season.activeDivisionId === div.id){
+      season.activeDivisionId = season.divisions[0]?.id || "";
+    }
+    editingDivisionId = "";
+    persist();
+    renderDivisions();
+    toast("ディビジョンを削除しました");
+  });
+
+  function renderHome(){
+    el.leagueCount.textContent = `${state.leagues.length} leagues`;
+    el.leagueList.innerHTML = "";
+    if (state.leagues.length === 0){
+      el.leagueList.innerHTML = `
+        <div style="border:1px dashed rgba(255,255,255,.14); border-radius:18px; padding:14px 12px; color:rgba(255,255,255,.62); background:rgba(0,0,0,.14);">
+          まだリーグがありません。左の「リーグ追加」から作成できます。
+        </div>`;
+      return;
+    }
+    for (const league of state.leagues){
+      el.leagueList.appendChild(renderLeagueCard(league));
+    }
+  }
+
+  function renderLeagueCard(league){
+    normalizeLeague(league);
+    const card = document.createElement("div");
+    card.className = "leagueCard";
+
+    const top = document.createElement("div");
+    top.className = "leagueTop";
+
+    const left = document.createElement("div");
+    left.className = "leagueLeft";
+
+    const logo = document.createElement("div");
+    logo.className = "sqLogo";
+    if (league.logoDataUrl){
+      const img = document.createElement("img");
+      img.src = league.logoDataUrl; img.alt = "league logo";
+      logo.appendChild(img);
+    }else logo.textContent = "L";
+
+    const info = document.createElement("div");
+    info.className = "leagueInfo";
+
+    const name = document.createElement("div");
+    name.className = "leagueName";
+    name.textContent = league.name;
+
+    const meta = document.createElement("div");
+    meta.className = "leagueMeta";
+    meta.innerHTML = `<span>形式: ${formatLabel(league.format)}</span><span>チーム: ${league.teams.length}</span><span>シーズン: ${escapeHtml(getActiveSeasonName(league))}</span>`;
+
+    info.appendChild(name); info.appendChild(meta);
+    left.appendChild(logo); left.appendChild(info);
+
+    const right = document.createElement("div");
+    const manage = document.createElement("button");
+    manage.className = "btn primary";
+    manage.textContent = "管理";
+    manage.addEventListener("click", () => openLeagueModal(league.id));
+    right.appendChild(manage);
+
+    top.appendChild(left); top.appendChild(right);
+    card.appendChild(top);
+    return card;
+  }
+
+  function openLeagueModal(leagueId){
+    activeLeagueId = leagueId;
+    activeTeamId = null;
+    activeSeasonId = null;
+    editingDivisionId = "";
+    const league = getActiveLeague();
+    if (!league) return;
+    normalizeLeague(league);
+
+    el.leagueEditName.value = league.name;
+    el.leagueEditFormat.value = league.format;
+    el.leagueEditPoints.value = league.points;
+
+    syncModalHeader();
+    setTab("league");
+
+    el.overlay.classList.add("show");
+    el.overlay.setAttribute("aria-hidden","false");
+  }
+
+  function closeLeagueModal(){
+    el.overlay.classList.remove("show");
+    el.overlay.setAttribute("aria-hidden","true");
+  }
+
+  function syncModalHeader(){
+    const league = getActiveLeague();
+    if (!league) return;
+    normalizeLeague(league);
+
+    el.leagueModalTitle.textContent = league.name;
+    el.leagueModalSub.textContent = `形式: ${formatLabel(league.format)} / 勝ち点: ${league.points} / チーム: ${league.teams.length} / シーズン: ${getActiveSeasonName(league)}`;
+    el.leagueInfoMeta.textContent = `${league.teams.length} teams`;
+
+    el.leagueModalLogo.innerHTML = "";
+    if (league.logoDataUrl){
+      const img = document.createElement("img");
+      img.src = league.logoDataUrl; img.alt = "league logo";
+      el.leagueModalLogo.appendChild(img);
+    }else el.leagueModalLogo.textContent = "L";
+  }
+
+  function setTab(key){
+    el.tabs.forEach(t => t.classList.toggle("active", t.getAttribute("data-tab") === key));
+    el.tabLeague.classList.toggle("hide", key !== "league");
+    el.tabSeasons.classList.toggle("hide", key !== "seasons");
+    el.tabTeams.classList.toggle("hide", key !== "teams");
+    if (key === "seasons") renderSeasons();
+    if (key === "teams") renderTeams();
+  }
+
+  function renderSeasons(){
+    const league = getActiveLeague();
+    if (!league) return;
+    normalizeLeague(league);
+
+    el.seasonCount.textContent = `${league.seasons.length} seasons`;
+    el.seasonList.innerHTML = "";
+
+    league.seasons.slice().reverse().forEach((s) => {
+      const row = document.createElement("div");
+      row.className = "seasonRow";
+
+      const left = document.createElement("div");
+      left.className = "left";
+      const nm = document.createElement("div");
+      nm.className = "name";
+      nm.textContent = s.name;
+      const meta = document.createElement("div");
+      meta.className = "meta";
+      meta.textContent = `作成: ${formatDate(s.createdAt)}${league.activeSeasonId === s.id ? " / 現在" : ""}`;
+      left.appendChild(nm); left.appendChild(meta);
+
+      const btns = document.createElement("div");
+      btns.className = "seasonBtns";
+
+      const open = document.createElement("button");
+      open.className = "btn primary small";
+      open.textContent = "開く";
+      open.addEventListener("click", () => {
+        league.activeSeasonId = s.id;
+        persist();
+        syncModalHeader();
+        openSeasonView(league.id, s.id);
+      });
+
+      const del = document.createElement("button");
+      del.className = "miniIconBtn danger";
+      del.textContent = "×";
+      del.title = "シーズン削除";
+      del.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (league.seasons.length <= 1){
+          toast("最後のシーズンは削除できません");
+          return;
+        }
+        const ok = confirm(`「${s.name}」を削除しますか？`);
+        if (!ok) return;
+        league.seasons = league.seasons.filter(x => x.id !== s.id);
+        if (league.activeSeasonId === s.id){
+          league.activeSeasonId = league.seasons[league.seasons.length - 1].id;
+        }
+        persist();
+        renderSeasons();
+        syncModalHeader();
+        toast("シーズンを削除しました");
+      });
+
+      btns.appendChild(open);
+      btns.appendChild(del);
+
+      row.appendChild(left);
+      row.appendChild(btns);
+
+      el.seasonList.appendChild(row);
+    });
+  }
+
+  function renderTeams(){
+    const league = getActiveLeague();
+    if (!league) return;
+    normalizeLeague(league);
+
+    el.teamCount.textContent = `${league.teams.length} teams`;
+    el.teamList.innerHTML = "";
+
+    if (league.teams.length === 0){
+      el.teamList.innerHTML = `
+        <div style="grid-column:1/-1; border:1px dashed rgba(255,255,255,.14); border-radius:16px; padding:12px; color:rgba(255,255,255,.62); background:rgba(0,0,0,.12);">
+          まだチームがありません。「チーム追加」で作成できます。
+        </div>`;
+      activeTeamId = null;
+      syncTeamEditor();
+      return;
+    }
+
+    for (let i = 0; i < league.teams.length; i++){
+      const team = league.teams[i];
+
+      const row = document.createElement("div");
+      row.className = "teamCard" + (activeTeamId === team.id ? " selected" : "");
+
+      const pick = document.createElement("button");
+      pick.className = "pick";
+      pick.type = "button";
+      pick.addEventListener("click", () => {
+        activeTeamId = team.id;
+        renderTeams();
+        fillTeamEditor();
+        syncTeamEditor();
+      });
+
+      const logo = document.createElement("div");
+      logo.className = "sqLogo";
+      logo.style.width = "38px";
+      logo.style.height = "38px";
+      logo.style.borderRadius = "14px";
+      logo.innerHTML = "";
+      if (team.logoDataUrl){
+        const img = document.createElement("img");
+        img.src = team.logoDataUrl; img.alt = "team logo";
+        logo.appendChild(img);
+      }else logo.textContent = "T";
+
+      const txt = document.createElement("div");
+      txt.className = "teamTxt";
+      const nm = document.createElement("div");
+      nm.className = "teamName";
+      nm.textContent = team.name;
+      const hint = document.createElement("div");
+      hint.className = "teamHint";
+      hint.textContent = team.comment ? "コメントあり" : `Team ${i + 1}`;
+      txt.appendChild(nm); txt.appendChild(hint);
+
+      pick.appendChild(logo);
+      pick.appendChild(txt);
+
+      const del = document.createElement("button");
+      del.className = "xBtn";
+      del.title = "削除";
+      del.textContent = "×";
+      del.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const ok = confirm(`「${team.name}」を削除しますか？`);
+        if (!ok) return;
+        league.teams = league.teams.filter(t => t.id !== team.id);
+        if (activeTeamId === team.id) activeTeamId = null;
+        league.seasons.forEach(s => {
+          (s.divisions || []).forEach(d => {
+            d.teamIds = (d.teamIds || []).filter(id => id !== team.id);
+          });
+        });
+        persist();
+        renderHome();
+        renderTeams();
+        toast("チームを削除しました");
+      });
+
+      row.appendChild(pick);
+      row.appendChild(del);
+      el.teamList.appendChild(row);
+    }
+
+    if (activeTeamId) fillTeamEditor();
+    syncTeamEditor();
+  }
+
+  function fillTeamEditor(){
+    const team = getActiveTeam();
+    const league = getActiveLeague();
+    if (!team || !league) return;
+    el.teamEditName.value = team.name;
+    el.teamEditComment.value = team.comment || "";
+    el.editingTeamMeta.textContent = `所属: ${league.name}`;
+  }
+
+  function syncTeamEditor(){
+    const team = getActiveTeam();
+    if (!team){
+      el.editingTeamMeta.textContent = "未選択";
+      el.teamEditorEmpty.classList.remove("hide");
+      el.teamEditorForm.classList.add("hide");
+      return;
+    }
+    el.teamEditorEmpty.classList.add("hide");
+    el.teamEditorForm.classList.remove("hide");
+  }
+
+  function openSeasonView(leagueId, seasonId){
+    activeLeagueId = leagueId;
+    activeSeasonId = seasonId;
+    editingDivisionId = "";
+
+    const league = getActiveLeague();
+    if (!league) return;
+    normalizeLeague(league);
+
+    const season = league.seasons.find(s => s.id === seasonId) || league.seasons[0];
+    if (!season) return;
+    normalizeSeason(season);
+
+    closeLeagueModal();
+
+    el.seasonHeaderLeague.textContent = league.name;
+    el.seasonHeaderSeason.textContent = season.name;
+    el.seasonPageTitle.textContent = season.name;
+
+    el.seasonLeagueLogo.innerHTML = "";
+    if (league.logoDataUrl){
+      const img = document.createElement("img");
+      img.src = league.logoDataUrl;
+      img.alt = "league logo";
+      el.seasonLeagueLogo.appendChild(img);
+    }else el.seasonLeagueLogo.textContent = "L";
+
+    seasonChipsOpen = false;
+    el.seasonChipBar.classList.add("hide");
+    el.btnToggleSeasonChips.textContent = "シーズン ▾";
+    el.seasonChips.innerHTML = "";
+    league.seasons.forEach(s => {
+      const chip = document.createElement("button");
+      chip.className = "seasonChip" + (s.id === season.id ? " active" : "");
+      chip.innerHTML = `<span class="chipDot"></span><span>${escapeHtml(s.name)}</span>`;
+      chip.addEventListener("click", () => {
+        league.activeSeasonId = s.id;
+        persist();
+        openSeasonView(league.id, s.id);
+      });
+      el.seasonChips.appendChild(chip);
+    });
+
+    el.divisionDetails.open = true;
+    renderDivisions();
+    seasonSection = 'schedule';
+    activeRoundIndex = 0;
+    syncSeasonSection();
+
+    el.seasonView.classList.add("show");
+    el.seasonView.setAttribute("aria-hidden","false");
+  }
+
+  function closeSeasonView(){
+    el.seasonView.classList.remove("show");
+    el.seasonView.setAttribute("aria-hidden","true");
+  }
+
+  function renderDivisions(){
+    const league = getActiveLeague();
+    const season = getActiveSeason();
+    if (!league || !season) return;
+    normalizeLeague(league);
+    normalizeSeason(season);
+
+    if (editingDivisionId && !season.divisions.some(d => d.id === editingDivisionId)){
+      editingDivisionId = "";
+    }
+    if (!editingDivisionId && season.activeDivisionId){
+      editingDivisionId = season.activeDivisionId;
+    }
+
+    // chips in Season card header
+    el.divisionChipsInSeason.innerHTML = "";
+    if (!season.divisions.length){
+      const ghost = document.createElement("div");
+      ghost.className = "small";
+      ghost.textContent = "ディビジョンなし";
+      ghost.style.whiteSpace = "nowrap";
+      el.divisionChipsInSeason.appendChild(ghost);
+    }else{
+      season.divisions.forEach(d => {
+        const b = document.createElement("button");
+        b.className = "divBtn" + (season.activeDivisionId === d.id ? " active" : "");
+        const icon = document.createElement("span");
+        icon.className = "divIcon";
+        if (d.logoDataUrl){
+          const img = document.createElement("img");
+          img.src = d.logoDataUrl; img.alt = "division logo";
+          icon.appendChild(img);
+        }else icon.textContent = "D";
+        const t = document.createElement("span");
+        t.textContent = d.name;
+        b.appendChild(icon); b.appendChild(t);
+        b.addEventListener("click", () => {
+          season.activeDivisionId = d.id;
+          editingDivisionId = d.id;
+          persist();
+          renderDivisions();
+          toast(`ディビジョン: ${d.name}`);
+        });
+        el.divisionChipsInSeason.appendChild(b);
+      });
+    }
+
+    // division buttons list (open)
+    el.divisionButtonList.innerHTML = "";
+    if (!season.divisions.length){
+      el.divisionButtonList.innerHTML = `
+        <div style="border:1px dashed rgba(255,255,255,.14); border-radius:16px; padding:12px; color:rgba(255,255,255,.62); background:rgba(0,0,0,.12);">
+          まだディビジョンがありません。「ディビジョン追加」で作成できます。
+        </div>`;
+    }else{
+      season.divisions.forEach(d => {
+        const row = document.createElement("div");
+        row.className = "seasonRow";
+
+        const left = document.createElement("div");
+        left.className = "left";
+        left.style.flexDirection = "row";
+        left.style.alignItems = "center";
+        left.style.gap = "10px";
+
+        const icon = document.createElement("div");
+        icon.className = "divIcon";
+        icon.style.width = "34px";
+        icon.style.height = "34px";
+        icon.style.borderRadius = "12px";
+        if (d.logoDataUrl){
+          const img = document.createElement("img");
+          img.src = d.logoDataUrl; img.alt = "division logo";
+          icon.appendChild(img);
+        }else icon.textContent = "D";
+
+        const texts = document.createElement("div");
+        texts.style.display = "flex";
+        texts.style.flexDirection = "column";
+        texts.style.gap = "2px";
+        texts.style.minWidth = "0";
+
+        const name = document.createElement("div");
+        name.className = "name";
+        name.textContent = d.name;
+
+        const meta = document.createElement("div");
+        meta.className = "meta";
+        const cnt = (d.teamIds || []).length;
+        meta.textContent = (season.activeDivisionId === d.id ? "現在のディビジョン" : "") + (cnt ? ` / チーム:${cnt}` : "");
+
+        texts.appendChild(name);
+        texts.appendChild(meta);
+
+        left.appendChild(icon);
+        left.appendChild(texts);
+
+        const btns = document.createElement("div");
+        btns.className = "seasonBtns";
+
+        const open = document.createElement("button");
+        open.className = "btn small";
+        open.textContent = "開く";
+        open.addEventListener("click", () => {
+          editingDivisionId = d.id;
+          season.activeDivisionId = d.id;
+          persist();
+          renderDivisions();
+          el.divisionDetails.open = true;
+          toast("ディビジョンを開きました");
+        });
+
+        btns.appendChild(open);
+        row.appendChild(left);
+        row.appendChild(btns);
+        el.divisionButtonList.appendChild(row);
+      });
+    }
+
+    syncDivisionEditor();
+    renderSeasonHint();
+    if (seasonSection === 'schedule') renderScheduleUI();
+  }
+
+  function syncDivisionEditor(){
+    const league = getActiveLeague();
+    const season = getActiveSeason();
+    if (!league || !season) return;
+    const div = getEditingDivision();
+    if (!div){
+      el.divisionEditingMeta.textContent = "未選択";
+      el.divisionEditorEmpty.classList.remove("hide");
+      el.divisionEditor.classList.add("hide");
+      el.btnDeleteDivision.disabled = true;
+      return;
+    }
+    el.btnDeleteDivision.disabled = false;
+
+    el.divisionEditingMeta.textContent = `編集中: ${div.name}`;
+    el.divisionEditorEmpty.classList.add("hide");
+    el.divisionEditor.classList.remove("hide");
+    el.divisionEditName.value = div.name;
+
+    el.divisionTeamChecklist.innerHTML = "";
+    const teamIds = new Set(div.teamIds || []);
+    (league.teams || []).forEach(team => {
+      const item = document.createElement("div");
+      item.className = "checkItem";
+
+      const left = document.createElement("div");
+      left.className = "checkLeft";
+
+      const logo = document.createElement("div");
+      logo.className = "sqLogo";
+      logo.style.width = "34px";
+      logo.style.height = "34px";
+      logo.style.borderRadius = "12px";
+      if (team.logoDataUrl){
+        const img = document.createElement("img");
+        img.src = team.logoDataUrl; img.alt = "team logo";
+        logo.appendChild(img);
+      }else logo.textContent = "T";
+
+      const txt = document.createElement("div");
+      txt.style.minWidth = "0";
+      const nm = document.createElement("div");
+      nm.className = "nm";
+      nm.textContent = team.name;
+      const sub = document.createElement("div");
+      sub.className = "sub";
+      sub.textContent = team.comment ? "コメントあり" : "";
+      txt.appendChild(nm);
+      txt.appendChild(sub);
+
+      left.appendChild(logo);
+      left.appendChild(txt);
+
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.className = "toggle";
+      cb.checked = teamIds.has(team.id);
+      cb.addEventListener("change", () => {
+        div.teamIds = div.teamIds || [];
+        if (cb.checked){
+          if (!div.teamIds.includes(team.id)) div.teamIds.push(team.id);
+        }else{
+          div.teamIds = div.teamIds.filter(id => id !== team.id);
+        }
+        persist();
+        renderSeasonHint();
+    if (seasonSection === 'schedule') renderScheduleUI();
+      });
+
+      item.appendChild(left);
+      item.appendChild(cb);
+      el.divisionTeamChecklist.appendChild(item);
+    });
+  }
+
+  function renderSeasonHint(){
+    const season = getActiveSeason();
+    if (!season) return;
+    const div = (season.divisions || []).find(d => d.id === season.activeDivisionId);
+    const activeName = div?.name || "未選択";
+    const cnt = (div?.teamIds || []).length;
+    el.seasonBodyHint.innerHTML = `現在のディビジョン: <b>${escapeHtml(activeName)}</b>${div ? `（参加チーム ${cnt}）` : ""}<br/>次ステップで、シーズン/ディビジョンに紐づく順位表・試合日程・結果を保存します。`;
+  }
+
+  function getActiveLeague(){
+    if (!activeLeagueId) return null;
+    return state.leagues.find(l => l.id === activeLeagueId) || null;
+  }
+  function getActiveTeam(){
+    const league = getActiveLeague();
+    if (!league || !activeTeamId) return null;
+    return league.teams.find(t => t.id === activeTeamId) || null;
+  }
+  function getActiveSeason(){
+    const league = getActiveLeague();
+    if (!league || !activeSeasonId) return null;
+    return league.seasons.find(s => s.id === activeSeasonId) || null;
+  }
+  function getEditingDivision(){
+    const season = getActiveSeason();
+    if (!season) return null;
+    return (season.divisions || []).find(d => d.id === editingDivisionId) || null;
+  }
+
+  function normalizeLeague(league){
+    league.logoDataUrl ??= "";
+    league.teams ??= [];
+    league.seasons ??= [];
+    league.customMatches ??= [];
+    league.activeSeasonId ??= "";
+    league.format ??= "round_robin";
+    league.points ??= "3 / 1 / 0";
+    league.teams.forEach(t => { t.logoDataUrl ??= ""; t.comment ??= ""; });
+
+    if (!league.seasons.length){
+      const s = { id: uid(), name: "Season 1", createdAt: Date.now(), divisions: [], activeDivisionId: "" };
+      league.seasons.push(s);
+      league.activeSeasonId = s.id;
+    }
+    if (!league.activeSeasonId){
+      league.activeSeasonId = league.seasons[league.seasons.length - 1].id;
+    }
+    league.seasons.forEach(normalizeSeason);
+  }
+
+  function normalizeSeason(season){
+    season.createdAt ??= Date.now();
+    season.divisions ??= [];
+    season.activeDivisionId ??= "";
+    season.divisions.forEach(d => {
+      d.logoDataUrl ??= "";
+      d.name ??= "Division";
+      d.teamIds ??= [];
+      d.schedule ??= null;
+    });
+    if (season.activeDivisionId && !season.divisions.some(d => d.id === season.activeDivisionId)){
+      season.activeDivisionId = "";
+    }
+  }
+
+  function getActiveSeasonName(league){
+    normalizeLeague(league);
+    const s = league.seasons.find(x => x.id === league.activeSeasonId) || league.seasons[0];
+    return s ? s.name : "Season";
+  }
+
+  function nextSeasonNumber(league){
+    let max = 0;
+    for (const s of league.seasons){
+      const m = /^Season\s+(\d+)$/i.exec((s.name || "").trim());
+      if (m){
+        const n = parseInt(m[1], 10);
+        if (Number.isFinite(n)) max = Math.max(max, n);
+      }
+    }
+    return max + 1;
+  }
+
+  function nextDivisionNumber(season){
+    let max = 0;
+    for (const d of season.divisions){
+      const m = /^Division\s+(\d+)$/i.exec((d.name || "").trim());
+      if (m){
+        const n = parseInt(m[1], 10);
+        if (Number.isFinite(n)) max = Math.max(max, n);
+      }
+    }
+    return max + 1;
+  }
+
+  function persist(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+  function load(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw){
+        const parsed = JSON.parse(raw);
+        if (parsed && Array.isArray(parsed.leagues)){
+          if (typeof parsed.nextLeagueNumber !== "number") parsed.nextLeagueNumber = 1;
+          parsed.leagues.forEach(l => normalizeLeague(l));
+          return parsed;
+        }
+      }
+      const legacyKeys = ["league_builder_v8","league_builder_v7","league_builder_v6","league_builder_v5","league_builder_v4","league_builder_v3","league_builder_v2","league_builder_v1"];
+      for (const k of legacyKeys){
+        const r = localStorage.getItem(k);
+        if (!r) continue;
+        const p = JSON.parse(r);
+        if (!p || !Array.isArray(p.leagues)) continue;
+
+        const migrated = {
+          nextLeagueNumber: typeof p.nextLeagueNumber === "number" ? p.nextLeagueNumber : 1,
+          leagues: p.leagues.map(l => {
+            const league = {
+              id: l.id || uid(),
+              name: l.name || "League",
+              format: l.format || "round_robin",
+              points: l.points || "3 / 1 / 0",
+              logoDataUrl: l.logoDataUrl || "",
+              teams: (l.teams || []).map(t => ({
+                id: t.id || uid(),
+                name: t.name || "Team",
+                logoDataUrl: t.logoDataUrl || "",
+                comment: t.comment || ""
+              })),
+              seasons: [],
+              activeSeasonId: l.activeSeasonId || "",
+              customMatches: Array.isArray(l.customMatches) ? l.customMatches : []
+            };
+            if (Array.isArray(l.seasons) && l.seasons.length){
+              league.seasons = l.seasons.map(s => ({
+                id: s.id || uid(),
+                name: s.name || "Season",
+                createdAt: s.createdAt || Date.now(),
+                divisions: Array.isArray(s.divisions) ? s.divisions.map(d => ({
+                  id: d.id || uid(),
+                  name: d.name || "Division",
+                  logoDataUrl: d.logoDataUrl || "",
+                  teamIds: Array.isArray(d.teamIds) ? d.teamIds : [],
+                  schedule: d.schedule || null
+                })) : [],
+                activeDivisionId: s.activeDivisionId || ""
+              }));
+            }else{
+              const s = { id: uid(), name: "Season 1", createdAt: Date.now(), divisions: [], activeDivisionId: "" };
+              league.seasons = [s];
+              league.activeSeasonId = s.id;
+            }
+            normalizeLeague(league);
+            return league;
+          })
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
+        return migrated;
+      }
+      return null;
+    }catch{
+      return null;
+    }
+  }
+
+
+  function teamNameById(league, id){
+    const t = (league.teams || []).find(x => x.id === id);
+    return t ? t.name : "Team";
+  }
+
+  function generateRoundRobinSchedule(teamIds){
+    // Circle method (single round). If odd, add BYE.
+    const ids = teamIds.slice();
+    const isOdd = ids.length % 2 === 1;
+    if (isOdd) ids.push("BYE");
+    const n = ids.length;
+    const rounds = n - 1;
+    const half = n / 2;
+    const arr = ids.slice();
+
+    const schedule = { createdAt: Date.now(), rounds: [] };
+
+    for (let r = 0; r < rounds; r++){
+      const matches = [];
+      for (let i = 0; i < half; i++){
+        const a = arr[i];
+        const b = arr[n - 1 - i];
+        if (a === "BYE" || b === "BYE") continue;
+        const home = (r % 2 === 0) ? a : b;
+        const away = (r % 2 === 0) ? b : a;
+        matches.push({ id: uid(), homeId: home, awayId: away, homeScore: "", awayScore: "" });
+      }
+      schedule.rounds.push({ id: uid(), name: `第${r + 1}節`, matches });
+      // rotate (keep first fixed)
+      const fixed = arr[0];
+      const rest = arr.slice(1);
+      rest.unshift(rest.pop());
+      arr.splice(0, arr.length, fixed, ...rest);
+    }
+    return schedule;
+  }
+
+  function renderScheduleUI(){
+    const league = getActiveLeague();
+    const season = getActiveSeason();
+    if (!league || !season) return;
+    const div = (season.divisions || []).find(d => d.id === season.activeDivisionId) || null;
+
+    if (!el.schedMeta || !el.roundScroller || !el.matchList) return;
+
+    if (!div){
+      el.schedMeta.textContent = "ディビジョン未選択";
+      el.roundScroller.innerHTML = "";
+      el.matchList.innerHTML = "";
+      return;
+    }
+
+    const teamCount = (div.teamIds || []).length;
+    el.schedMeta.textContent = `${div.name} / 参加チーム: ${teamCount}`;
+
+    const schedule = div.schedule || null;
+    const rounds = schedule?.rounds || [];
+
+    // Round buttons
+    el.roundScroller.innerHTML = "";
+    if (rounds.length === 0){
+      el.roundScroller.innerHTML = `<div class="small">日程が未作成です。「日程を作成」を押してください。</div>`;
+      el.matchList.innerHTML = "";
+      return;
+    }
+
+    if (activeRoundIndex >= rounds.length) activeRoundIndex = 0;
+
+    rounds.forEach((rd, idx) => {
+      const b = document.createElement("button");
+      b.className = "roundBtn" + (idx === activeRoundIndex ? " active" : "");
+      b.textContent = rd.name || `第${idx + 1}節`;
+      b.addEventListener("click", () => {
+        activeRoundIndex = idx;
+        renderScheduleUI();
+      });
+      el.roundScroller.appendChild(b);
+    });
+
+    const rd = rounds[activeRoundIndex];
+    const matches = rd?.matches || [];
+    el.matchList.innerHTML = "";
+
+    if (matches.length === 0){
+      el.matchList.innerHTML = `<div class="small">この節の試合がありません。</div>`;
+      return;
+    }
+
+    matches.forEach(m => {
+      const row = document.createElement("div");
+      row.className = "matchRow";
+
+      const center = document.createElement("div");
+      center.className = "matchCenter";
+
+      const hTeam = league.teams.find(t => t.id === m.homeId);
+      const aTeam = league.teams.find(t => t.id === m.awayId);
+
+      const homeBox = document.createElement("div");
+      homeBox.className = "teamBox left";
+
+      const hLogo = document.createElement("div");
+      hLogo.className = "sqLogo";
+      hLogo.style.width = "34px"; hLogo.style.height = "34px"; hLogo.style.borderRadius = "12px";
+      if (hTeam?.logoDataUrl){
+        const img = document.createElement("img"); img.src = hTeam.logoDataUrl;
+        hLogo.appendChild(img);
+      } else {
+        hLogo.textContent = "T";
+      }
+
+      const hText = document.createElement("div");
+      hText.className = "text";
+
+      const hTag = document.createElement("div");
+      hTag.className = "tag home";
+      hTag.textContent = "HOME";
+
+      const hName = document.createElement("div");
+      hName.className = "name";
+      hName.textContent = teamNameById(league, m.homeId);
+
+      hText.appendChild(hTag);
+      hText.appendChild(hName);
+
+      homeBox.appendChild(hLogo);
+      homeBox.appendChild(hText);
+
+      const score = document.createElement("div");
+      score.className = "scoreBox";
+
+      const hs = document.createElement("input");
+      hs.inputMode = "numeric";
+      hs.placeholder = "-";
+      hs.value = m.homeScore ?? "";
+      hs.addEventListener("change", () => { m.homeScore = (hs.value || "").trim(); persist(); });
+
+      const dash = document.createElement("div");
+      dash.style.fontWeight = "950";
+      dash.textContent = "—";
+
+      const as_ = document.createElement("input");
+      as_.inputMode = "numeric";
+      as_.placeholder = "-";
+      as_.value = m.awayScore ?? "";
+      as_.addEventListener("change", () => { m.awayScore = (as_.value || "").trim(); persist(); });
+
+      score.appendChild(hs);
+      score.appendChild(dash);
+      score.appendChild(as_);
+
+      const awayBox = document.createElement("div");
+      awayBox.className = "teamBox right";
+
+      const aText = document.createElement("div");
+      aText.className = "text";
+
+      const aTag = document.createElement("div");
+      aTag.className = "tag away";
+      aTag.textContent = "AWAY";
+
+      const aName = document.createElement("div");
+      aName.className = "name";
+      aName.textContent = teamNameById(league, m.awayId);
+
+      aText.appendChild(aTag);
+      aText.appendChild(aName);
+
+      const aLogo = document.createElement("div");
+      aLogo.className = "sqLogo";
+      aLogo.style.width = "34px"; aLogo.style.height = "34px"; aLogo.style.borderRadius = "12px";
+      if (aTeam?.logoDataUrl){
+        const img = document.createElement("img"); img.src = aTeam.logoDataUrl;
+        aLogo.appendChild(img);
+      } else {
+        aLogo.textContent = "T";
+      }
+
+      awayBox.appendChild(aText);
+      awayBox.appendChild(aLogo);
+
+      center.appendChild(homeBox);
+      center.appendChild(score);
+      center.appendChild(awayBox);
+
+      row.appendChild(center);
+      el.matchList.appendChild(row);
+    });
+  }
+
+  function renderCustomMatches(){
+    const league = getActiveLeague();
+    if (!league) return;
+    league.customMatches ??= [];
+
+    // fill selects
+    const opts = (league.teams || []).map(t => `<option value="${t.id}">${escapeHtml(t.name)}</option>`).join("");
+    if (el.customHome) el.customHome.innerHTML = opts;
+    if (el.customAway) el.customAway.innerHTML = opts;
+
+    if (!el.customMatchList) return;
+    el.customMatchList.innerHTML = "";
+
+    if (league.customMatches.length === 0){
+      el.customMatchList.innerHTML = `<div class="small">まだ任意の試合がありません。</div>`;
+      return;
+    }
+
+    league.customMatches.forEach(cm => {
+      const row = document.createElement("div");
+      row.className = "matchRow";
+
+      const left = document.createElement("div");
+      left.className = "matchLeft";
+
+      const nameBox = document.createElement("div");
+      nameBox.style.display = "flex";
+      nameBox.style.flexDirection = "column";
+      nameBox.style.gap = "6px";
+      nameBox.style.minWidth = "260px";
+      nameBox.style.flex = "1 1 320px";
+
+      const nmLabel = document.createElement("div");
+      nmLabel.className = "label";
+      nmLabel.textContent = "試合名";
+
+      const nm = document.createElement("input");
+      nm.className = "input";
+      nm.style.height = "34px";
+      nm.value = cm.name || "";
+      nm.addEventListener("change", () => {
+        cm.name = (nm.value || "").trim() || cm.name;
+        persist();
+      });
+
+      nameBox.appendChild(nmLabel);
+      nameBox.appendChild(nm);
+
+      const right = document.createElement("div");
+      right.className = "matchRight";
+      right.style.flexWrap = "wrap";
+
+      const homeSel = document.createElement("select");
+      homeSel.className = "select";
+      homeSel.style.height = "34px";
+      homeSel.style.minWidth = "160px";
+      homeSel.innerHTML = (league.teams || []).map(t => `<option value="${t.id}">${escapeHtml(t.name)}</option>`).join("");
+      homeSel.value = cm.homeId;
+      homeSel.addEventListener("change", () => {
+        if (homeSel.value === cm.awayId){ toast("同じチームは選べません"); homeSel.value = cm.homeId; return; }
+        cm.homeId = homeSel.value;
+        persist();
+      });
+
+      const awaySel = document.createElement("select");
+      awaySel.className = "select";
+      awaySel.style.height = "34px";
+      awaySel.style.minWidth = "160px";
+      awaySel.innerHTML = (league.teams || []).map(t => `<option value="${t.id}">${escapeHtml(t.name)}</option>`).join("");
+      awaySel.value = cm.awayId;
+      awaySel.addEventListener("change", () => {
+        if (awaySel.value === cm.homeId){ toast("同じチームは選べません"); awaySel.value = cm.awayId; return; }
+        cm.awayId = awaySel.value;
+        persist();
+      });
+
+      const score = document.createElement("div");
+      score.className = "scoreBox";
+      const hs = document.createElement("input");
+      hs.inputMode = "numeric";
+      hs.placeholder = "-";
+      hs.value = cm.homeScore ?? "";
+      hs.addEventListener("change", () => { cm.homeScore = (hs.value || "").trim(); persist(); });
+      const dash = document.createElement("div");
+      dash.style.color = "rgba(255,255,255,.55)";
+      dash.style.fontWeight = "950";
+      dash.textContent = "—";
+      const as_ = document.createElement("input");
+      as_.inputMode = "numeric";
+      as_.placeholder = "-";
+      as_.value = cm.awayScore ?? "";
+      as_.addEventListener("change", () => { cm.awayScore = (as_.value || "").trim(); persist(); });
+
+      score.appendChild(hs); score.appendChild(dash); score.appendChild(as_);
+
+      const del = document.createElement("button");
+      del.className = "xBtn";
+      del.textContent = "×";
+      del.title = "削除";
+      del.addEventListener("click", () => {
+        const ok = confirm(`「${cm.name || "Match"}」を削除しますか？`);
+        if (!ok) return;
+        league.customMatches = league.customMatches.filter(x => x.id !== cm.id);
+        persist();
+        renderCustomMatches();
+        toast("試合を削除しました");
+      });
+
+      right.appendChild(homeSel);
+      right.appendChild(awaySel);
+      right.appendChild(score);
+      right.appendChild(del);
+
+      row.appendChild(nameBox);
+      row.appendChild(right);
+
+      el.customMatchList.appendChild(row);
+    });
+  }
+
+
+    function uid(){ return Math.random().toString(16).slice(2) + Date.now().toString(16); }
+  function clampInt(v, min, max){
+    const n = parseInt(v, 10);
+    if (!Number.isFinite(n)) return min;
+    return Math.max(min, Math.min(max, n));
+  }
+  function defaultLeagueName(){ return `League ${state.nextLeagueNumber}`; }
+  function refreshNextLeagueName(){ el.nextLeagueName.value = defaultLeagueName(); }
+  function bumpNextLeagueNumberOnCreate(name){
+    const m = /^League\s+(\d+)$/i.exec(name.trim());
+    if (!m) { state.nextLeagueNumber += 1; return; }
+    const n = parseInt(m[1], 10);
+    if (Number.isFinite(n) && n >= state.nextLeagueNumber) state.nextLeagueNumber = n + 1;
+    else state.nextLeagueNumber += 1;
+  }
+  function nextTeamNumber(league){
+    let max = 0;
+    for (const t of league.teams){
+      const m = /^Team\s+(\d+)$/i.exec((t.name || "").trim());
+      if (m){
+        const n = parseInt(m[1], 10);
+        if (Number.isFinite(n)) max = Math.max(max, n);
+      }
+    }
+    return max + 1;
+  }
+  function formatLabel(v){ return v === "home_away" ? "H/A" : "総当たり"; }
+
+  async function fileToDataUrl(file){
+    return await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result || ""));
+      reader.onerror = () => reject(new Error("read failed"));
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function formatDate(ts){
+    try{
+      const d = new Date(ts);
+      return `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,"0")}/${String(d.getDate()).padStart(2,"0")}`;
+    }catch{
+      return "-";
+    }
+  }
+  function escapeHtml(str){
+    return String(str || "").replace(/[&<>"']/g, (c) => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
+    }[c] || c));
+  }
+  function toast(msg){
+    el.toast.textContent = msg;
+    el.toast.classList.add("show");
+    window.clearTimeout(toast._t);
+    toast._t = window.setTimeout(() => el.toast.classList.remove("show"), 1700);
+  }
+})();
+</script>
 </body>
 </html>
