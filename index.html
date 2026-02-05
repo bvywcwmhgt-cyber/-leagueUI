@@ -1023,7 +1023,24 @@
       .teamBox, .scoreBox{ height:58px; }
     }
 
-  </style>
+  
+    /* --- Schedule list layout override (force vertical one-line list) --- */
+    #matchList{
+      display:flex !important;
+      flex-direction:column !important;
+      gap:12px !important;
+      width:100% !important;
+    }
+    #matchList .matchRow{
+      display:block !important;
+      width:100% !important;
+    }
+    #matchList .matchCenter{
+      width:100% !important;
+      grid-template-columns: minmax(0,1fr) auto minmax(0,1fr) !important;
+    }
+
+</style>
 </head>
 
 <body>
