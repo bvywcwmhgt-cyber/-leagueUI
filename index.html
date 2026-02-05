@@ -588,6 +588,61 @@
       box-shadow: 0 0 0 4px rgba(176,75,255,.08);
     }
 
+    /* ===== Standings (順位表) ===== */
+    .standingsWrap{
+      border:1px solid rgba(255,255,255,.09);
+      border-radius:16px;
+      background: rgba(10,12,20,.34);
+      box-shadow: 0 10px 28px rgba(0,0,0,.25);
+      overflow:hidden;
+    }
+    .standingsHeader{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; padding:12px 14px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .standingsHeader .hint{opacity:.75; font-size:12px}
+    .standingsTableWrap{overflow:auto}
+    table.standings{width:100%; border-collapse:collapse; font-size:13px}
+    table.standings thead th{
+      text-align:left; font-weight:700; color:rgba(255,255,255,.8);
+      padding:10px 10px; border-bottom:1px solid rgba(255,255,255,.08);
+      white-space:nowrap;
+    }
+    table.standings tbody td{
+      padding:10px 10px; border-bottom:1px solid rgba(255,255,255,.06);
+      vertical-align:middle;
+    }
+    table.standings tbody tr:hover{background: rgba(255,255,255,.03)}
+    .rankCell{width:54px; position:relative; padding-left:16px !important}
+    .rankLine{position:absolute; left:6px; top:10px; bottom:10px; width:3px; border-radius:3px; background:transparent}
+    .rankNum{font-weight:800}
+    .teamCell{min-width:180px}
+    .teamInline{display:flex; align-items:center; gap:10px}
+    .teamLogo{width:26px; height:26px; border-radius:10px; overflow:hidden; border:1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.04); flex:0 0 auto; display:flex; align-items:center; justify-content:center}
+    .teamLogo img{width:100%; height:100%; object-fit:cover}
+    .teamName{font-weight:700}
+    .numCell{width:58px; text-align:center}
+    .ptsCell{width:70px; text-align:center; font-weight:900}
+    .gdCell{width:60px; text-align:center}
+    .formCell{width:140px}
+    .formDots{display:flex; gap:6px; justify-content:flex-start}
+    .dot{width:12px; height:12px; border-radius:999px; border:1px solid rgba(255,255,255,.35); background:transparent}
+    .dot.win{background: rgba(76, 230, 128, .85); border-color: rgba(76,230,128,.95)}
+    .dot.draw{background: rgba(200,200,200,.6); border-color: rgba(220,220,220,.7)}
+    .dot.loss{background: rgba(255, 86, 86, .82); border-color: rgba(255,86,86,.95)}
+    .legendRow{display:flex; flex-wrap:wrap; gap:10px; padding:10px 14px}
+    .legendItem{display:flex; align-items:center; gap:8px; padding:6px 10px; border:1px solid rgba(255,255,255,.08); border-radius:999px; background: rgba(255,255,255,.03); font-size:12px; opacity:.92}
+    .legendSwatch{width:10px; height:10px; border-radius:999px; background:#fff}
+
+    /* rank marker editor (ディビジョン編集) */
+    .markerList{display:flex; flex-direction:column; gap:8px; margin-top:8px}
+    .markerRow{display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:10px; border:1px solid rgba(255,255,255,.08); border-radius:12px; background: rgba(255,255,255,.03)}
+    .markerRow input[type="text"]{flex:1 1 160px}
+    .markerRow .miniNum{width:88px}
+    .markerRow .miniColor{width:52px; height:36px; padding:0; border-radius:10px; overflow:hidden}
+    .markerRow .miniBtn{padding:9px 10px}
+
   
     
   
@@ -1023,21 +1078,6 @@
       .teamBox, .scoreBox{ height:58px; }
     }
 
-  
-    /* --- schedule layout override: vertical list (no horizontal row scroll) --- */
-    .matchBoard{
-      overflow: visible !important;
-      align-items: stretch !important;
-    }
-    .matchList{
-      display:flex !important;
-      flex-direction:column !important;
-    }
-    .matchRow{
-      width: 100% !important;
-      max-width: none !important;
-    }
-
   </style>
 </head>
 
@@ -1408,6 +1448,15 @@
                       <div class="small">リーグで登録済みのチームから選べます。</div>
                     </div>
 
+                    <div class="field">
+                      <div class="label">順位カラー（凡例）</div>
+                      <div class="small">順位表の左側に表示する細いラインです。順位範囲（例: 1〜1）ごとに色と名称を設定できます。</div>
+                      <div id="divisionRankMarkers" class="markerList"></div>
+                      <div class="row" style="justify-content:flex-start; gap:10px;">
+                        <button class="btn small" id="btnAddRankMarker">凡例を追加</button>
+                      </div>
+                    </div>
+
                     <div class="row">
                       <button class="btn primary" id="btnSaveDivision">保存</button>
                     </div>
@@ -1511,8 +1560,20 @@
 
           <!-- placeholders -->
           <div id="sec_standings" class="hide">
-            <div style="border:1px dashed rgba(255,255,255,.14); border-radius:16px; padding:12px; color:rgba(255,255,255,.62); background:rgba(0,0,0,.12);">
-              順位表は次で実装します。
+            <div class="standingsWrap">
+              <div class="standingsTitleRow">
+                <div>
+                  <div class="h">リーグ順位表</div>
+                  <div class="small" id="standingsSub"></div>
+                </div>
+                <div class="small" style="opacity:.8">試合結果から自動計算</div>
+              </div>
+
+              <div class="standingsTableWrap">
+                <table class="standingsTable" id="standingsTable"></table>
+              </div>
+
+              <div class="legend" id="standingsLegend"></div>
             </div>
           </div>
 
@@ -1612,6 +1673,8 @@
     divisionEditLogoFile: document.getElementById("divisionEditLogoFile"),
     btnClearDivisionLogo: document.getElementById("btnClearDivisionLogo"),
     divisionTeamChecklist: document.getElementById("divisionTeamChecklist"),
+    divisionRankMarkers: document.getElementById("divisionRankMarkers"),
+    btnAddRankMarker: document.getElementById("btnAddRankMarker"),
     btnSaveDivision: document.getElementById("btnSaveDivision"),
     btnDeleteDivision: document.getElementById("btnDeleteDivision"),
 
@@ -1624,6 +1687,10 @@
     btnResetSchedule: document.getElementById("btnResetSchedule"),
     roundScroller: document.getElementById("roundScroller"),
     matchList: document.getElementById("matchList"),
+
+    standingsSub: document.getElementById("standingsSub"),
+    standingsTable: document.getElementById("standingsTable"),
+    standingsLegend: document.getElementById("standingsLegend"),
 
     customMatchName: document.getElementById("customMatchName"),
     customHome: document.getElementById("customHome"),
@@ -1881,6 +1948,8 @@
     if (seasonSection === "schedule"){
       renderScheduleUI();
       renderCustomMatches();
+    } else if (seasonSection === "standings"){
+      renderStandingsUI();
     }
   }
 
@@ -2416,6 +2485,8 @@
           editingDivisionId = d.id;
           persist();
           renderDivisions();
+          syncSeasonMeta();
+          syncSeasonSection();
           toast(`ディビジョン: ${d.name}`);
         });
         el.divisionChipsInSeason.appendChild(b);
@@ -2572,6 +2643,91 @@
       item.appendChild(cb);
       el.divisionTeamChecklist.appendChild(item);
     });
+
+    // Rank markers (legend / thin line colors)
+    div.rankMarkers = Array.isArray(div.rankMarkers) ? div.rankMarkers : [];
+    const renderMarkers = () => {
+      el.divisionRankMarkers.innerHTML = "";
+      if (!div.rankMarkers.length){
+        const empty = document.createElement("div");
+        empty.className = "small";
+        empty.style.marginTop = "6px";
+        empty.textContent = "まだ凡例がありません。例：1位=優勝（黄）、8位=入替戦（橙）、9-10位=降格（赤）など。";
+        el.divisionRankMarkers.appendChild(empty);
+        return;
+      }
+      div.rankMarkers.forEach(m => {
+        if (!m.id) m.id = uid("m");
+        if (typeof m.from !== 'number') m.from = 1;
+        if (typeof m.to !== 'number') m.to = m.from;
+        if (!m.color) m.color = "#7d4bff";
+        if (!m.label) m.label = "";
+
+        const row = document.createElement("div");
+        row.className = "markerRow";
+
+        const color = document.createElement("input");
+        color.type = "color";
+        color.value = normalizeColor(m.color);
+        color.addEventListener("input", () => { m.color = color.value; persist(); if (seasonSection==='standings') renderStandingsUI(); });
+
+        const label = document.createElement("input");
+        label.type = "text";
+        label.placeholder = "例：昇格 / 降格";
+        label.value = m.label;
+        label.addEventListener("input", () => { m.label = label.value; persist(); if (seasonSection==='standings') renderStandingsUI(); });
+
+        const range = document.createElement("div");
+        range.className = "markerRange";
+        const from = document.createElement("input");
+        from.type = "number";
+        from.min = "1";
+        from.value = String(m.from);
+        from.addEventListener("input", () => { m.from = clampInt(from.value, 1, 999); persist(); if (seasonSection==='standings') renderStandingsUI(); });
+        const dash = document.createElement("span");
+        dash.textContent = "-";
+        dash.style.opacity = ".6";
+        const to = document.createElement("input");
+        to.type = "number";
+        to.min = "1";
+        to.value = String(m.to);
+        to.addEventListener("input", () => { m.to = clampInt(to.value, 1, 999); persist(); if (seasonSection==='standings') renderStandingsUI(); });
+        range.appendChild(from);
+        range.appendChild(dash);
+        range.appendChild(to);
+
+        const del = document.createElement("button");
+        del.className = "btn small danger";
+        del.textContent = "削除";
+        del.addEventListener("click", () => {
+          div.rankMarkers = div.rankMarkers.filter(x => x.id !== m.id);
+          persist();
+          renderMarkers();
+          if (seasonSection==='standings') renderStandingsUI();
+        });
+
+        row.appendChild(color);
+        row.appendChild(label);
+        row.appendChild(range);
+        row.appendChild(del);
+        el.divisionRankMarkers.appendChild(row);
+      });
+    };
+
+    renderMarkers();
+    el.btnAddRankMarker.onclick = () => {
+      const next = {
+        id: uid("m"),
+        label: "",
+        color: "#b04bff",
+        from: 1,
+        to: 1
+      };
+      div.rankMarkers.push(next);
+      persist();
+      renderMarkers();
+      if (seasonSection==='standings') renderStandingsUI();
+    };
   }
 
   function renderSeasonHint(){
@@ -2632,7 +2788,11 @@
       d.logoDataUrl ??= "";
       d.name ??= "Division";
       d.teamIds ??= [];
-      d.schedule ??= null;
+      d.schedule ??= { rounds: [] };
+      if (!d.schedule || typeof d.schedule !== "object") d.schedule = { rounds: [] };
+      d.schedule.rounds = Array.isArray(d.schedule.rounds) ? d.schedule.rounds : [];
+      d.rankMarkers ??= [];
+      if (!Array.isArray(d.rankMarkers)) d.rankMarkers = [];
     });
     if (season.activeDivisionId && !season.divisions.some(d => d.id === season.activeDivisionId)){
       season.activeDivisionId = "";
@@ -3049,6 +3209,218 @@
 
       el.customMatchList.appendChild(row);
     });
+  }
+
+  /* =========================
+     Standings (順位表)
+     ========================= */
+
+  function parsePointsString(str){
+    const parts = String(str || "3 / 1 / 0")
+      .split("/")
+      .map(s => parseInt(String(s).trim(), 10))
+      .filter(n => Number.isFinite(n));
+    return {
+      win: Number.isFinite(parts[0]) ? parts[0] : 3,
+      draw: Number.isFinite(parts[1]) ? parts[1] : 1,
+      loss: Number.isFinite(parts[2]) ? parts[2] : 0,
+    };
+  }
+
+  function computeStandingsForDivision(league, season, div){
+    const pts = parsePointsString(league.points);
+    const teamsInDiv = (div.teamIds || []).map(id => (league.teams || []).find(t => t.id === id)).filter(Boolean);
+    const byId = new Map(teamsInDiv.map(t => [t.id, t]));
+
+    // init stats
+    const rows = teamsInDiv.map(t => ({
+      id: t.id,
+      team: t,
+      played: 0,
+      w: 0,
+      d: 0,
+      l: 0,
+      gf: 0,
+      ga: 0,
+      gd: 0,
+      points: 0,
+      form: []
+    }));
+    const stats = new Map(rows.map(r => [r.id, r]));
+
+    const pushForm = (teamId, res) => {
+      const r = stats.get(teamId);
+      if (!r) return;
+      r.form.push(res);
+      if (r.form.length > 5) r.form = r.form.slice(-5);
+    };
+
+    const rounds = (div.schedule && Array.isArray(div.schedule.rounds)) ? div.schedule.rounds : [];
+    rounds.forEach(round => {
+      (round.matches || []).forEach(m => {
+        if (!byId.has(m.homeId) || !byId.has(m.awayId)) return; // only count matches between division teams
+        const hs = (m.homeScore === 0 || m.homeScore) ? Number(m.homeScore) : null;
+        const as = (m.awayScore === 0 || m.awayScore) ? Number(m.awayScore) : null;
+        if (!Number.isFinite(hs) || !Number.isFinite(as)) return;
+
+        const home = stats.get(m.homeId);
+        const away = stats.get(m.awayId);
+        if (!home || !away) return;
+
+        home.played += 1; away.played += 1;
+        home.gf += hs; home.ga += as;
+        away.gf += as; away.ga += hs;
+
+        if (hs > as){
+          home.w += 1; home.points += pts.win;
+          away.l += 1; away.points += pts.loss;
+          pushForm(home.id, "W");
+          pushForm(away.id, "L");
+        } else if (hs < as){
+          away.w += 1; away.points += pts.win;
+          home.l += 1; home.points += pts.loss;
+          pushForm(away.id, "W");
+          pushForm(home.id, "L");
+        } else {
+          home.d += 1; away.d += 1;
+          home.points += pts.draw; away.points += pts.draw;
+          pushForm(home.id, "D");
+          pushForm(away.id, "D");
+        }
+      });
+    });
+
+    rows.forEach(r => { r.gd = r.gf - r.ga; });
+
+    rows.sort((a,b) => {
+      if (b.points !== a.points) return b.points - a.points;
+      if (b.gd !== a.gd) return b.gd - a.gd;
+      if (b.gf !== a.gf) return b.gf - a.gf;
+      return String(a.team.name || "").localeCompare(String(b.team.name || ""), "ja");
+    });
+
+    rows.forEach((r,i) => r.rank = i + 1);
+    return rows;
+  }
+
+  function rankMarkerFor(div, rank){
+    const markers = Array.isArray(div.rankMarkers) ? div.rankMarkers : [];
+    for (const m of markers){
+      const from = Number(m.from);
+      const to = Number(m.to);
+      if (Number.isFinite(from) && Number.isFinite(to) && rank >= Math.min(from,to) && rank <= Math.max(from,to)){
+        return m;
+      }
+    }
+    return null;
+  }
+
+  function renderStandingsUI(){
+    const league = getLeague();
+    const season = getSeason();
+    const div = getDivision();
+    if (!league || !season || !div) return;
+
+    // header subtext
+    const teamCount = (div.teamIds || []).length;
+    el.standingsSub.textContent = `${div.name || "Division"} / 参加チーム: ${teamCount}`;
+
+    const rows = computeStandingsForDivision(league, season, div);
+    const table = document.createElement("table");
+    table.className = "standingsTable";
+    table.innerHTML = `
+      <thead>
+        <tr>
+          <th class="colRank">順位</th>
+          <th class="colTeam">チーム</th>
+          <th class="colNum">試合</th>
+          <th class="colNum">勝</th>
+          <th class="colNum">分</th>
+          <th class="colNum">負</th>
+          <th class="colNum">得点</th>
+          <th class="colNum">失点</th>
+          <th class="colNum">差</th>
+          <th class="colNum">勝ち点</th>
+          <th class="colForm">調子</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    `;
+    const tbody = table.querySelector("tbody");
+
+    rows.forEach(r => {
+      const tr = document.createElement("tr");
+      const marker = rankMarkerFor(div, r.rank);
+      const lineColor = marker ? (marker.color || "rgba(255,255,255,.18)") : "transparent";
+      tr.innerHTML = `
+        <td class="colRank">
+          <div class="rankCell">
+            <span class="rankLine" style="background:${escapeHtml(lineColor)}"></span>
+            <span class="rankNo">${r.rank}</span>
+          </div>
+        </td>
+        <td class="colTeam">
+          <div class="teamCell">
+            <img class="teamLogoSm" src="${escapeHtml(r.team.logoDataUrl || "")}" alt="" onerror="this.style.display='none'" />
+            <span class="teamName">${escapeHtml(r.team.name || "")}</span>
+          </div>
+        </td>
+        <td class="colNum">${r.played}</td>
+        <td class="colNum">${r.w}</td>
+        <td class="colNum">${r.d}</td>
+        <td class="colNum">${r.l}</td>
+        <td class="colNum">${r.gf}</td>
+        <td class="colNum">${r.ga}</td>
+        <td class="colNum">${r.gd}</td>
+        <td class="colNum pts">${r.points}</td>
+        <td class="colForm">
+          <div class="formDots"></div>
+        </td>
+      `;
+
+      const dotsWrap = tr.querySelector(".formDots");
+      const resList = r.form || [];
+      for (let i = 0; i < 5; i++){
+        const res = resList[i] || null;
+        const dot = document.createElement("span");
+        dot.className = "formDot";
+        if (res === "W") dot.classList.add("win");
+        else if (res === "D") dot.classList.add("draw");
+        else if (res === "L") dot.classList.add("loss");
+        else dot.classList.add("none");
+        dotsWrap.appendChild(dot);
+      }
+
+      tbody.appendChild(tr);
+    });
+
+    el.standingsTable.innerHTML = "";
+    el.standingsTable.appendChild(table);
+
+    // legend
+    const markers = Array.isArray(div.rankMarkers) ? div.rankMarkers : [];
+    el.standingsLegend.innerHTML = "";
+    if (markers.length){
+      const legendTitle = document.createElement("div");
+      legendTitle.className = "legendTitle";
+      legendTitle.textContent = "凡例";
+      el.standingsLegend.appendChild(legendTitle);
+      const legendRow = document.createElement("div");
+      legendRow.className = "legendRow";
+      markers
+        .slice()
+        .sort((a,b) => (Number(a.from)||9999) - (Number(b.from)||9999))
+        .forEach(m => {
+          const it = document.createElement("div");
+          it.className = "legendItem";
+          it.innerHTML = `
+            <span class="legendBar" style="background:${escapeHtml(m.color || "rgba(255,255,255,.2)")}"></span>
+            <span class="legendText">${escapeHtml(m.label || "")}</span>
+          `;
+          legendRow.appendChild(it);
+        });
+      el.standingsLegend.appendChild(legendRow);
+    }
   }
 
 
