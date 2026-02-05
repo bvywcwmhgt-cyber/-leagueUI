@@ -535,128 +535,9 @@
   
     
   
-    /* Match row: long left/right boxes with fixed center score */
-    .matchRow{ flex-wrap: nowrap; }
-    .matchGrid{
-      display:grid;
-      grid-template-columns: 1fr 140px 1fr; /* score stays centered */
-      align-items:center;
-      gap: 16px;
-      width: 100%;
-      min-width: 0;
-    }
-    @media (max-width: 720px){
-      .matchGrid{ grid-template-columns: 1fr 120px 1fr; gap: 12px; }
-    }
-    .teamBox{
-      display:flex;
-      align-items:center;
-      justify-content: space-between;
-      padding: 12px 14px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.20);
-      background: rgba(255,255,255,.02);
-      min-width: 0;
-      height: 64px;
-      width: 100%;
-      box-sizing: border-box;
-    }
-    .teamInner{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      min-width: 0;
-      width: 100%;
-    }
-    .teamBox.right .teamInner{
-      flex-direction: row-reverse; /* logo at far right */
-    }
-    .teamName{
-      font-weight: 950;
-      font-size: 13px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      min-width: 0;
-    }
-    .scoreFixed{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      width: 100%;
-    }
-    .scoreFixed input{
-      width: 54px;
-      height: 38px;
-    }
-    .scoreDash{
-      font-weight: 950;
-      color: rgba(255,255,255,.72);
-      width: 18px;
-      text-align:center;
-    }
-
+    
   
     
-/* v17 visual alignment fix */
-.matchRow{
-  padding: 14px 12px;
-}
-.matchGrid{
-  display:grid;
-  grid-template-columns: minmax(260px,1fr) 120px minmax(260px,1fr);
-  align-items: stretch; /* important */
-  column-gap: 18px;
-  width:100%;
-}
-.teamBox{
-  display:flex;
-  align-items:center;
-  justify-content:flex-start;
-  border:1px solid rgba(255,255,255,.18);
-  border-radius:18px;
-  padding: 0 16px;
-  height: 72px; /* visual fixed height */
-  box-sizing:border-box;
-}
-.teamBox.right{
-  justify-content:flex-end;
-}
-.teamInner{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  width:100%;
-  height:100%;
-}
-.teamBox.right .teamInner{
-  flex-direction:row-reverse;
-}
-.teamName{
-  font-size:13px;
-  font-weight:900;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-.scoreFixed{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  height:72px; /* SAME AS teamBox */
-}
-.scoreFixed input{
-  height:40px;
-  width:54px;
-  text-align:center;
-}
-.scoreDash{
-  width:20px;
-  text-align:center;
-  font-weight:900;
-}
-
     .matchRow{ padding: 12px 12px; }
     .matchGrid{ height: 72px; } /* stable row height (inside existing card row) */
     .teamBox{ height: 72px; }   /* same as grid */
@@ -675,6 +556,91 @@
       height: 44px;
       line-height: 44px;
       padding: 0;
+    }
+
+  
+    /* v18: Match layout type ② (strict 3 columns) */
+    .matchRow{
+      padding: 10px 10px;
+      flex-wrap: nowrap;
+    }
+    .matchLine{
+      display:grid;
+      grid-template-columns: minmax(260px, 1fr) 150px minmax(260px, 1fr);
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      min-width: 0;
+    }
+    @media (max-width: 860px){
+      .matchLine{
+        grid-template-columns: 1fr 140px 1fr;
+        gap: 10px;
+      }
+    }
+    .teamCell{
+      height: 64px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.02);
+      padding: 0 14px;
+      display:flex;
+      align-items:center;
+      min-width: 0;
+    }
+    .teamCell.left{
+      justify-content:flex-start;
+    }
+    .teamCell.right{
+      justify-content:flex-end;
+    }
+    .teamCellInner{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      min-width: 0;
+      width: 100%;
+    }
+    .teamCell.right .teamCellInner{
+      flex-direction: row-reverse; /* logo at far right */
+    }
+    .teamName2{
+      font-weight: 950;
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
+      max-width: 100%;
+    }
+    .scoreCell{
+      height: 64px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap: 10px;
+    }
+    .scoreCell input{
+      width: 54px;
+      height: 40px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.03);
+      color: rgba(255,255,255,.88);
+      font-weight: 950;
+      text-align:center;
+      outline:none;
+      padding: 0;
+    }
+    .scoreDash2{
+      width: 18px;
+      text-align:center;
+      font-weight: 950;
+      color: rgba(255,255,255,.70);
+      user-select:none;
     }
 
   </style>
