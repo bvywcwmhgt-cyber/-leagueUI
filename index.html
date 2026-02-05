@@ -443,6 +443,93 @@
       z-index:50;
     }
     .toast.show{ opacity:1; transform: translateX(-50%) translateY(-2px); }
+  
+    .sectionTabs{
+      display:flex; gap:10px; align-items:center; justify-content:flex-start;
+      flex-wrap:wrap;
+      padding: 0;
+    }
+    .sectionBtn{
+      padding: 9px 12px;
+      border-radius: 14px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.20);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 950;
+      cursor:pointer;
+      display:flex; align-items:center; gap:8px;
+      white-space:nowrap;
+    }
+    .sectionBtn.active{
+      color: rgba(255,255,255,.92);
+      border-color: rgba(176,75,255,.34);
+      background: rgba(176,75,255,.16);
+      box-shadow: 0 0 0 4px rgba(176,75,255,.08);
+    }
+    .sectionIcon{
+      width:22px; height:22px; border-radius: 11px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      display:flex; align-items:center; justify-content:center;
+      font-weight: 950;
+      color: rgba(255,255,255,.72);
+      flex:0 0 auto;
+      font-size: 11px;
+    }
+    .matchList{ display:flex; flex-direction:column; gap:10px; }
+    .matchRow{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding:10px 10px;
+      border-radius:16px;
+      border:1px solid var(--stroke-2);
+      background: rgba(255,255,255,.03);
+      flex-wrap:wrap;
+    }
+    .matchRow:hover{ border-color: rgba(176,75,255,.22); background: rgba(176,75,255,.06); }
+    .matchLeft{ display:flex; align-items:center; gap:10px; min-width: 260px; flex: 1 1 320px; }
+    .matchTeams{
+      display:flex; flex-direction:column; gap:4px; min-width:0;
+      font-weight: 950;
+      font-size: 12px;
+    }
+    .matchTeams .t{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width: 52vw; }
+    .scoreBox{ display:flex; align-items:center; gap:6px; }
+    .scoreBox input{
+      width:52px; height:34px;
+      border-radius:12px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.22);
+      color: var(--text);
+      font-weight: 950;
+      text-align:center;
+      outline:none;
+    }
+    .matchRight{ display:flex; align-items:center; gap:8px; justify-content:flex-end; flex: 0 0 auto; }
+    .roundScroller{
+      display:flex; gap:8px; align-items:center;
+      overflow:auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain;
+      padding-bottom:2px;
+      max-width: 100%;
+    }
+    .roundBtn{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.22);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 950;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .roundBtn.active{
+      color: rgba(255,255,255,.92);
+      border-color: rgba(176,75,255,.34);
+      background: rgba(176,75,255,.16);
+      box-shadow: 0 0 0 4px rgba(176,75,255,.08);
+    }
+
   </style>
 </head>
 
@@ -745,7 +832,7 @@
       <div class="card">
         <div class="cardBody">
           <details id="divisionDetails" open>
-            <summary>ディビジョン編集（折りたたみ） <span style="color:var(--muted); font-weight:950;">▾</span></summary>
+            <summary>ディビジョン編集 <span style="color:var(--muted); font-weight:950;">▾</span></summary>
 
             <div style="margin-top:12px; display:grid; gap:12px;">
               <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
@@ -828,6 +915,7 @@
       <div style="height:12px;"></div>
 
       <!-- Season area + Division buttons moved here -->
+      
       <div class="card">
         <div class="cardHead">
           <div class="title">
@@ -840,8 +928,90 @@
           <div class="small" id="seasonBodyHint">
             次ステップで、シーズン/ディビジョンに紐づく順位表・試合日程・結果を保存します。
           </div>
+
+          <div style="height:12px;"></div>
+
+          <div class="sectionTabs" id="seasonSectionTabs">
+            <button class="sectionBtn active" data-sec="schedule"><span class="sectionIcon">🗓</span>日程/結果</button>
+            <button class="sectionBtn" data-sec="standings"><span class="sectionIcon">#</span>順位表</button>
+            <button class="sectionBtn" data-sec="teams"><span class="sectionIcon">👥</span>チーム一覧</button>
+          </div>
+
+          <div style="height:12px;"></div>
+
+          <!-- Section: schedule/results -->
+          <div id="sec_schedule">
+            <div class="panel" style="min-height: unset;">
+              <div class="panelHead">
+                <strong>ディビジョン日程 / 結果</strong>
+                <span id="schedMeta" class="muted"></span>
+              </div>
+              <div class="panelBody">
+                <div class="row" style="justify-content:flex-start; margin-top:0;">
+                  <button class="btn primary small" id="btnGenerateSchedule">日程を作成</button>
+                  <button class="btn danger small" id="btnResetSchedule">日程リセット</button>
+                </div>
+
+                <div style="height:10px;"></div>
+
+                <div class="roundScroller" id="roundScroller"></div>
+
+                <div style="height:10px;"></div>
+
+                <div class="matchList" id="matchList"></div>
+
+                <div style="height:14px;"></div>
+
+                <div class="panel" style="min-height: unset;">
+                  <div class="panelHead">
+                    <strong>任意の試合（リーグ全体）</strong>
+                    <span class="muted">ディビジョン外</span>
+                  </div>
+                  <div class="panelBody">
+                    <div style="display:grid; grid-template-columns: 1.2fr 1fr 1fr; gap:10px;">
+                      <div class="field">
+                        <div class="label">試合名（任意）</div>
+                        <input class="input" id="customMatchName" placeholder="例：Super Cup / Friendly など" />
+                      </div>
+                      <div class="field">
+                        <div class="label">ホーム</div>
+                        <select class="select" id="customHome"></select>
+                      </div>
+                      <div class="field">
+                        <div class="label">アウェイ</div>
+                        <select class="select" id="customAway"></select>
+                      </div>
+                    </div>
+                    <div class="row" style="justify-content:flex-start;">
+                      <button class="btn primary small" id="btnAddCustomMatch">試合を追加</button>
+                    </div>
+
+                    <div class="small">※ この試合はリーグ全体の登録チームから作れます（ディビジョンに依存しません）。</div>
+
+                    <div style="height:10px;"></div>
+                    <div class="matchList" id="customMatchList"></div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- placeholders -->
+          <div id="sec_standings" class="hide">
+            <div style="border:1px dashed rgba(255,255,255,.14); border-radius:16px; padding:12px; color:rgba(255,255,255,.62); background:rgba(0,0,0,.12);">
+              順位表は次で実装します。
+            </div>
+          </div>
+
+          <div id="sec_teams" class="hide">
+            <div style="border:1px dashed rgba(255,255,255,.14); border-radius:16px; padding:12px; color:rgba(255,255,255,.62); background:rgba(0,0,0,.12);">
+              チーム一覧は次で実装します。
+            </div>
+          </div>
         </div>
       </div>
+
     </div>
   </div>
 
@@ -932,6 +1102,23 @@
     divisionTeamChecklist: document.getElementById("divisionTeamChecklist"),
     btnSaveDivision: document.getElementById("btnSaveDivision"),
     btnDeleteDivision: document.getElementById("btnDeleteDivision"),
+
+    seasonSectionTabs: document.getElementById("seasonSectionTabs"),
+    secSchedule: document.getElementById("sec_schedule"),
+    secStandings: document.getElementById("sec_standings"),
+    secTeams: document.getElementById("sec_teams"),
+    schedMeta: document.getElementById("schedMeta"),
+    btnGenerateSchedule: document.getElementById("btnGenerateSchedule"),
+    btnResetSchedule: document.getElementById("btnResetSchedule"),
+    roundScroller: document.getElementById("roundScroller"),
+    matchList: document.getElementById("matchList"),
+
+    customMatchName: document.getElementById("customMatchName"),
+    customHome: document.getElementById("customHome"),
+    customAway: document.getElementById("customAway"),
+    btnAddCustomMatch: document.getElementById("btnAddCustomMatch"),
+    customMatchList: document.getElementById("customMatchList"),
+
   };
 
   let activeLeagueId = null;
@@ -939,6 +1126,8 @@
   let activeSeasonId = null;
 
   let seasonChipsOpen = false;
+  let seasonSection = 'schedule';
+  let activeRoundIndex = 0;
   let pendingDivisionLogoDataUrl = "";
   let editingDivisionId = "";
 
@@ -1160,7 +1349,87 @@
     el.btnToggleSeasonChips.textContent = seasonChipsOpen ? "シーズン ▴" : "シーズン ▾";
   });
 
-  // Divisions
+
+  // Season sections (日程/結果・順位表・チーム一覧)
+  if (el.seasonSectionTabs){
+    el.seasonSectionTabs.addEventListener("click", (e) => {
+      const btn = e.target.closest(".sectionBtn");
+      if (!btn) return;
+      seasonSection = btn.getAttribute("data-sec") || "schedule";
+      syncSeasonSection();
+    });
+  }
+
+  function syncSeasonSection(){
+    const btns = el.seasonSectionTabs ? Array.from(el.seasonSectionTabs.querySelectorAll(".sectionBtn")) : [];
+    btns.forEach(b => b.classList.toggle("active", b.getAttribute("data-sec") === seasonSection));
+    if (el.secSchedule) el.secSchedule.classList.toggle("hide", seasonSection !== "schedule");
+    if (el.secStandings) el.secStandings.classList.toggle("hide", seasonSection !== "standings");
+    if (el.secTeams) el.secTeams.classList.toggle("hide", seasonSection !== "teams");
+    if (seasonSection === "schedule"){
+      renderScheduleUI();
+      renderCustomMatches();
+    }
+  }
+
+  if (el.btnGenerateSchedule){
+    el.btnGenerateSchedule.addEventListener("click", () => {
+      const league = getActiveLeague();
+      const season = getActiveSeason();
+      const div = season ? (season.divisions || []).find(d => d.id === season.activeDivisionId) : null;
+      if (!league || !season || !div) return toast("ディビジョンを選択してください");
+      const teams = (div.teamIds || []).map(id => league.teams.find(t => t.id === id)).filter(Boolean);
+      if (teams.length < 2) return toast("参加チームが2つ以上必要です");
+      div.schedule = generateRoundRobinSchedule(teams.map(t => t.id));
+      activeRoundIndex = 0;
+      persist();
+      renderScheduleUI();
+      toast("日程を作成しました");
+    });
+  }
+
+  if (el.btnResetSchedule){
+    el.btnResetSchedule.addEventListener("click", () => {
+      const season = getActiveSeason();
+      const div = season ? (season.divisions || []).find(d => d.id === season.activeDivisionId) : null;
+      if (!season || !div) return;
+      const ok = confirm("このディビジョンの日程をリセットしますか？");
+      if (!ok) return;
+      div.schedule = null;
+      activeRoundIndex = 0;
+      persist();
+      renderScheduleUI();
+      toast("日程をリセットしました");
+    });
+  }
+
+  if (el.btnAddCustomMatch){
+    el.btnAddCustomMatch.addEventListener("click", () => {
+      const league = getActiveLeague();
+      if (!league) return;
+      league.customMatches ??= [];
+      const home = el.customHome.value;
+      const away = el.customAway.value;
+      if (!home || !away || home === away) return toast("ホーム/アウェイを正しく選んでください");
+      const name = (el.customMatchName.value || "").trim() || `Match ${league.customMatches.length + 1}`;
+      league.customMatches.unshift({
+        id: uid(),
+        name,
+        homeId: home,
+        awayId: away,
+        homeScore: "",
+        awayScore: "",
+        note: ""
+      });
+      el.customMatchName.value = "";
+      persist();
+      renderCustomMatches();
+      toast("任意の試合を追加しました");
+    });
+  }
+
+
+    // Divisions
   el.newDivisionLogoFile.addEventListener("change", async () => {
     const file = el.newDivisionLogoFile.files?.[0];
     if (!file) return;
@@ -1568,6 +1837,9 @@
 
     el.divisionDetails.open = true;
     renderDivisions();
+    seasonSection = 'schedule';
+    activeRoundIndex = 0;
+    syncSeasonSection();
 
     el.seasonView.classList.add("show");
     el.seasonView.setAttribute("aria-hidden","false");
@@ -1699,6 +1971,7 @@
 
     syncDivisionEditor();
     renderSeasonHint();
+    if (seasonSection === 'schedule') renderScheduleUI();
   }
 
   function syncDivisionEditor(){
@@ -1767,6 +2040,7 @@
         }
         persist();
         renderSeasonHint();
+    if (seasonSection === 'schedule') renderScheduleUI();
       });
 
       item.appendChild(left);
@@ -1808,6 +2082,7 @@
     league.logoDataUrl ??= "";
     league.teams ??= [];
     league.seasons ??= [];
+    league.customMatches ??= [];
     league.activeSeasonId ??= "";
     league.format ??= "round_robin";
     league.points ??= "3 / 1 / 0";
@@ -1832,6 +2107,7 @@
       d.logoDataUrl ??= "";
       d.name ??= "Division";
       d.teamIds ??= [];
+      d.schedule ??= null;
     });
     if (season.activeDivisionId && !season.divisions.some(d => d.id === season.activeDivisionId)){
       season.activeDivisionId = "";
@@ -1904,7 +2180,8 @@
                 comment: t.comment || ""
               })),
               seasons: [],
-              activeSeasonId: l.activeSeasonId || ""
+              activeSeasonId: l.activeSeasonId || "",
+              customMatches: Array.isArray(l.customMatches) ? l.customMatches : []
             };
             if (Array.isArray(l.seasons) && l.seasons.length){
               league.seasons = l.seasons.map(s => ({
@@ -1915,7 +2192,8 @@
                   id: d.id || uid(),
                   name: d.name || "Division",
                   logoDataUrl: d.logoDataUrl || "",
-                  teamIds: Array.isArray(d.teamIds) ? d.teamIds : []
+                  teamIds: Array.isArray(d.teamIds) ? d.teamIds : [],
+                  schedule: d.schedule || null
                 })) : [],
                 activeDivisionId: s.activeDivisionId || ""
               }));
@@ -1937,7 +2215,291 @@
     }
   }
 
-  function uid(){ return Math.random().toString(16).slice(2) + Date.now().toString(16); }
+
+  function teamNameById(league, id){
+    const t = (league.teams || []).find(x => x.id === id);
+    return t ? t.name : "Team";
+  }
+
+  function generateRoundRobinSchedule(teamIds){
+    // Circle method (single round). If odd, add BYE.
+    const ids = teamIds.slice();
+    const isOdd = ids.length % 2 === 1;
+    if (isOdd) ids.push("BYE");
+    const n = ids.length;
+    const rounds = n - 1;
+    const half = n / 2;
+    const arr = ids.slice();
+
+    const schedule = { createdAt: Date.now(), rounds: [] };
+
+    for (let r = 0; r < rounds; r++){
+      const matches = [];
+      for (let i = 0; i < half; i++){
+        const a = arr[i];
+        const b = arr[n - 1 - i];
+        if (a === "BYE" || b === "BYE") continue;
+        const home = (r % 2 === 0) ? a : b;
+        const away = (r % 2 === 0) ? b : a;
+        matches.push({ id: uid(), homeId: home, awayId: away, homeScore: "", awayScore: "" });
+      }
+      schedule.rounds.push({ id: uid(), name: `第${r + 1}節`, matches });
+      // rotate (keep first fixed)
+      const fixed = arr[0];
+      const rest = arr.slice(1);
+      rest.unshift(rest.pop());
+      arr.splice(0, arr.length, fixed, ...rest);
+    }
+    return schedule;
+  }
+
+  function renderScheduleUI(){
+    const league = getActiveLeague();
+    const season = getActiveSeason();
+    if (!league || !season) return;
+    const div = (season.divisions || []).find(d => d.id === season.activeDivisionId) || null;
+
+    if (!el.schedMeta || !el.roundScroller || !el.matchList) return;
+
+    if (!div){
+      el.schedMeta.textContent = "ディビジョン未選択";
+      el.roundScroller.innerHTML = "";
+      el.matchList.innerHTML = "";
+      return;
+    }
+
+    const teamCount = (div.teamIds || []).length;
+    el.schedMeta.textContent = `${div.name} / 参加チーム: ${teamCount}`;
+
+    const schedule = div.schedule || null;
+    const rounds = schedule?.rounds || [];
+
+    // Round buttons
+    el.roundScroller.innerHTML = "";
+    if (rounds.length === 0){
+      el.roundScroller.innerHTML = `<div class="small">日程が未作成です。「日程を作成」を押してください。</div>`;
+      el.matchList.innerHTML = "";
+      return;
+    }
+
+    if (activeRoundIndex >= rounds.length) activeRoundIndex = 0;
+
+    rounds.forEach((rd, idx) => {
+      const b = document.createElement("button");
+      b.className = "roundBtn" + (idx === activeRoundIndex ? " active" : "");
+      b.textContent = rd.name || `第${idx + 1}節`;
+      b.addEventListener("click", () => {
+        activeRoundIndex = idx;
+        renderScheduleUI();
+      });
+      el.roundScroller.appendChild(b);
+    });
+
+    const rd = rounds[activeRoundIndex];
+    const matches = rd?.matches || [];
+    el.matchList.innerHTML = "";
+
+    if (matches.length === 0){
+      el.matchList.innerHTML = `<div class="small">この節の試合がありません。</div>`;
+      return;
+    }
+
+    matches.forEach(m => {
+      const row = document.createElement("div");
+      row.className = "matchRow";
+
+      const left = document.createElement("div");
+      left.className = "matchLeft";
+
+      const hLogo = document.createElement("div");
+      hLogo.className = "sqLogo";
+      hLogo.style.width = "34px"; hLogo.style.height = "34px"; hLogo.style.borderRadius = "12px";
+      const hTeam = league.teams.find(t => t.id === m.homeId);
+      if (hTeam?.logoDataUrl){
+        const img = document.createElement("img"); img.src = hTeam.logoDataUrl; img.alt = "home";
+        hLogo.appendChild(img);
+      } else hLogo.textContent = "T";
+
+      const aLogo = document.createElement("div");
+      aLogo.className = "sqLogo";
+      aLogo.style.width = "34px"; aLogo.style.height = "34px"; aLogo.style.borderRadius = "12px";
+      const aTeam = league.teams.find(t => t.id === m.awayId);
+      if (aTeam?.logoDataUrl){
+        const img = document.createElement("img"); img.src = aTeam.logoDataUrl; img.alt = "away";
+        aLogo.appendChild(img);
+      } else aLogo.textContent = "T";
+
+      const teams = document.createElement("div");
+      teams.className = "matchTeams";
+      const t1 = document.createElement("div"); t1.className = "t"; t1.textContent = `${teamNameById(league, m.homeId)} (H)`;
+      const t2 = document.createElement("div"); t2.className = "t"; t2.textContent = `${teamNameById(league, m.awayId)} (A)`;
+      teams.appendChild(t1); teams.appendChild(t2);
+
+      left.appendChild(hLogo);
+      left.appendChild(teams);
+      left.appendChild(aLogo);
+
+      const right = document.createElement("div");
+      right.className = "matchRight";
+
+      const score = document.createElement("div");
+      score.className = "scoreBox";
+      const hs = document.createElement("input");
+      hs.inputMode = "numeric";
+      hs.placeholder = "-";
+      hs.value = m.homeScore ?? "";
+      hs.addEventListener("change", () => {
+        m.homeScore = (hs.value || "").trim();
+        persist();
+      });
+      const dash = document.createElement("div");
+      dash.style.color = "rgba(255,255,255,.55)";
+      dash.style.fontWeight = "950";
+      dash.textContent = "—";
+      const as_ = document.createElement("input");
+      as_.inputMode = "numeric";
+      as_.placeholder = "-";
+      as_.value = m.awayScore ?? "";
+      as_.addEventListener("change", () => {
+        m.awayScore = (as_.value || "").trim();
+        persist();
+      });
+
+      score.appendChild(hs);
+      score.appendChild(dash);
+      score.appendChild(as_);
+
+      right.appendChild(score);
+
+      row.appendChild(left);
+      row.appendChild(right);
+
+      el.matchList.appendChild(row);
+    });
+  }
+
+  function renderCustomMatches(){
+    const league = getActiveLeague();
+    if (!league) return;
+    league.customMatches ??= [];
+
+    // fill selects
+    const opts = (league.teams || []).map(t => `<option value="${t.id}">${escapeHtml(t.name)}</option>`).join("");
+    if (el.customHome) el.customHome.innerHTML = opts;
+    if (el.customAway) el.customAway.innerHTML = opts;
+
+    if (!el.customMatchList) return;
+    el.customMatchList.innerHTML = "";
+
+    if (league.customMatches.length === 0){
+      el.customMatchList.innerHTML = `<div class="small">まだ任意の試合がありません。</div>`;
+      return;
+    }
+
+    league.customMatches.forEach(cm => {
+      const row = document.createElement("div");
+      row.className = "matchRow";
+
+      const left = document.createElement("div");
+      left.className = "matchLeft";
+
+      const nameBox = document.createElement("div");
+      nameBox.style.display = "flex";
+      nameBox.style.flexDirection = "column";
+      nameBox.style.gap = "6px";
+      nameBox.style.minWidth = "260px";
+      nameBox.style.flex = "1 1 320px";
+
+      const nmLabel = document.createElement("div");
+      nmLabel.className = "label";
+      nmLabel.textContent = "試合名";
+
+      const nm = document.createElement("input");
+      nm.className = "input";
+      nm.style.height = "34px";
+      nm.value = cm.name || "";
+      nm.addEventListener("change", () => {
+        cm.name = (nm.value || "").trim() || cm.name;
+        persist();
+      });
+
+      nameBox.appendChild(nmLabel);
+      nameBox.appendChild(nm);
+
+      const right = document.createElement("div");
+      right.className = "matchRight";
+      right.style.flexWrap = "wrap";
+
+      const homeSel = document.createElement("select");
+      homeSel.className = "select";
+      homeSel.style.height = "34px";
+      homeSel.style.minWidth = "160px";
+      homeSel.innerHTML = (league.teams || []).map(t => `<option value="${t.id}">${escapeHtml(t.name)}</option>`).join("");
+      homeSel.value = cm.homeId;
+      homeSel.addEventListener("change", () => {
+        if (homeSel.value === cm.awayId){ toast("同じチームは選べません"); homeSel.value = cm.homeId; return; }
+        cm.homeId = homeSel.value;
+        persist();
+      });
+
+      const awaySel = document.createElement("select");
+      awaySel.className = "select";
+      awaySel.style.height = "34px";
+      awaySel.style.minWidth = "160px";
+      awaySel.innerHTML = (league.teams || []).map(t => `<option value="${t.id}">${escapeHtml(t.name)}</option>`).join("");
+      awaySel.value = cm.awayId;
+      awaySel.addEventListener("change", () => {
+        if (awaySel.value === cm.homeId){ toast("同じチームは選べません"); awaySel.value = cm.awayId; return; }
+        cm.awayId = awaySel.value;
+        persist();
+      });
+
+      const score = document.createElement("div");
+      score.className = "scoreBox";
+      const hs = document.createElement("input");
+      hs.inputMode = "numeric";
+      hs.placeholder = "-";
+      hs.value = cm.homeScore ?? "";
+      hs.addEventListener("change", () => { cm.homeScore = (hs.value || "").trim(); persist(); });
+      const dash = document.createElement("div");
+      dash.style.color = "rgba(255,255,255,.55)";
+      dash.style.fontWeight = "950";
+      dash.textContent = "—";
+      const as_ = document.createElement("input");
+      as_.inputMode = "numeric";
+      as_.placeholder = "-";
+      as_.value = cm.awayScore ?? "";
+      as_.addEventListener("change", () => { cm.awayScore = (as_.value || "").trim(); persist(); });
+
+      score.appendChild(hs); score.appendChild(dash); score.appendChild(as_);
+
+      const del = document.createElement("button");
+      del.className = "xBtn";
+      del.textContent = "×";
+      del.title = "削除";
+      del.addEventListener("click", () => {
+        const ok = confirm(`「${cm.name || "Match"}」を削除しますか？`);
+        if (!ok) return;
+        league.customMatches = league.customMatches.filter(x => x.id !== cm.id);
+        persist();
+        renderCustomMatches();
+        toast("試合を削除しました");
+      });
+
+      right.appendChild(homeSel);
+      right.appendChild(awaySel);
+      right.appendChild(score);
+      right.appendChild(del);
+
+      row.appendChild(nameBox);
+      row.appendChild(right);
+
+      el.customMatchList.appendChild(row);
+    });
+  }
+
+
+    function uid(){ return Math.random().toString(16).slice(2) + Date.now().toString(16); }
   function clampInt(v, min, max){
     const n = parseInt(v, 10);
     if (!Number.isFinite(n)) return min;
