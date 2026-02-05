@@ -535,9 +535,7 @@
   
     
   
-    
-  
-    
+    /* v16: unify heights across team boxes + score area */
     .matchRow{ padding: 12px 12px; }
     .matchGrid{ height: 72px; } /* stable row height (inside existing card row) */
     .teamBox{ height: 72px; }   /* same as grid */
@@ -559,24 +557,21 @@
     }
 
   
-    /* v18: Match layout type ② (strict 3 columns) */
+    /* v19: one-row match layout (no vertical overlap) */
     .matchRow{
       padding: 10px 10px;
       flex-wrap: nowrap;
     }
     .matchLine{
-      display:grid;
-      grid-template-columns: minmax(260px, 1fr) 150px minmax(260px, 1fr);
-      align-items: center;
+      display: grid;
+      grid-template-columns: minmax(280px, 1fr) 160px minmax(280px, 1fr);
       gap: 14px;
+      align-items: center;
       width: 100%;
       min-width: 0;
     }
     @media (max-width: 860px){
-      .matchLine{
-        grid-template-columns: 1fr 140px 1fr;
-        gap: 10px;
-      }
+      .matchLine{ grid-template-columns: 1fr 150px 1fr; gap: 10px; }
     }
     .teamCell{
       height: 64px;
@@ -587,32 +582,30 @@
       display:flex;
       align-items:center;
       min-width: 0;
+      overflow: hidden; /* prevent wrapping */
     }
-    .teamCell.left{
-      justify-content:flex-start;
-    }
-    .teamCell.right{
-      justify-content:flex-end;
-    }
+    .teamCell.left{ justify-content:flex-start; }
+    .teamCell.right{ justify-content:flex-end; }
+
     .teamCellInner{
       display:flex;
       align-items:center;
       gap: 10px;
-      min-width: 0;
       width: 100%;
+      min-width: 0;
+      flex-wrap: nowrap; /* important */
     }
-    .teamCell.right .teamCellInner{
-      flex-direction: row-reverse; /* logo at far right */
-    }
+    .teamCell.right .teamCellInner{ flex-direction: row-reverse; }
+
     .teamName2{
       font-weight: 950;
       font-size: 13px;
-      white-space: nowrap;
+      white-space: nowrap;        /* no multi-line */
       overflow: hidden;
       text-overflow: ellipsis;
       min-width: 0;
-      max-width: 100%;
     }
+
     .scoreCell{
       height: 64px;
       border-radius: 18px;
@@ -622,6 +615,7 @@
       align-items:center;
       justify-content:center;
       gap: 10px;
+      flex-wrap: nowrap; /* no wrap */
     }
     .scoreCell input{
       width: 54px;
