@@ -478,6 +478,10 @@
       font-size: 11px;
     }
     .matchList{ display:flex; flex-direction:column; gap:10px; }
+/* Force vertical stacking (disable any previous horizontal/grid layout) */
+.matchList{ display:flex !important; flex-direction:column !important; flex-wrap:nowrap !important; }
+.matchRow{ width:100% !important; }
+
     .matchRow{
       padding:12px 12px;
       border-radius:16px;
@@ -2568,6 +2572,7 @@
     syncDivisionEditor();
     renderSeasonHint();
     if (seasonSection === 'schedule') renderScheduleUI();
+    if (seasonSection === 'standings') renderStandingsUI();
   }
 
   function syncDivisionEditor(){
@@ -2637,6 +2642,7 @@
         persist();
         renderSeasonHint();
     if (seasonSection === 'schedule') renderScheduleUI();
+    if (seasonSection === 'standings') renderStandingsUI();
       });
 
       item.appendChild(left);
