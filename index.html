@@ -1,32 +1,75 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8" />
-<title>League Builder UI – Schedule</title>
-<link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Schedule – One Line List UI</title>
+  <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-<div class="container">
-  <div class="card-grid">
-    <div class="match-card">
-      <div class="team home">
-        <span class="badge home">HOME</span>
-        <span class="name">横浜F・マリノス</span>
+  <div class="page">
+    <div class="panel">
+      <div class="panelHeader">
+        <div class="title">日程 / 結果（1行リスト）</div>
+        <div class="sub">HOME=赤 / AWAY=青、スコアは中央固定</div>
       </div>
-      <div class="score">
-        <span class="h">H</span>
-        <input value="-" />
-        <span>–</span>
-        <input value="-" />
-        <span class="a">A</span>
-      </div>
-      <div class="team away">
-        <span class="badge away">AWAY</span>
-        <span class="name">鹿島アントラーズ</span>
+
+      <div class="matchList" role="list">
+        <!-- Sample rows (UI only) -->
+        <div class="matchRow" role="listitem">
+          <div class="side sideHome">
+            <div class="logo">T</div>
+            <div class="meta">
+              <div class="tag tagHome">HOME</div>
+              <div class="name">横浜F・マリノス</div>
+            </div>
+          </div>
+
+          <div class="scoreBox">
+            <div class="scoreTag h">H</div>
+            <input class="scoreInput" inputmode="numeric" placeholder="-" />
+            <div class="dash">-</div>
+            <input class="scoreInput" inputmode="numeric" placeholder="-" />
+            <div class="scoreTag a">A</div>
+          </div>
+
+          <div class="side sideAway">
+            <div class="meta metaRight">
+              <div class="tag tagAway">AWAY</div>
+              <div class="name nameRight">鹿島アントラーズ</div>
+            </div>
+            <div class="logo">T</div>
+          </div>
+        </div>
+
+        <div class="matchRow" role="listitem">
+          <div class="side sideHome">
+            <div class="logo">T</div>
+            <div class="meta">
+              <div class="tag tagHome">HOME</div>
+              <div class="name">川崎フロンターレ</div>
+            </div>
+          </div>
+
+          <div class="scoreBox">
+            <div class="scoreTag h">H</div>
+            <input class="scoreInput" inputmode="numeric" placeholder="-" />
+            <div class="dash">-</div>
+            <input class="scoreInput" inputmode="numeric" placeholder="-" />
+            <div class="scoreTag a">A</div>
+          </div>
+
+          <div class="side sideAway">
+            <div class="meta metaRight">
+              <div class="tag tagAway">AWAY</div>
+              <div class="name nameRight">柏レイソル</div>
+            </div>
+            <div class="logo">T</div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
-</div>
 </body>
 </html>

@@ -1,53 +1,167 @@
+:root{
+  --bg0:#070712;
+  --bg1:rgba(255,255,255,.03);
+  --bd:rgba(255,255,255,.12);
+  --bd2:rgba(255,255,255,.16);
+  --txt:rgba(255,255,255,.92);
+  --muted:rgba(255,255,255,.55);
+  --home:rgba(255,90,90,.95);
+  --away:rgba(110,170,255,.95);
+}
 
-body {
-  background:#0b0b14;
-  color:#fff;
-  font-family: system-ui, sans-serif;
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  background:
+    radial-gradient(900px 500px at 70% 15%, rgba(147,79,255,.22), transparent 60%),
+    radial-gradient(900px 700px at 15% 75%, rgba(0,194,255,.10), transparent 60%),
+    var(--bg0);
+  color:var(--txt);
 }
-.container {
-  padding:40px;
+
+.page{ padding:28px; }
+.panel{
+  border:1px solid var(--bd);
+  border-radius:18px;
+  background: rgba(0,0,0,.22);
+  backdrop-filter: blur(10px);
+  padding:18px;
 }
-.card-grid {
-  display:grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap:16px;
+
+.panelHeader{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:14px;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--bd);
 }
-.match-card {
-  border:1px solid rgba(255,255,255,.15);
-  border-radius:12px;
-  padding:16px;
+.title{ font-weight:900; letter-spacing:.02em; }
+.sub{ color:var(--muted); font-size:12px; }
+
+.matchList{
   display:flex;
   flex-direction:column;
   gap:12px;
-  background:rgba(255,255,255,.03);
 }
-.team {
+
+/* 1 match = 1 line */
+.matchRow{
+  display:grid;
+  grid-template-columns: minmax(280px, 1fr) 170px minmax(280px, 1fr);
+  gap:12px;
+  align-items:center;
+  padding:12px;
+  border-radius:16px;
+  border:1px solid var(--bd);
+  background: var(--bg1);
+}
+
+/* Left/Right team blocks: SAME SIZE visual */
+.side{
   display:flex;
   align-items:center;
-  gap:8px;
+  gap:10px;
+  padding:10px;
+  border:1px solid var(--bd2);
+  border-radius:14px;
+  background: rgba(0,0,0,.18);
+  min-height:60px;
+  overflow:hidden;
 }
-.team.home { justify-content:flex-start; }
-.team.away { justify-content:flex-start; }
-.badge {
-  font-size:11px;
-  padding:2px 6px;
-  border-radius:6px;
+.sideHome{ justify-content:flex-start; }
+.sideAway{ justify-content:flex-end; }
+
+.logo{
+  width:34px;
+  height:34px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.18);
+  background: rgba(147,79,255,.18);
+  display:grid;
+  place-items:center;
+  font-weight:900;
+  flex: 0 0 auto;
 }
-.badge.home { background:#7a2d2d; }
-.badge.away { background:#2d4a7a; }
-.score {
+
+.meta{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+  flex:1 1 auto;
+}
+.metaRight{ align-items:flex-end; }
+.name{
+  font-weight:900;
+  font-size:13px;
+  line-height:1.15;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.nameRight{ text-align:right; }
+
+.tag{
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.08em;
+  line-height:1;
+  opacity:.95;
+}
+.tagHome{ color:var(--home); }
+.tagAway{ color:var(--away); }
+
+/* Center score box fixed */
+.scoreBox{
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:6px;
+  gap:8px;
+  padding:10px;
+  border-radius:14px;
+  border:1px solid var(--bd2);
+  background: rgba(0,0,0,.22);
+  min-height:60px;
 }
-.score input {
-  width:36px;
+.scoreTag{
+  width:16px;
   text-align:center;
-  background:#111;
-  border:1px solid rgba(255,255,255,.2);
-  color:#fff;
-  border-radius:6px;
+  font-weight:900;
+  font-size:10px;
+  opacity:.95;
+  user-select:none;
 }
-.score .h { color:#ff6b6b; font-size:12px; }
-.score .a { color:#6bb1ff; font-size:12px; }
+.scoreTag.h{ color:var(--home); }
+.scoreTag.a{ color:var(--away); }
+
+.scoreInput{
+  width:52px;
+  height:36px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.20);
+  background: rgba(255,255,255,.05);
+  color:var(--txt);
+  font-weight:900;
+  text-align:center;
+  outline:none;
+}
+.dash{
+  width:14px;
+  text-align:center;
+  color:rgba(255,255,255,.75);
+  font-weight:900;
+  user-select:none;
+}
+
+/* Responsive */
+@media (max-width: 980px){
+  .matchRow{
+    grid-template-columns: 1fr;
+    gap:10px;
+  }
+  .sideAway{ justify-content:space-between; }
+}
