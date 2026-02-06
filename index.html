@@ -530,61 +530,6 @@
       box-shadow: 0 0 0 4px rgba(176,75,255,.08);
     }
 
-  
-    
-  
-    /* Match row: fixed center score, equal-width team boxes */
-    .matchRow{ flex-wrap: nowrap; }
-    .matchGrid{
-      display:grid;
-      grid-template-columns: minmax(240px, 1fr) 160px minmax(240px, 1fr);
-      align-items:center;
-      gap: 14px;
-      width: 100%;
-    }
-    @media (max-width: 820px){
-      .matchGrid{
-        grid-template-columns: 1fr 140px 1fr;
-      }
-    }
-    .teamBox{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      padding: 10px 12px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.02);
-      min-width: 0;
-      height: 56px;
-    }
-    .teamBox.right{
-      justify-content:flex-end;
-    }
-    .teamBox .name{
-      font-weight: 950;
-      font-size: 12px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 100%;
-    }
-    .scoreFixed{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-    }
-    .scoreFixed input{
-      width: 56px;
-    }
-    .scoreDash{
-      font-weight: 950;
-      color: rgba(255,255,255,.65);
-      width: 18px;
-      text-align:center;
-    }
-
   </style>
 </head>
 
@@ -2363,75 +2308,71 @@
       const row = document.createElement("div");
       row.className = "matchRow";
 
-      const center = document.createElement("div");
-      center.className = "matchCenter";
-
-      const homeWrap = document.createElement("div");
-      homeWrap.className = "teamSide left";
+      const left = document.createElement("div");
+      left.className = "matchLeft";
 
       const hLogo = document.createElement("div");
       hLogo.className = "sqLogo";
       hLogo.style.width = "34px"; hLogo.style.height = "34px"; hLogo.style.borderRadius = "12px";
       const hTeam = league.teams.find(t => t.id === m.homeId);
       if (hTeam?.logoDataUrl){
-        const img = document.createElement("img"); img.src = hTeam.logoDataUrl;
+        const img = document.createElement("img"); img.src = hTeam.logoDataUrl; img.alt = "home";
         hLogo.appendChild(img);
       } else hLogo.textContent = "T";
-
-      const hName = document.createElement("div");
-      hName.className = "name";
-      hName.textContent = teamNameById(league, m.homeId);
-
-      homeWrap.appendChild(hLogo);
-      homeWrap.appendChild(hName);
-
-      const score = document.createElement("div");
-      score.className = "scoreBox";
-
-      const hs = document.createElement("input");
-      hs.inputMode = "numeric";
-      hs.placeholder = "-";
-      hs.value = m.homeScore ?? "";
-      hs.addEventListener("change", () => { m.homeScore = (hs.value || "").trim(); persist(); });
-
-      const dash = document.createElement("div");
-      dash.style.fontWeight = "950";
-      dash.textContent = "—";
-
-      const as_ = document.createElement("input");
-      as_.inputMode = "numeric";
-      as_.placeholder = "-";
-      as_.value = m.awayScore ?? "";
-      as_.addEventListener("change", () => { m.awayScore = (as_.value || "").trim(); persist(); });
-
-      score.appendChild(hs);
-      score.appendChild(dash);
-      score.appendChild(as_);
-
-      const awayWrap = document.createElement("div");
-      awayWrap.className = "teamSide right";
 
       const aLogo = document.createElement("div");
       aLogo.className = "sqLogo";
       aLogo.style.width = "34px"; aLogo.style.height = "34px"; aLogo.style.borderRadius = "12px";
       const aTeam = league.teams.find(t => t.id === m.awayId);
       if (aTeam?.logoDataUrl){
-        const img = document.createElement("img"); img.src = aTeam.logoDataUrl;
+        const img = document.createElement("img"); img.src = aTeam.logoDataUrl; img.alt = "away";
         aLogo.appendChild(img);
       } else aLogo.textContent = "T";
 
-      const aName = document.createElement("div");
-      aName.className = "name";
-      aName.textContent = teamNameById(league, m.awayId);
+      const teams = document.createElement("div");
+      teams.className = "matchTeams";
+      const t1 = document.createElement("div"); t1.className = "t"; t1.textContent = `${teamNameById(league, m.homeId)} (H)`;
+      const t2 = document.createElement("div"); t2.className = "t"; t2.textContent = `${teamNameById(league, m.awayId)} (A)`;
+      teams.appendChild(t1); teams.appendChild(t2);
 
-      awayWrap.appendChild(aName);
-      awayWrap.appendChild(aLogo);
+      left.appendChild(hLogo);
+      left.appendChild(teams);
+      left.appendChild(aLogo);
 
-      center.appendChild(homeWrap);
-      center.appendChild(score);
-      center.appendChild(awayWrap);
+      const right = document.createElement("div");
+      right.className = "matchRight";
 
-      row.appendChild(center);
+      const score = document.createElement("div");
+      score.className = "scoreBox";
+      const hs = document.createElement("input");
+      hs.inputMode = "numeric";
+      hs.placeholder = "-";
+      hs.value = m.homeScore ?? "";
+      hs.addEventListener("change", () => {
+        m.homeScore = (hs.value || "").trim();
+        persist();
+      });
+      const dash = document.createElement("div");
+      dash.style.color = "rgba(255,255,255,.55)";
+      dash.style.fontWeight = "950";
+      dash.textContent = "—";
+      const as_ = document.createElement("input");
+      as_.inputMode = "numeric";
+      as_.placeholder = "-";
+      as_.value = m.awayScore ?? "";
+      as_.addEventListener("change", () => {
+        m.awayScore = (as_.value || "").trim();
+        persist();
+      });
+
+      score.appendChild(hs);
+      score.appendChild(dash);
+      score.appendChild(as_);
+
+      right.appendChild(score);
+
+      row.appendChild(left);
+      row.appendChild(right);
 
       el.matchList.appendChild(row);
     });
