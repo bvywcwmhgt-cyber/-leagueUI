@@ -11,63 +11,104 @@
 
   <style>
     :root{
-      --bg-0:#070A12; --bg-1:#0B1020;
-      --stroke:rgba(255,255,255,.09); --stroke-2:rgba(255,255,255,.06);
-      --text:rgba(255,255,255,.92); --muted:rgba(255,255,255,.64); --faint:rgba(255,255,255,.42);
-      --accent:#B04BFF; --accent-2:#7A3CFF; --good:#4BE38B; --bad:#FF4D6D;
-      --r-xl:18px; --r-lg:16px;
-      --shadow:0 14px 35px rgba(0,0,0,.45); --shadow-soft:0 10px 24px rgba(0,0,0,.32);
+      --bg-0: #070A12;
+      --bg-1: #0B1020;
+      --panel: rgba(16, 22, 45, .92);
+      --panel-2: rgba(12, 16, 35, .92);
+      --stroke: rgba(255,255,255,.09);
+      --stroke-2: rgba(255,255,255,.06);
+
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.64);
+      --faint: rgba(255,255,255,.42);
+
+      --accent: #B04BFF;
+      --accent-2: #7A3CFF;
+      --good: #4BE38B;
+      --warn: #FFB84D;
+      --bad:  #FF4D6D;
+
+      --r-xl: 18px;
+      --r-lg: 16px;
+      --r-md: 12px;
+      --r-sm: 10px;
+
+      --shadow: 0 14px 35px rgba(0,0,0,.45);
+      --shadow-soft: 0 10px 24px rgba(0,0,0,.32);
+
       --font: Inter, "Noto Sans JP", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
+
+    *{ box-sizing: border-box; }
+    html, body{ height: 100%; }
     body{
-      margin:0; font-family:var(--font); color:var(--text);
+      margin: 0;
+      font-family: var(--font);
+      color: var(--text);
       background:
         radial-gradient(1200px 600px at 72% 16%, rgba(176,75,255,.22), transparent 55%),
         radial-gradient(900px 520px at 20% 12%, rgba(122,60,255,.12), transparent 60%),
         radial-gradient(700px 500px at 26% 92%, rgba(75,227,139,.08), transparent 55%),
         linear-gradient(180deg, var(--bg-0), var(--bg-1));
-      overflow-x:hidden;
+      overflow-x: hidden;
     }
-    .app{ max-width:1200px; margin:0 auto; padding:22px 18px 34px; }
 
-    .topbar{
-      display:flex; gap:12px; align-items:center; justify-content:space-between;
-      padding:14px 16px; border:1px solid var(--stroke);
-      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-      border-radius:var(--r-xl); box-shadow:var(--shadow-soft);
-      backdrop-filter: blur(10px);
-      position: sticky; top: 10px; z-index: 3;
+    .app{
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 22px 18px 34px;
     }
-    .brand{ display:flex; align-items:center; gap:10px; min-width:220px; }
+
+    /* Topbar */
+    .topbar{
+      display:flex;
+      gap: 12px;
+      align-items:center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border: 1px solid var(--stroke);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border-radius: var(--r-xl);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 10px;
+      z-index: 3;
+    }
+    .brand{ display:flex; align-items:center; gap: 10px; min-width: 220px; }
     .logoMark{
-      width:38px; height:38px; border-radius:12px;
+      width: 38px; height: 38px; border-radius: 12px;
       background:
         radial-gradient(16px 16px at 30% 30%, rgba(255,255,255,.35), transparent 60%),
         linear-gradient(135deg, rgba(176,75,255,.95), rgba(122,60,255,.55));
-      border:1px solid rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.14);
       box-shadow: 0 10px 20px rgba(176,75,255,.12);
     }
-    .brand h1{ margin:0; font-size:14px; line-height:1.1; letter-spacing:.2px; }
-    .brand p{ margin:2px 0 0; font-size:12px; color:var(--muted); }
-    .actions{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end; }
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:10px 12px; border-radius:999px; border:1px solid var(--stroke);
-      background: rgba(0,0,0,.18);
-      color:var(--muted); font-size:12px; user-select:none;
-    }
-    .dot{ width:8px; height:8px; border-radius:99px; background:var(--good); box-shadow:0 0 0 4px rgba(75,227,139,.12); }
+    .brand h1{ font-size: 14px; line-height: 1.1; margin: 0; letter-spacing: .2px; }
+    .brand p{ margin: 2px 0 0; font-size: 12px; color: var(--muted); }
+    .actions{ display:flex; gap: 10px; align-items:center; flex-wrap: wrap; justify-content: flex-end; }
 
+    .pill{
+      display:inline-flex; align-items:center; gap: 8px;
+      padding: 10px 12px; border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(0,0,0,.18);
+      color: var(--muted); font-size: 12px; user-select: none;
+    }
+    .dot{ width: 8px; height: 8px; border-radius: 99px; background: var(--good); box-shadow: 0 0 0 4px rgba(75,227,139,.12); }
+
+    /* Buttons */
     .btn{
-      border:1px solid rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.06);
-      color:var(--text);
-      padding:10px 12px; border-radius:12px;
-      cursor:pointer; font-weight:700; font-size:13px;
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
       transition: transform .06s ease, background .16s ease, border-color .16s ease, filter .16s ease;
-      white-space:nowrap;
+      white-space: nowrap;
     }
     .btn:hover{ background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.16); }
     .btn:active{ transform: translateY(1px); }
@@ -77,153 +118,210 @@
       box-shadow: 0 10px 22px rgba(176,75,255,.18);
     }
     .btn.primary:hover{ filter: brightness(1.04); }
-    .btn.danger{ border-color: rgba(255,77,109,.26); background: rgba(255,77,109,.08); }
-    .btn.ghost{ background: rgba(0,0,0,.20); border-color: rgba(255,255,255,.10); }
-    .btn.small{ padding:8px 10px; border-radius:11px; font-size:12px; }
+    .btn.danger{
+      border-color: rgba(255,77,109,.26);
+      background: rgba(255,77,109,.08);
+    }
 
-    .grid{ margin-top:16px; display:grid; grid-template-columns: 1fr 1fr; gap:16px; align-items:start; }
-    @media (max-width:980px){ .grid{ grid-template-columns:1fr; } .brand{ min-width:auto; } }
+    /* Layout */
+    .grid{
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: 1.45fr 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+    @media (max-width: 980px){
+      .grid{ grid-template-columns: 1fr; }
+      .brand{ min-width: auto; }
+    }
 
     .card{
-      border:1px solid var(--stroke);
-      border-radius:var(--r-xl);
+      border: 1px solid var(--stroke);
+      border-radius: var(--r-xl);
       background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
       box-shadow: var(--shadow);
       backdrop-filter: blur(10px);
-      overflow:hidden;
+      overflow: hidden;
     }
     .cardHead{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:12px 14px;
-      border-bottom:1px solid var(--stroke-2);
+      display:flex; align-items:center; justify-content: space-between;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--stroke-2);
       background: linear-gradient(180deg, rgba(0,0,0,.12), transparent);
-      gap:10px;
     }
-    .cardHead .title{ display:flex; flex-direction:column; gap:2px; }
-    .cardHead h2{ margin:0; font-size:13px; letter-spacing:.2px; }
-    .cardHead p{ margin:0; font-size:12px; color:var(--muted); }
-    .cardBody{ padding:12px 14px 14px; }
+    .cardHead .title{ display:flex; flex-direction: column; gap: 2px; }
+    .cardHead h2{ margin: 0; font-size: 13px; letter-spacing: .2px; }
+    .cardHead p{ margin: 0; font-size: 12px; color: var(--muted); }
 
-    .compactRow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-    .grow{ flex:1 1 auto; min-width: 220px; }
+    .cardBody{ padding: 14px 16px 16px; }
 
-    .form{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
-    @media (max-width:720px){ .form{ grid-template-columns:1fr; } }
-    .field{ display:flex; flex-direction:column; gap:6px; }
-    .label{ font-size:12px; color:var(--muted); }
-    .input,.select,.textarea{
-      width:100%;
-      min-height:40px;
-      padding:10px 12px;
-      border-radius:12px;
-      border:1px solid var(--stroke);
+    /* Form */
+    .form{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 720px){ .form{ grid-template-columns: 1fr; } }
+    .field{ display:flex; flex-direction: column; gap: 6px; }
+    .label{ font-size: 12px; color: var(--muted); }
+    .input, .select, .textarea{
+      width: 100%;
+      min-height: 40px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--stroke);
       background: rgba(0,0,0,.22);
-      color:var(--text);
-      outline:none;
-      font-size:13px;
+      color: var(--text);
+      outline: none;
+      font-size: 13px;
       transition: border-color .15s ease, box-shadow .15s ease;
       resize: vertical;
     }
-    .input{ height:40px; padding:0 12px; }
-    .input:focus,.select:focus,.textarea:focus{
+    .input{ height: 40px; padding: 0 12px; }
+    .input:focus, .select:focus, .textarea:focus{
       border-color: rgba(176,75,255,.45);
       box-shadow: 0 0 0 4px rgba(176,75,255,.12);
     }
-    .hint{ font-size:11px; color:var(--faint); line-height:1.35; }
-    .row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; align-items:center; justify-content:flex-end; }
+    .hint{ font-size: 11px; color: var(--faint); line-height: 1.35; }
 
-    details{
-      border:1px solid var(--stroke-2);
-      border-radius: 16px;
-      background: rgba(0,0,0,.16);
-      padding: 10px 10px;
-    }
-    summary{
-      cursor:pointer;
-      list-style:none;
-      user-select:none;
-      display:flex; align-items:center; justify-content:space-between;
-      font-weight:800;
-      color: rgba(255,255,255,.88);
-      font-size: 12px;
-    }
-    summary::-webkit-details-marker{ display:none; }
-    .chev{ color: var(--muted); font-weight:900; }
+    .row{ display:flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; align-items: center; justify-content: flex-end; }
 
-    .list{ display:flex; flex-direction:column; gap:10px; }
+    /* Compact list (leagues) */
+    .list{ display:flex; flex-direction: column; gap: 10px; }
     .leagueCard{
-      border:1px solid var(--stroke);
-      border-radius:var(--r-xl);
+      border: 1px solid var(--stroke);
+      border-radius: var(--r-xl);
       background: rgba(0,0,0,.16);
-      overflow:hidden;
+      overflow: hidden;
     }
-    .leagueTop{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px; }
-    .leagueLeft{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .leagueTop{
+      display:flex; align-items:center; justify-content: space-between;
+      gap: 10px;
+      padding: 12px 12px;
+    }
+    .leagueLeft{ display:flex; align-items:center; gap: 10px; min-width: 0; }
     .sqLogo{
-      width:42px; height:42px; border-radius:14px;
-      border:1px solid rgba(255,255,255,.14);
+      width: 42px; height: 42px;
+      border-radius: 14px; /* 角丸四角 */
+      border: 1px solid rgba(255,255,255,.14);
       background:
         radial-gradient(16px 16px at 30% 30%, rgba(255,255,255,.18), transparent 60%),
         linear-gradient(135deg, rgba(176,75,255,.38), rgba(0,0,0,.2));
-      overflow:hidden; flex:0 0 auto;
-      display:flex; align-items:center; justify-content:center;
-      color:rgba(255,255,255,.7); font-weight:900; font-size:12px;
+      overflow: hidden;
+      flex: 0 0 auto;
+      display:flex; align-items:center; justify-content: center;
+      color: rgba(255,255,255,.7);
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: .2px;
     }
-    .sqLogo img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .leagueInfo{ min-width:0; display:flex; flex-direction:column; gap:2px; }
+    .sqLogo img{ width: 100%; height: 100%; object-fit: cover; display:block; }
+    .leagueInfo{ min-width: 0; display:flex; flex-direction: column; gap: 2px; }
     .leagueName{
-      font-size:13px; font-weight:800; letter-spacing:.2px;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-      max-width: 340px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 320px;
     }
-    .leagueMeta{ font-size:12px; color:var(--muted); display:flex; gap:10px; flex-wrap:wrap; }
+    .leagueMeta{
+      font-size: 12px;
+      color: var(--muted);
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .rightBtns{ display:flex; gap: 8px; align-items:center; flex-wrap: wrap; justify-content: flex-end; }
 
     .badge{
-      display:inline-flex; align-items:center; gap:6px;
-      padding:6px 10px; border-radius:999px; border:1px solid var(--stroke);
+      display:inline-flex; align-items:center; gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
       background: rgba(255,255,255,.05);
-      font-size:12px; color:var(--muted);
+      font-size: 12px;
+      color: var(--muted);
     }
-    .badge .bDot{ width:6px; height:6px; border-radius:99px; background:var(--accent); box-shadow:0 0 0 3px rgba(176,75,255,.12); }
+    .badge .bDot{
+      width: 6px; height: 6px; border-radius: 99px;
+      background: var(--accent);
+      box-shadow: 0 0 0 3px rgba(176,75,255,.12);
+    }
 
+    .footer{ margin-top: 14px; color: var(--faint); font-size: 12px; text-align: center; }
+
+    /* Modal */
     .overlay{
-      position:fixed; inset:0;
+      position: fixed;
+      inset: 0;
       background: rgba(0,0,0,.55);
       backdrop-filter: blur(10px);
-      display:none; align-items:center; justify-content:center;
-      z-index:20; padding:18px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+      padding: 18px;
     }
     .overlay.show{ display:flex; }
+
     .modal{
-      width: min(1040px, 100%);
-      border:1px solid var(--stroke);
-      border-radius:20px;
+      width: min(960px, 100%);
+      border: 1px solid var(--stroke);
+      border-radius: 20px;
       background: linear-gradient(180deg, rgba(16, 22, 45, .92), rgba(12, 16, 35, .90));
       box-shadow: var(--shadow);
-      overflow:hidden;
+      overflow: hidden;
     }
     .modalHead{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:14px; gap:10px;
-      border-bottom:1px solid var(--stroke-2);
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      padding: 14px 14px;
+      border-bottom: 1px solid var(--stroke-2);
       background: linear-gradient(180deg, rgba(0,0,0,.12), transparent);
+      gap: 10px;
     }
-    .modalTitle{ display:flex; align-items:center; gap:10px; min-width:0; }
-    .modalTitle .txt{ min-width:0; display:flex; flex-direction:column; gap:2px; }
-    .modalTitle h3{ margin:0; font-size:13px; letter-spacing:.2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .modalTitle p{ margin:0; font-size:12px; color:var(--muted); }
-    .modalBody{ padding:12px 14px 14px; }
+    .modalTitle{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .modalTitle .txt{
+      min-width: 0;
+      display:flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .modalTitle h3{
+      margin: 0;
+      font-size: 13px;
+      letter-spacing: .2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .modalTitle p{
+      margin: 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .modalBody{ padding: 12px 14px 14px; }
 
-    .tabs{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+    .tabs{
+      display:flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
     .tab{
-      padding:9px 10px;
-      border-radius:999px;
-      border:1px solid var(--stroke);
+      padding: 9px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
       background: rgba(0,0,0,.18);
-      color:var(--muted);
-      font-size:12px;
-      cursor:pointer;
-      font-weight:800;
+      color: var(--muted);
+      font-size: 12px;
+      cursor: pointer;
+      font-weight: 700;
     }
     .tab.active{
       color: rgba(255,255,255,.92);
@@ -232,158 +330,145 @@
       box-shadow: 0 0 0 4px rgba(176,75,255,.08);
     }
 
-    .split{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; align-items:start; }
-    @media (max-width:860px){ .split{ grid-template-columns:1fr; } }
+    .split{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+    @media (max-width: 860px){
+      .split{ grid-template-columns: 1fr; }
+    }
 
     .panel{
-      border:1px solid var(--stroke);
-      border-radius:18px;
+      border: 1px solid var(--stroke);
+      border-radius: 18px;
       background: rgba(0,0,0,.16);
-      overflow:hidden;
+      overflow: hidden;
     }
     .panelHead{
-      padding:12px;
-      border-bottom:1px solid var(--stroke-2);
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding: 12px 12px;
+      border-bottom: 1px solid var(--stroke-2);
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
     }
-    .panelHead strong{ font-size:13px; letter-spacing:.2px; }
-    .panelHead span{ font-size:12px; color:var(--muted); }
-    .panelBody{ padding:12px; }
+    .panelHead strong{
+      font-size: 13px;
+      letter-spacing: .2px;
+    }
+    .panelHead span{ font-size: 12px; color: var(--muted); }
 
-    .seasonList{ display:flex; flex-direction:column; gap:10px; }
-    .seasonRow{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      padding:10px 10px;
-      border-radius:16px;
-      border:1px solid var(--stroke-2);
+    .panelBody{ padding: 12px; }
+
+    .teamList{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    @media (max-width: 820px){
+      .teamList{ grid-template-columns: 1fr; }
+    }
+    .teamRow{
+      display:flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 10px;
+      border-radius: 16px;
+      border: 1px solid var(--stroke-2);
       background: rgba(255,255,255,.03);
     }
-    .seasonRow:hover{ border-color: rgba(176,75,255,.22); background: rgba(176,75,255,.06); }
-    .seasonRow .left{ display:flex; flex-direction:column; gap:2px; min-width:0; }
-    .seasonRow .name{ font-weight:800; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .seasonRow .meta{ font-size:11px; color: var(--muted); }
-
-    .teamList{ display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-    @media (max-width: 820px){ .teamList{ grid-template-columns: 1fr; } }
-    .teamCard{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:10px;
-      padding:10px 10px;
-      border-radius:16px;
-      border:1px solid var(--stroke-2);
-      background: rgba(255,255,255,.03);
+    .teamRow:hover{
+      border-color: rgba(176,75,255,.22);
+      background: rgba(176,75,255,.06);
     }
-    .teamCard:hover{ border-color: rgba(176,75,255,.22); background: rgba(176,75,255,.06); }
-    .teamCard.selected{
+    .teamRow.selected{
       border-color: rgba(176,75,255,.38);
       background: rgba(176,75,255,.10);
       box-shadow: 0 0 0 4px rgba(176,75,255,.08);
     }
-    .pick{
+    .teamRow .pick{
       all: unset;
-      cursor:pointer;
-      display:flex; align-items:center; gap:10px;
-      min-width:0; flex: 1 1 auto;
+      cursor: pointer;
+      display:flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      flex: 1 1 auto;
     }
-    .teamTxt{ min-width:0; display:flex; flex-direction:column; gap:2px; }
-    .teamName{ font-size:13px; font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .teamHint{ font-size:11px; color:var(--muted); }
+    .teamName{
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .teamHint{ font-size: 11px; color: var(--muted); }
 
     .xBtn{
-      width:34px; height:34px;
-      border-radius:12px;
-      border:1px solid rgba(255,77,109,.26);
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,77,109,.26);
       background: rgba(255,77,109,.08);
       color: rgba(255,255,255,.88);
-      cursor:pointer; font-weight:900; line-height:1;
-      flex:0 0 auto;
-    }
-
-    .fileBtn{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      padding:10px 12px; border-radius:12px;
-      border:1px solid var(--stroke);
-      background: rgba(0,0,0,.22);
-    }
-    .fileBtn input[type="file"]{ width:100%; color:var(--muted); font-size:12px; }
-
-    .small{ font-size:11px; color:var(--faint); line-height:1.35; }
-    .hide{ display:none !important; }
-    .footer{ margin-top:14px; color:var(--faint); font-size:12px; text-align:center; }
-
-    .seasonView{
-      position: fixed;
-      inset: 0;
-      z-index: 40;
-      display: none;
-      flex-direction: column;
-      background:
-        radial-gradient(1200px 600px at 72% 16%, rgba(176,75,255,.18), transparent 55%),
-        radial-gradient(700px 500px at 26% 92%, rgba(75,227,139,.06), transparent 55%),
-        linear-gradient(180deg, rgba(7,10,18,.98), rgba(11,16,32,.98));
-      backdrop-filter: blur(12px);
-    }
-    .seasonView.show{ display:flex; }
-    .seasonTop{ max-width: 1200px; width: 100%; margin: 0 auto; padding: 16px 18px 10px; }
-    .seasonTopInner{
-      display:flex; align-items:center; justify-content: space-between; gap: 10px;
-      padding: 12px 12px;
-      border-radius: 18px;
-      border:1px solid var(--stroke);
-      background: rgba(0,0,0,.20);
-      box-shadow: var(--shadow-soft);
-    }
-    .seasonTitle{ display:flex; align-items:center; gap:10px; min-width: 0; }
-    .seasonTitle .t{ min-width:0; display:flex; flex-direction: column; gap: 2px; }
-    .seasonTitle .t .l1{
-      font-weight: 900; font-size: 13px;
-      white-space: nowrap; overflow:hidden; text-overflow: ellipsis; max-width: 42vw;
-    }
-    .seasonTitle .t .l2{
-      font-size: 12px; color: var(--muted);
-      white-space: nowrap; overflow:hidden; text-overflow: ellipsis; max-width: 42vw;
-    }
-    .seasonBtns{ display:flex; gap: 8px; align-items:center; flex-wrap: wrap; justify-content: flex-end; max-width: 56vw; }
-    .seasonChip{
-      padding: 8px 10px;
-      border-radius: 999px;
-      border:1px solid var(--stroke);
-      background: rgba(0,0,0,.22);
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 900;
       cursor: pointer;
-      white-space: nowrap;
+      font-weight: 900;
+      line-height: 1;
+      flex: 0 0 auto;
     }
-    .seasonChip.active{
-      color: rgba(255,255,255,.92);
-      border-color: rgba(176,75,255,.34);
-      background: rgba(176,75,255,.16);
-      box-shadow: 0 0 0 4px rgba(176,75,255,.08);
-    }
-    .seasonBody{ max-width: 1200px; width: 100%; margin: 0 auto; padding: 6px 18px 22px; flex: 1 1 auto; overflow: auto; }
+    .xBtn:hover{ filter: brightness(1.05); }
 
     .toast{
-      position:fixed; left:50%; bottom:18px;
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
       transform: translateX(-50%);
       background: rgba(0,0,0,.55);
-      border:1px solid var(--stroke);
-      padding:10px 12px;
-      border-radius:999px;
-      font-size:12px;
-      color:var(--text);
+      border: 1px solid var(--stroke);
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--text);
       box-shadow: var(--shadow-soft);
       backdrop-filter: blur(10px);
-      opacity:0; pointer-events:none;
+      opacity: 0;
+      pointer-events: none;
       transition: opacity .18s ease, transform .18s ease;
-      z-index:50;
+      z-index: 30;
     }
-    .toast.show{ opacity:1; transform: translateX(-50%) translateY(-2px); }
+    .toast.show{ opacity: 1; transform: translateX(-50%) translateY(-2px); }
+
+    /* Small helper */
+    .muted{ color: var(--muted); }
+    .hide{ display:none !important; }
+    .fileBtn{
+      display:flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--stroke);
+      background: rgba(0,0,0,.22);
+    }
+    .fileBtn input[type="file"]{
+      width: 100%;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .small{
+      font-size: 11px;
+      color: var(--faint);
+      line-height: 1.35;
+    }
   </style>
 </head>
 
 <body>
-  <div class="app" id="homeApp">
+  <div class="app">
     <header class="topbar">
       <div class="brand">
         <div class="logoMark" aria-hidden="true"></div>
@@ -392,6 +477,7 @@
           <p>リーグ作成 / 管理 UI</p>
         </div>
       </div>
+
       <div class="actions">
         <div class="pill"><span class="dot" aria-hidden="true"></span> ローカル保存: ON</div>
         <button class="btn" id="btnReset">全消去</button>
@@ -399,71 +485,58 @@
     </header>
 
     <main class="grid">
+      <!-- Create League -->
       <section class="card">
         <div class="cardHead">
           <div class="title">
             <h2>リーグを作成</h2>
-            <p>コンパクト（詳細は開いて設定）</p>
+            <p>追加時は League 1 / League 2 … を自動生成（編集OK）</p>
           </div>
           <button class="btn primary" id="btnCreateLeague">リーグ追加</button>
         </div>
 
         <div class="cardBody">
-          <div class="compactRow">
-            <div class="field grow">
-              <div class="label">リーグ名（初期値）</div>
+          <div class="form">
+            <div class="field">
+              <div class="label">次に作るリーグ名（初期値）</div>
               <input class="input" id="nextLeagueName" />
-              <div class="hint">基本は「固有名詞 + 番号」（例: League 3）。</div>
+              <div class="hint">基本は「固有名詞 + 番号」で運用（例: League 3）。</div>
+            </div>
+
+            <div class="field">
+              <div class="label">リーグ形式（仮）</div>
+              <select class="select" id="format">
+                <option value="round_robin">総当たり</option>
+                <option value="home_away">H/A（2回戦）</option>
+              </select>
+              <div class="hint">※ 今はUI/保存まで。試合生成は次ステップ。</div>
+            </div>
+
+            <div class="field">
+              <div class="label">勝ち点（勝/分/負）</div>
+              <input class="input" id="points" placeholder="3 / 1 / 0" value="3 / 1 / 0" />
+              <div class="hint">※ 現段階は保存のみ。</div>
+            </div>
+
+            <div class="field">
+              <div class="label">チーム初期数（作成時に自動で追加）</div>
+              <input class="input" id="initialTeams" type="number" min="0" max="40" value="12" />
+              <div class="hint">作成したら Team 1 / Team 2 … を自動で入れる。</div>
             </div>
           </div>
 
-          <div style="margin-top:10px;">
-            <details>
-              <summary>詳細設定 <span class="chev">▾</span></summary>
-              <div style="margin-top:10px;">
-                <div class="form">
-                  <div class="field">
-                    <div class="label">リーグ形式（仮）</div>
-                    <select class="select" id="format">
-                      <option value="round_robin">総当たり</option>
-                      <option value="home_away">H/A（2回戦）</option>
-                    </select>
-                    <div class="hint">※ 今はUI/保存まで。試合生成は次ステップ。</div>
-                  </div>
-
-                  <div class="field">
-                    <div class="label">勝ち点（勝/分/負）</div>
-                    <input class="input" id="points" placeholder="3 / 1 / 0" value="3 / 1 / 0" />
-                    <div class="hint">※ 現段階は保存のみ。</div>
-                  </div>
-
-                  <div class="field">
-                    <div class="label">チーム初期数（作成時に自動で追加）</div>
-                    <input class="input" id="initialTeams" type="number" min="0" max="40" value="12" />
-                    <div class="hint">作成したら Team 1 / Team 2 … を自動で入れる。</div>
-                  </div>
-
-                  <div class="field">
-                    <div class="label">初期シーズン名（任意）</div>
-                    <input class="input" id="initialSeasonName" placeholder="例：2025-26 / Season 1 など" />
-                    <div class="hint">空なら Season 1 にします。</div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <button class="btn" id="btnExport">JSONを書き出し</button>
-                </div>
-              </div>
-            </details>
+          <div class="row">
+            <button class="btn" id="btnExport">JSONを書き出し</button>
           </div>
         </div>
       </section>
 
+      <!-- League list -->
       <section class="card">
         <div class="cardHead">
           <div class="title">
             <h2>作成済みリーグ</h2>
-            <p>コンパクト表示 → 管理ボタンで編集</p>
+            <p>コンパクト表示 → 管理ボタンで詳細編集</p>
           </div>
           <div class="badge"><span class="bDot" aria-hidden="true"></span><span id="leagueCount">0 leagues</span></div>
         </div>
@@ -476,6 +549,7 @@
     </main>
   </div>
 
+  <!-- League Manage Modal -->
   <div class="overlay" id="leagueOverlay" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="leagueModalTitle">
       <div class="modalHead">
@@ -483,7 +557,7 @@
           <div class="sqLogo" id="leagueModalLogo" aria-hidden="true">L</div>
           <div class="txt">
             <h3 id="leagueModalTitle">リーグ管理</h3>
-            <p id="leagueModalSub">設定・チーム管理・シーズン</p>
+            <p id="leagueModalSub" class="muted">設定・チーム管理</p>
           </div>
         </div>
         <div style="display:flex; gap:8px; align-items:center;">
@@ -495,10 +569,10 @@
       <div class="modalBody">
         <div class="tabs">
           <button class="tab active" data-tab="league">リーグ設定</button>
-          <button class="tab" data-tab="seasons">シーズン</button>
-          <button class="tab" data-tab="teams">チーム管理</button>
-        </div>
+          <button class="tab" data-tab="teams">チーム一覧</button>
+          </div>
 
+        <!-- League settings -->
         <div id="tab_league">
           <div class="split">
             <div class="panel">
@@ -547,70 +621,44 @@
                 </div>
 
                 <div class="row">
-                  <button class="btn" id="btnToSeasons">シーズンへ</button>
+                  <button class="btn" id="btnToTeams">チーム管理へ</button>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div id="tab_seasons" class="hide">
-          <div class="split">
-            <div class="panel">
-              <div class="panelHead">
-                <strong>シーズン一覧</strong>
-                <span id="seasonCount" class="muted"></span>
-              </div>
-              <div class="panelBody">
-                <div class="field">
-                  <div class="label">次シーズン名（任意）</div>
-                  <input class="input" id="newSeasonName" placeholder="例：2026-27 / Season 2 など" />
-                  <div class="hint">空なら Season + 番号 で作成します。</div>
-                </div>
-                <div class="row" style="justify-content:flex-start;">
-                  <button class="btn primary" id="btnCreateSeason">次シーズン作成</button>
-                </div>
-
-                <div class="seasonList" id="seasonList"></div>
-                <div class="small" style="margin-top:10px;">シーズンを押すと、そのシーズン画面に「全画面で切り替え」ます。</div>
-              </div>
-            </div>
-
-            <div class="panel">
-              <div class="panelHead">
-                <strong>メモ</strong>
-                <span class="muted">（ここは後で拡張）</span>
-              </div>
-              <div class="panelBody">
-                <div class="small">今は「シーズン作成 / 切り替え」の土台だけ入れています。次ステップで、順位表・日程・結果入力をシーズン単位で持たせます。</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
+        <!-- Teams tab -->
         <div id="tab_teams" class="hide">
           <div class="split">
             <div class="panel">
               <div class="panelHead">
                 <strong>登録チーム</strong>
-                <span id="teamCount"></span>
+                <span id="teamCount" class="muted"></span>
               </div>
               <div class="panelBody">
                 <div class="row" style="justify-content:flex-start; margin-top:0; margin-bottom:10px;">
                   <button class="btn primary" id="btnAddTeam">チーム追加</button>
                 </div>
+
                 <div class="teamList" id="teamList"></div>
-                <div class="small" style="margin-top:10px;">チームをタップすると右側に詳細が出ます。</div>
+                <div class="small" style="margin-top:10px;">チームをタップすると右側に情報が表示され、編集して保存できます。</div>
               </div>
             </div>
 
             <div class="panel">
               <div class="panelHead">
-                <strong>チーム詳細</strong>
-                <span id="editingTeamMeta">未選択</span>
+                <strong>チーム情報</strong>
+                <span id="editingTeamMeta" class="muted">未選択</span>
               </div>
-              <div class="panelBody">
-                <div id="teamEditorEmpty" style="border:1px dashed rgba(255,255,255,.14); border-radius:16px; padding:12px; color:rgba(255,255,255,.62); background:rgba(0,0,0,.12);">
+              <div class="panelBody" id="teamEditor">
+                <div id="teamEditorEmpty" style="
+                  border:1px dashed rgba(255,255,255,.14);
+                  border-radius:16px;
+                  padding:12px;
+                  color:rgba(255,255,255,.62);
+                  background:rgba(0,0,0,.12);
+                ">
                   左のチーム一覧からチームを選択してください。
                 </div>
 
@@ -643,57 +691,78 @@
             </div>
           </div>
         </div>
+<div class="panelBody">
+              <div class="row" style="justify-content:flex-start; margin-top:0; margin-bottom:10px;">
+                <button class="btn primary" id="btnAddTeam">チーム追加</button>
+              </div>
 
-      </div>
-    </div>
-  </div>
-
-  <div class="seasonView" id="seasonView" aria-hidden="true">
-    <div class="seasonTop">
-      <div class="seasonTopInner">
-        <div class="seasonTitle">
-          <div class="sqLogo" id="seasonLeagueLogo" aria-hidden="true">L</div>
-          <div class="t">
-            <div class="l1" id="seasonHeaderLeague">League</div>
-            <div class="l2" id="seasonHeaderSeason">Season</div>
+              <div class="teamList" id="teamList"></div>
+              <div class="small" style="margin-top:10px;">チームをタップすると「チーム名 / ロゴ / コメント」を編集できます。</div>
+            </div>
           </div>
         </div>
 
-        <div class="seasonBtns">
-          <button class="btn ghost small" id="btnSeasonHome">ホーム</button>
-          <div id="seasonChips" style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;"></div>
-        </div>
-      </div>
-    </div>
+                      <div class="panelBody">
+                <div class="field">
+                  <div class="label">チーム名</div>
+                  <input class="input" id="teamEditName" />
+                </div>
 
-    <div class="seasonBody">
-      <div class="card">
-        <div class="cardHead">
-          <div class="title">
-            <h2 id="seasonPageTitle">シーズン画面</h2>
-            <p class="muted">ここに順位表 / 日程 / 結果入力を追加していく</p>
+                <div class="field" style="margin-top:10px;">
+                  <div class="label">チームロゴ（写真から選択）</div>
+                  <div class="fileBtn">
+                    <input id="teamLogoFile" type="file" accept="image/*" />
+                  </div>
+                  <div class="small">ロゴ表示は角丸の四角です。</div>
+                </div>
+
+                <div class="row">
+                  <button class="btn" id="btnClearTeamLogo">ロゴ削除</button>
+                  <button class="btn primary" id="btnSaveTeam">保存</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panelHead">
+                <strong>コメント</strong>
+                <span class="muted">任意</span>
+              </div>
+              <div class="panelBody">
+                <div class="field">
+                  <div class="label">コメント</div>
+                  <textarea class="textarea" id="teamEditComment" rows="6" placeholder="例：スタイル、目標、メモなど"></textarea>
+                  <div class="hint">ここは表示や検索に使えるように後で拡張できます。</div>
+                </div>
+
+                <div class="row">
+                  <button class="btn" id="btnBackToTeams">チーム一覧へ戻る</button>
+                  <button class="btn danger" id="btnDeleteTeam">チーム削除</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="cardBody">
-          <div class="small">
-            いまは「シーズン切り替えの枠」だけ作成済み。<br/>
-            次ステップで、このシーズンに紐づく順位表・試合日程・結果を保存します。
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+
+      </div><!-- /modalBody -->
+    </div><!-- /modal -->
+  </div><!-- /overlay -->
 
   <div class="toast" id="toast"></div>
 
 <script>
 (() => {
-  const STORAGE_KEY = "league_builder_v5";
+  const STORAGE_KEY = "league_builder_v2";
+
+  /** state
+   * leagues: [{id,name,format,points,logoDataUrl?,teams:[{id,name,logoDataUrl?,comment?}]}]
+   * nextLeagueNumber
+   */
   let state = load() ?? { leagues: [], nextLeagueNumber: 1 };
 
+  // DOM
   const el = {
     nextLeagueName: document.getElementById("nextLeagueName"),
-    initialSeasonName: document.getElementById("initialSeasonName"),
     format: document.getElementById("format"),
     points: document.getElementById("points"),
     initialTeams: document.getElementById("initialTeams"),
@@ -704,6 +773,7 @@
     leagueCount: document.getElementById("leagueCount"),
     toast: document.getElementById("toast"),
 
+    // Modal
     overlay: document.getElementById("leagueOverlay"),
     btnCloseLeague: document.getElementById("btnCloseLeague"),
     btnDeleteLeague: document.getElementById("btnDeleteLeague"),
@@ -711,61 +781,49 @@
     leagueModalSub: document.getElementById("leagueModalSub"),
     leagueModalLogo: document.getElementById("leagueModalLogo"),
     leagueInfoMeta: document.getElementById("leagueInfoMeta"),
-    tabs: Array.from(document.querySelectorAll(".tab")),
-    tabLeague: document.getElementById("tab_league"),
-    tabSeasons: document.getElementById("tab_seasons"),
-    tabTeams: document.getElementById("tab_teams"),
 
+    tabs: Array.from(document.querySelectorAll(".tab")),
+    tab_league: document.getElementById("tab_league"),
+    tab_teams: document.getElementById("tab_teams"),
+    // League edit
     leagueEditName: document.getElementById("leagueEditName"),
     leagueLogoFile: document.getElementById("leagueLogoFile"),
-    btnClearLeagueLogo: document.getElementById("btnClearLeagueLogo"),
     leagueEditFormat: document.getElementById("leagueEditFormat"),
     leagueEditPoints: document.getElementById("leagueEditPoints"),
     btnSaveLeague: document.getElementById("btnSaveLeague"),
-    btnToSeasons: document.getElementById("btnToSeasons"),
+    btnClearLeagueLogo: document.getElementById("btnClearLeagueLogo"),
+    btnToTeams: document.getElementById("btnToTeams"),
 
-    seasonCount: document.getElementById("seasonCount"),
-    newSeasonName: document.getElementById("newSeasonName"),
-    btnCreateSeason: document.getElementById("btnCreateSeason"),
-    seasonList: document.getElementById("seasonList"),
-
+    // Teams
     teamCount: document.getElementById("teamCount"),
     btnAddTeam: document.getElementById("btnAddTeam"),
     teamList: document.getElementById("teamList"),
 
+    // Team edit
     editingTeamMeta: document.getElementById("editingTeamMeta"),
     teamEditorEmpty: document.getElementById("teamEditorEmpty"),
     teamEditorForm: document.getElementById("teamEditorForm"),
     teamEditName: document.getElementById("teamEditName"),
     teamLogoFile: document.getElementById("teamLogoFile"),
     teamEditComment: document.getElementById("teamEditComment"),
-    btnClearTeamLogo: document.getElementById("btnClearTeamLogo"),
     btnSaveTeam: document.getElementById("btnSaveTeam"),
-    btnDeleteTeam: document.getElementById("btnDeleteTeam"),
-
-    seasonView: document.getElementById("seasonView"),
-    seasonLeagueLogo: document.getElementById("seasonLeagueLogo"),
-    seasonHeaderLeague: document.getElementById("seasonHeaderLeague"),
-    seasonHeaderSeason: document.getElementById("seasonHeaderSeason"),
-    seasonChips: document.getElementById("seasonChips"),
-    btnSeasonHome: document.getElementById("btnSeasonHome"),
-    seasonPageTitle: document.getElementById("seasonPageTitle"),
+    btnClearTeamLogo: document.getElementById("btnClearTeamLogo"),    btnDeleteTeam: document.getElementById("btnDeleteTeam"),
   };
 
+  // Currently managing league/team
   let activeLeagueId = null;
   let activeTeamId = null;
-  let activeSeasonId = null;
 
+  // Init
   refreshNextLeagueName();
-  renderHome();
+  render();
 
+  // ---- Events: main
   el.btnCreateLeague.addEventListener("click", () => {
     const name = (el.nextLeagueName.value || "").trim() || defaultLeagueName();
     const format = el.format.value;
     const points = (el.points.value || "").trim() || "3 / 1 / 0";
     const initialTeams = clampInt(el.initialTeams.value, 0, 40);
-    const seasonNameRaw = (el.initialSeasonName.value || "").trim();
-    const seasonName = seasonNameRaw || "Season 1";
 
     const league = {
       id: uid(),
@@ -773,25 +831,17 @@
       format,
       points,
       logoDataUrl: "",
-      teams: [],
-      seasons: [],
-      activeSeasonId: ""
+      teams: []
     };
-
     for (let i = 0; i < initialTeams; i++){
       league.teams.push({ id: uid(), name: `Team ${i + 1}`, logoDataUrl: "", comment: "" });
     }
 
-    const s = { id: uid(), name: seasonName, createdAt: Date.now() };
-    league.seasons.push(s);
-    league.activeSeasonId = s.id;
-
     state.leagues.unshift(league);
     bumpNextLeagueNumberOnCreate(name);
     persist();
-    renderHome();
+    render();
     refreshNextLeagueName();
-    el.initialSeasonName.value = "";
     toast(`「${name}」を追加しました`);
   });
 
@@ -800,7 +850,7 @@
     if (!ok) return;
     state = { leagues: [], nextLeagueNumber: 1 };
     persist();
-    renderHome();
+    render();
     refreshNextLeagueName();
     toast("全データを削除しました");
   });
@@ -821,17 +871,24 @@
     }
   });
 
+  // ---- Modal: open/close
   el.btnCloseLeague.addEventListener("click", closeLeagueModal);
-  el.overlay.addEventListener("click", (e) => { if (e.target === el.overlay) closeLeagueModal(); });
+  el.overlay.addEventListener("click", (e) => {
+    if (e.target === el.overlay) closeLeagueModal();
+  });
   window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape"){
-      if (el.seasonView.classList.contains("show")) closeSeasonView();
-      else if (el.overlay.classList.contains("show")) closeLeagueModal();
-    }
+    if (e.key === "Escape" && el.overlay.classList.contains("show")) closeLeagueModal();
   });
 
-  el.tabs.forEach(t => t.addEventListener("click", () => setTab(t.getAttribute("data-tab"))));
+  // Tabs
+  el.tabs.forEach(t => {
+    t.addEventListener("click", () => {
+      const key = t.getAttribute("data-tab");
+      setTab(key);
+    });
+  });
 
+  // League edit actions
   el.btnSaveLeague.addEventListener("click", () => {
     const league = getActiveLeague();
     if (!league) return;
@@ -841,7 +898,7 @@
     league.format = el.leagueEditFormat.value;
     league.points = (el.leagueEditPoints.value || "").trim() || "3 / 1 / 0";
     persist();
-    renderHome();
+    render();
     syncModalHeader();
     toast("リーグを保存しました");
   });
@@ -851,7 +908,7 @@
     if (!league) return;
     league.logoDataUrl = "";
     persist();
-    renderHome();
+    render();
     syncModalHeader();
     toast("リーグロゴを削除しました");
   });
@@ -863,13 +920,13 @@
     if (!file) return;
     league.logoDataUrl = await fileToDataUrl(file);
     persist();
-    renderHome();
+    render();
     syncModalHeader();
     toast("リーグロゴを更新しました");
     el.leagueLogoFile.value = "";
   });
 
-  el.btnToSeasons.addEventListener("click", () => setTab("seasons"));
+  el.btnToTeams.addEventListener("click", () => setTab("teams"));
 
   el.btnDeleteLeague.addEventListener("click", () => {
     const league = getActiveLeague();
@@ -878,38 +935,25 @@
     if (!ok) return;
     state.leagues = state.leagues.filter(l => l.id !== league.id);
     persist();
-    renderHome();
+    render();
     closeLeagueModal();
     toast("リーグを削除しました");
   });
 
-  el.btnCreateSeason.addEventListener("click", () => {
-    const league = getActiveLeague();
-    if (!league) return;
-    normalizeLeague(league);
-
-    const raw = (el.newSeasonName.value || "").trim();
-    const name = raw || `Season ${nextSeasonNumber(league)}`;
-    const season = { id: uid(), name, createdAt: Date.now() };
-    league.seasons.push(season);
-    league.activeSeasonId = season.id;
-
-    persist();
-    el.newSeasonName.value = "";
-    renderSeasons();
-    syncModalHeader();
-    toast(`「${name}」を作成しました`);
-  });
-
+  // Teams tab actions
   el.btnAddTeam.addEventListener("click", () => {
     const league = getActiveLeague();
     if (!league) return;
     const num = nextTeamNumber(league);
-    league.teams.push({ id: uid(), name: `Team ${num}`, logoDataUrl: "", comment: "" });
+    const team = { id: uid(), name: `Team ${num}`, logoDataUrl: "", comment: "" };
+    league.teams.push(team);
     persist();
-    renderTeams();
-    syncModalHeader();
+    render();
+    renderTeamsInModal();
+    syncTeamEditorVisibility();
     toast("チームを追加しました");
+  });
+  // Team editor actions
   });
 
   el.btnSaveTeam.addEventListener("click", () => {
@@ -920,8 +964,10 @@
     team.name = name;
     team.comment = (el.teamEditComment.value || "").trim();
     persist();
-    renderHome();
-    renderTeams();
+    render();
+    renderTeamsInModal();
+    syncModalHeader(); // league header logo stays, but counts may update
+    syncTeamEditMeta();
     toast("チームを保存しました");
   });
 
@@ -930,7 +976,10 @@
     if (!team) return;
     team.logoDataUrl = "";
     persist();
-    renderTeams();
+    render();
+    renderTeamsInModal();
+    syncTeamEditorVisibility();
+    syncTeamEditMeta();
     toast("チームロゴを削除しました");
   });
 
@@ -941,8 +990,10 @@
     if (!file) return;
     team.logoDataUrl = await fileToDataUrl(file);
     persist();
-    renderHome();
-    renderTeams();
+    render();
+    renderTeamsInModal();
+    syncTeamEditorVisibility();
+    syncTeamEditMeta();
     toast("チームロゴを更新しました");
     el.teamLogoFile.value = "";
   });
@@ -956,26 +1007,19 @@
     league.teams = league.teams.filter(t => t.id !== team.id);
     activeTeamId = null;
     persist();
-    renderHome();
-    renderTeams();
+    render();
+    renderTeamsInModal();
+    syncTeamEditorVisibility();
     toast("チームを削除しました");
   });
 
-  el.btnSeasonHome.addEventListener("click", () => {
-    closeSeasonView();
-    if (!el.overlay.classList.contains("show") && activeLeagueId) openLeagueModal(activeLeagueId);
-    setTab("seasons");
-  });
-
-  function renderHome(){
+  // ---- Render: main list
+  function render(){
     el.leagueCount.textContent = `${state.leagues.length} leagues`;
     el.leagueList.innerHTML = "";
 
     if (state.leagues.length === 0){
-      el.leagueList.innerHTML = `
-        <div style="border:1px dashed rgba(255,255,255,.14); border-radius:18px; padding:14px 12px; color:rgba(255,255,255,.62); background:rgba(0,0,0,.14);">
-          まだリーグがありません。左の「リーグ追加」から作成できます。
-        </div>`;
+      el.leagueList.innerHTML = emptyState();
       return;
     }
 
@@ -985,8 +1029,6 @@
   }
 
   function renderLeagueCard(league){
-    normalizeLeague(league);
-
     const card = document.createElement("div");
     card.className = "leagueCard";
 
@@ -1000,7 +1042,9 @@
     logo.className = "sqLogo";
     if (league.logoDataUrl){
       const img = document.createElement("img");
-      img.src = league.logoDataUrl; img.alt = "league logo";
+      img.src = league.logoDataUrl;
+      img.alt = "league logo";
+      logo.textContent = "";
       logo.appendChild(img);
     }else{
       logo.textContent = "L";
@@ -1015,8 +1059,10 @@
 
     const meta = document.createElement("div");
     meta.className = "leagueMeta";
-    const sName = getActiveSeasonName(league);
-    meta.innerHTML = `<span>形式: ${formatLabel(league.format)}</span><span>チーム: ${league.teams.length}</span><span>シーズン: ${escapeHtml(sName)}</span>`;
+    meta.innerHTML = `
+      <span>形式: ${formatLabel(league.format)}</span>
+      <span>チーム: ${league.teams.length}</span>
+    `;
 
     info.appendChild(name);
     info.appendChild(meta);
@@ -1025,10 +1071,13 @@
     left.appendChild(info);
 
     const right = document.createElement("div");
+    right.className = "rightBtns";
+
     const manage = document.createElement("button");
     manage.className = "btn primary";
     manage.textContent = "管理";
     manage.addEventListener("click", () => openLeagueModal(league.id));
+
     right.appendChild(manage);
 
     top.appendChild(left);
@@ -1038,15 +1087,29 @@
     return card;
   }
 
+  function emptyState(){
+    return `
+      <div style="
+        border:1px dashed rgba(255,255,255,.14);
+        border-radius:18px;
+        padding:14px 12px;
+        color:rgba(255,255,255,.62);
+        background:rgba(0,0,0,.14);
+      ">
+        まだリーグがありません。左の「リーグ追加」から作成できます。
+      </div>
+    `;
+  }
+
+  // ---- Modal rendering
   function openLeagueModal(leagueId){
     activeLeagueId = leagueId;
     activeTeamId = null;
-    activeSeasonId = null;
 
     const league = getActiveLeague();
     if (!league) return;
-    normalizeLeague(league);
 
+    // Fill league fields
     el.leagueEditName.value = league.name;
     el.leagueEditFormat.value = league.format;
     el.leagueEditPoints.value = league.points;
@@ -1059,90 +1122,47 @@
   }
 
   function closeLeagueModal(){
+    activeLeagueId = null;
+    activeTeamId = null;
     el.overlay.classList.remove("show");
-    el.overlay.setAttribute("aria-hidden","true");
-  }
+    el.overlay.setAttribute("aria-hidden","true");  }
 
   function syncModalHeader(){
     const league = getActiveLeague();
     if (!league) return;
-    normalizeLeague(league);
 
     el.leagueModalTitle.textContent = league.name;
-    el.leagueModalSub.textContent = `形式: ${formatLabel(league.format)} / 勝ち点: ${league.points} / チーム: ${league.teams.length} / シーズン: ${getActiveSeasonName(league)}`;
+    el.leagueModalSub.textContent = `形式: ${formatLabel(league.format)} / 勝ち点: ${league.points} / チーム: ${league.teams.length}`;
     el.leagueInfoMeta.textContent = `${league.teams.length} teams`;
 
+    // logo
     el.leagueModalLogo.innerHTML = "";
+    el.leagueModalLogo.classList.add("sqLogo");
     if (league.logoDataUrl){
       const img = document.createElement("img");
-      img.src = league.logoDataUrl; img.alt = "league logo";
+      img.src = league.logoDataUrl;
+      img.alt = "league logo";
       el.leagueModalLogo.appendChild(img);
     }else{
       el.leagueModalLogo.textContent = "L";
     }
   }
 
-  function setTab(key){
+  function setTab(key, force = false){
+    // active styling
     el.tabs.forEach(t => t.classList.toggle("active", t.getAttribute("data-tab") === key));
-    el.tabLeague.classList.toggle("hide", key !== "league");
-    el.tabSeasons.classList.toggle("hide", key !== "seasons");
-    el.tabTeams.classList.toggle("hide", key !== "teams");
 
-    if (key === "seasons") renderSeasons();
-    if (key === "teams") renderTeams();
+    // show/hide
+    el.tab_league.classList.toggle("hide", key !== "league");
+    el.tab_teams.classList.toggle("hide", key !== "teams");
+
+    if (key === "teams"){
+      renderTeamsInModal();
+      syncTeamEditorVisibility();
+    }
   }
 
-  function renderSeasons(){
-    const league = getActiveLeague();
-    if (!league) return;
-    normalizeLeague(league);
-
-    el.seasonCount.textContent = `${league.seasons.length} seasons`;
-    el.seasonList.innerHTML = "";
-
-    league.seasons.slice().reverse().forEach((s) => {
-      const row = document.createElement("div");
-      row.className = "seasonRow";
-
-      const left = document.createElement("div");
-      left.className = "left";
-
-      const nm = document.createElement("div");
-      nm.className = "name";
-      nm.textContent = s.name;
-
-      const meta = document.createElement("div");
-      meta.className = "meta";
-      meta.textContent = `作成: ${formatDate(s.createdAt)}${league.activeSeasonId === s.id ? " / 現在" : ""}`;
-
-      left.appendChild(nm);
-      left.appendChild(meta);
-
-      const btns = document.createElement("div");
-      btns.style.display = "flex";
-      btns.style.gap = "8px";
-      btns.style.alignItems = "center";
-
-      const open = document.createElement("button");
-      open.className = "btn primary small";
-      open.textContent = "開く";
-      open.addEventListener("click", () => {
-        league.activeSeasonId = s.id;
-        persist();
-        syncModalHeader();
-        openSeasonView(league.id, s.id);
-      });
-
-      btns.appendChild(open);
-
-      row.appendChild(left);
-      row.appendChild(btns);
-
-      el.seasonList.appendChild(row);
-    });
-  }
-
-  function renderTeams(){
+  function renderTeamsInModal(){
     const league = getActiveLeague();
     if (!league) return;
 
@@ -1151,19 +1171,25 @@
 
     if (league.teams.length === 0){
       el.teamList.innerHTML = `
-        <div style="grid-column:1/-1; border:1px dashed rgba(255,255,255,.14); border-radius:16px; padding:12px; color:rgba(255,255,255,.62); background:rgba(0,0,0,.12);">
+        <div style="
+          grid-column: 1 / -1;
+          border:1px dashed rgba(255,255,255,.14);
+          border-radius:16px;
+          padding:12px;
+          color:rgba(255,255,255,.62);
+          background:rgba(0,0,0,.12);
+        ">
           まだチームがありません。「チーム追加」で作成できます。
-        </div>`;
+        </div>
+      `;
       activeTeamId = null;
-      syncTeamEditor();
+      syncTeamEditorVisibility();
       return;
     }
 
-    for (let i = 0; i < league.teams.length; i++){
-      const team = league.teams[i];
-
+    league.teams.forEach((team, idx) => {
       const row = document.createElement("div");
-      row.className = "teamCard";
+      row.className = "teamRow";
       if (activeTeamId === team.id) row.classList.add("selected");
 
       const pick = document.createElement("button");
@@ -1171,9 +1197,9 @@
       pick.type = "button";
       pick.addEventListener("click", () => {
         activeTeamId = team.id;
-        renderTeams();
-        fillTeamEditor();
-        syncTeamEditor();
+        renderTeamsInModal(); // refresh highlight
+        fillTeamEditFields();
+        syncTeamEditorVisibility();
       });
 
       const logo = document.createElement("div");
@@ -1184,14 +1210,18 @@
       logo.innerHTML = "";
       if (team.logoDataUrl){
         const img = document.createElement("img");
-        img.src = team.logoDataUrl; img.alt = "team logo";
+        img.src = team.logoDataUrl;
+        img.alt = "team logo";
         logo.appendChild(img);
       }else{
         logo.textContent = "T";
       }
 
       const txt = document.createElement("div");
-      txt.className = "teamTxt";
+      txt.style.minWidth = "0";
+      txt.style.display = "flex";
+      txt.style.flexDirection = "column";
+      txt.style.gap = "2px";
 
       const nm = document.createElement("div");
       nm.className = "teamName";
@@ -1199,7 +1229,7 @@
 
       const hint = document.createElement("div");
       hint.className = "teamHint";
-      hint.textContent = team.comment ? "コメントあり" : `Team ${i + 1}`;
+      hint.textContent = team.comment ? "コメントあり" : `Team ${idx + 1}`;
 
       txt.appendChild(nm);
       txt.appendChild(hint);
@@ -1218,8 +1248,9 @@
         league.teams = league.teams.filter(t => t.id !== team.id);
         if (activeTeamId === team.id) activeTeamId = null;
         persist();
-        renderHome();
-        renderTeams();
+        render();
+        renderTeamsInModal();
+        syncTeamEditorVisibility();
         toast("チームを削除しました");
       });
 
@@ -1227,24 +1258,36 @@
       row.appendChild(del);
 
       el.teamList.appendChild(row);
-    }
+    });
 
-    if (activeTeamId) fillTeamEditor();
-    syncTeamEditor();
+    if (activeTeamId){
+      fillTeamEditFields();
+    }
+    syncTeamEditorVisibility();
   }
 
-  function fillTeamEditor(){
+  function fillTeamEditFields(){
     const team = getActiveTeam();
     const league = getActiveLeague();
     if (!team || !league) return;
+
     el.teamEditName.value = team.name;
     el.teamEditComment.value = team.comment || "";
+    syncTeamEditMeta();
+  }
+
+  function syncTeamEditMeta(){
+    const team = getActiveTeam();
+    const league = getActiveLeague();
+    if (!team || !league) return;
+
     el.editingTeamMeta.textContent = `所属: ${league.name}`;
   }
 
-  function syncTeamEditor(){
+  function syncTeamEditorVisibility(){
+    const league = getActiveLeague();
     const team = getActiveTeam();
-    if (!team){
+    if (!league || !team){
       el.editingTeamMeta.textContent = "未選択";
       el.teamEditorEmpty.classList.remove("hide");
       el.teamEditorForm.classList.add("hide");
@@ -1254,55 +1297,7 @@
     el.teamEditorForm.classList.remove("hide");
   }
 
-  function openSeasonView(leagueId, seasonId){
-    activeLeagueId = leagueId;
-    activeSeasonId = seasonId;
-
-    const league = getActiveLeague();
-    if (!league) return;
-    normalizeLeague(league);
-
-    const season = league.seasons.find(s => s.id === seasonId) || league.seasons[0];
-    if (!season) return;
-
-    closeLeagueModal();
-
-    el.seasonHeaderLeague.textContent = league.name;
-    el.seasonHeaderSeason.textContent = season.name;
-    el.seasonPageTitle.textContent = season.name;
-
-    el.seasonLeagueLogo.innerHTML = "";
-    if (league.logoDataUrl){
-      const img = document.createElement("img");
-      img.src = league.logoDataUrl;
-      img.alt = "league logo";
-      el.seasonLeagueLogo.appendChild(img);
-    }else{
-      el.seasonLeagueLogo.textContent = "L";
-    }
-
-    el.seasonChips.innerHTML = "";
-    league.seasons.forEach(s => {
-      const chip = document.createElement("button");
-      chip.className = "seasonChip" + (s.id === season.id ? " active" : "");
-      chip.textContent = s.name;
-      chip.addEventListener("click", () => {
-        league.activeSeasonId = s.id;
-        persist();
-        openSeasonView(league.id, s.id);
-      });
-      el.seasonChips.appendChild(chip);
-    });
-
-    el.seasonView.classList.add("show");
-    el.seasonView.setAttribute("aria-hidden","false");
-  }
-
-  function closeSeasonView(){
-    el.seasonView.classList.remove("show");
-    el.seasonView.setAttribute("aria-hidden","true");
-  }
-
+  // ---- Helpers: state
   function getActiveLeague(){
     if (!activeLeagueId) return null;
     return state.leagues.find(l => l.id === activeLeagueId) || null;
@@ -1313,105 +1308,71 @@
     return league.teams.find(t => t.id === activeTeamId) || null;
   }
 
-  function normalizeLeague(league){
-    league.logoDataUrl ??= "";
-    league.teams ??= [];
-    league.seasons ??= [];
-    if (!league.seasons.length){
-      const s = { id: uid(), name: "Season 1", createdAt: Date.now() };
-      league.seasons.push(s);
-      league.activeSeasonId = s.id;
-    }
-    if (!league.activeSeasonId){
-      league.activeSeasonId = league.seasons[league.seasons.length - 1].id;
-    }
+  // ---- Helpers: storage, ids, defaults
+  function persist(){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }
-
-  function getActiveSeasonName(league){
-    normalizeLeague(league);
-    const s = league.seasons.find(x => x.id === league.activeSeasonId) || league.seasons[0];
-    return s ? s.name : "Season";
-  }
-
-  function nextSeasonNumber(league){
-    let max = 0;
-    for (const s of league.seasons){
-      const m = /^Season\s+(\d+)$/i.exec((s.name || "").trim());
-      if (m){
-        const n = parseInt(m[1], 10);
-        if (Number.isFinite(n)) max = Math.max(max, n);
-      }
-    }
-    return max + 1;
-  }
-
-  function persist(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 
   function load(){
     try{
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw){
-        const parsed = JSON.parse(raw);
-        if (parsed && Array.isArray(parsed.leagues)){
+      // migrate from v1 if exists
+      const rawV2 = localStorage.getItem(STORAGE_KEY);
+      if (rawV2){
+        const parsed = JSON.parse(rawV2);
+        if (parsed && typeof parsed === "object" && Array.isArray(parsed.leagues)){
           if (typeof parsed.nextLeagueNumber !== "number") parsed.nextLeagueNumber = 1;
+          // ensure fields
           parsed.leagues.forEach(l => {
             l.logoDataUrl ??= "";
             l.teams ??= [];
-            l.teams.forEach(t => { t.logoDataUrl ??= ""; t.comment ??= ""; });
-            l.seasons ??= [];
-            l.activeSeasonId ??= "";
+            l.teams.forEach(t => {
+              t.logoDataUrl ??= "";
+              t.comment ??= "";
+            });
           });
           return parsed;
         }
       }
-      const legacyKeys = ["league_builder_v4","league_builder_v3","league_builder_v2","league_builder_v1"];
-      for (const k of legacyKeys){
-        const r = localStorage.getItem(k);
-        if (!r) continue;
-        const p = JSON.parse(r);
-        if (!p || !Array.isArray(p.leagues)) continue;
-        const migrated = {
-          nextLeagueNumber: typeof p.nextLeagueNumber === "number" ? p.nextLeagueNumber : 1,
-          leagues: p.leagues.map(l => {
-            const league = {
-              id: l.id || uid(),
-              name: l.name || "League",
-              format: l.format || "round_robin",
-              points: l.points || "3 / 1 / 0",
-              logoDataUrl: l.logoDataUrl || "",
-              teams: (l.teams || []).map(t => ({
-                id: t.id || uid(),
-                name: t.name || "Team",
-                logoDataUrl: t.logoDataUrl || "",
-                comment: t.comment || ""
-              })),
-              seasons: [],
-              activeSeasonId: ""
-            };
-            const s = { id: uid(), name: "Season 1", createdAt: Date.now() };
-            league.seasons = [s];
-            league.activeSeasonId = s.id;
-            return league;
-          })
-        };
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
-        return migrated;
-      }
-      return null;
+      // v1 -> v2
+      const rawV1 = localStorage.getItem("league_builder_v1");
+      if (!rawV1) return null;
+      const p1 = JSON.parse(rawV1);
+      if (!p1 || !Array.isArray(p1.leagues)) return null;
+      const migrated = {
+        nextLeagueNumber: typeof p1.nextLeagueNumber === "number" ? p1.nextLeagueNumber : 1,
+        leagues: p1.leagues.map(l => ({
+          id: l.id || uid(),
+          name: l.name || "League",
+          format: l.format || "round_robin",
+          points: l.points || "3 / 1 / 0",
+          logoDataUrl: "",
+          teams: (l.teams || []).map(t => ({
+            id: t.id || uid(),
+            name: t.name || "Team",
+            logoDataUrl: "",
+            comment: ""
+          }))
+        }))
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
+      return migrated;
     }catch{
       return null;
     }
   }
 
-  function uid(){ return Math.random().toString(16).slice(2) + Date.now().toString(16); }
-  function clampInt(v, min, max){
-    const n = parseInt(v, 10);
-    if (!Number.isFinite(n)) return min;
-    return Math.max(min, Math.min(max, n));
+  function uid(){
+    return Math.random().toString(16).slice(2) + Date.now().toString(16);
   }
 
-  function defaultLeagueName(){ return `League ${state.nextLeagueNumber}`; }
-  function refreshNextLeagueName(){ el.nextLeagueName.value = defaultLeagueName(); }
+  function defaultLeagueName(){
+    return `League ${state.nextLeagueNumber}`;
+  }
+
+  function refreshNextLeagueName(){
+    el.nextLeagueName.value = defaultLeagueName();
+  }
+
   function bumpNextLeagueNumberOnCreate(name){
     const m = /^League\s+(\d+)$/i.exec(name.trim());
     if (!m) { state.nextLeagueNumber += 1; return; }
@@ -1419,6 +1380,7 @@
     if (Number.isFinite(n) && n >= state.nextLeagueNumber) state.nextLeagueNumber = n + 1;
     else state.nextLeagueNumber += 1;
   }
+
   function nextTeamNumber(league){
     let max = 0;
     for (const t of league.teams){
@@ -1430,9 +1392,20 @@
     }
     return max + 1;
   }
-  function formatLabel(v){ return v === "home_away" ? "H/A" : "総当たり"; }
+
+  function clampInt(v, min, max){
+    const n = parseInt(v, 10);
+    if (!Number.isFinite(n)) return min;
+    return Math.max(min, Math.min(max, n));
+  }
+
+  function formatLabel(v){
+    if (v === "home_away") return "H/A";
+    return "総当たり";
+  }
 
   async function fileToDataUrl(file){
+    // Note: DataURL size can be large. Later we can add compression if needed.
     return await new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => resolve(String(reader.result || ""));
@@ -1441,21 +1414,7 @@
     });
   }
 
-  function formatDate(ts){
-    try{
-      const d = new Date(ts);
-      return `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,"0")}/${String(d.getDate()).padStart(2,"0")}`;
-    }catch{
-      return "-";
-    }
-  }
-
-  function escapeHtml(str){
-    return String(str || "").replace(/[&<>"']/g, (c) => ({
-      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-    }[c]));
-  }
-
+  // Toast
   function toast(msg){
     el.toast.textContent = msg;
     el.toast.classList.add("show");
