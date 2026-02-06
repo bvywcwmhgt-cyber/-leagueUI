@@ -182,6 +182,21 @@
               <div class="subMeta">リーグに登録済みのチームから選択</div>
             </div>
             <div class="scrollBox teamPick" id="divisionTeamPick"></div>
+
+            <div class="divider"></div>
+
+            <div class="subHead thin">
+              <div class="subTitle">順位カラー（凡例）</div>
+              <div class="subMeta">順位表の左側に表示する細いライン</div>
+            </div>
+            <div class="helpText">順位範囲ごとに色と名前を設定できます（例: 1〜1=優勝 / 8〜8=入れ替え戦）。</div>
+            <div class="row" style="align-items:flex-end;">
+              <div class="field" style="min-width:180px;">
+                <label>&nbsp;</label>
+                <button type="button" class="btnGhost" id="btnAddRankBand">凡例を追加</button>
+              </div>
+            </div>
+            <div id="rankBandList" class="rankBandList"></div>
           </div>
 
           <div class="divNav">
@@ -234,7 +249,36 @@
           </div>
 
           <div class="divTab" id="tabStandings" style="display:none;">
-            <div class="emptyNote">順位表は次で実装します</div>
+            <div class="standingsWrap">
+              <div class="standingsHeader">
+                <div>
+                  <div class="sectionTitle">リーグ順位表</div>
+                  <div class="sub">試合結果から自動計算（勝ち点→得失点差→得点）</div>
+                </div>
+                <button class="btn" id="btnSaveRankSnapshot" type="button">現在順位を保存</button>
+              </div>
+
+              <table class="standingsTable">
+                <thead>
+                  <tr>
+                    <th class="col-rank">順位</th>
+                    <th class="col-team">チーム</th>
+                    <th class="col-num">試合</th>
+                    <th class="col-num">勝</th>
+                    <th class="col-num">分</th>
+                    <th class="col-num">負</th>
+                    <th class="col-num">得点</th>
+                    <th class="col-num">失点</th>
+                    <th class="col-num">差</th>
+                    <th class="col-num">勝ち点</th>
+                    <th class="col-form">調子</th>
+                  </tr>
+                </thead>
+                <tbody id="standingsTbody"></tbody>
+              </table>
+
+              <div class="legendRow" id="standingsLegend"></div>
+            </div>
           </div>
 
           <div class="divTab" id="tabTeams" style="display:none;">

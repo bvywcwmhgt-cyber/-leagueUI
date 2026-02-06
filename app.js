@@ -18,7 +18,16 @@ function save(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
 function defaultState(){
   const mkTeam = (n)=>({ id: uid(), name:`Team${n}`, logoDataUrl:"", comment:"" });
   const teams = [1,2,3,4].map(mkTeam);
-  const div = { id: uid(), name:"Division1", logoDataUrl:"", memberTeamIds:[], schedule:{ rounds:[], currentRound:0 }, freeMatches:[] };
+  const div = {
+    id: uid(),
+    name:"Division1",
+    logoDataUrl:"",
+    memberTeamIds:[],
+    schedule:{ rounds:[], currentRound:0 },
+    freeMatches:[],
+    rankBands: [],
+    prevRanks: {}
+  };
   const season = { id: uid(), name:"Season 1", divisionSeq:2, divisions:[div] };
   const league = { id: uid(), name:"League1", logoDataUrl:"", teamSeq:5, seasonSeq:2, teams, seasons:[season] };
   return { leagues:[league], selectedLeagueId: league.id, selectedSeasonId: season.id, selectedDivisionId: div.id, ui:{ view:"home", divEditOpen:false, seasonDropdownOpen:false, divTab:"schedule" } };
@@ -67,6 +76,8 @@ const el = {
   btnSaveDivision: document.getElementById("btnSaveDivision"),
   btnDeleteDivision: document.getElementById("btnDeleteDivision"),
   divisionTeamPick: document.getElementById("divisionTeamPick"),
+  rankBandList: document.getElementById("rankBandList"),
+  btnAddRankBand: document.getElementById("btnAddRankBand"),
   tabSchedule: document.getElementById("tabSchedule"),
   tabStandings: document.getElementById("tabStandings"),
   tabTeams: document.getElementById("tabTeams"),
@@ -80,6 +91,10 @@ const el = {
   freeAway: document.getElementById("freeAway"),
   btnAddFree: document.getElementById("btnAddFree"),
   freeList: document.getElementById("freeList"),
+
+  standingsTbody: document.getElementById("standingsTbody"),
+  standingsLegend: document.getElementById("standingsLegend"),
+  btnSaveStandingsSnapshot: document.getElementById("btnSaveStandingsSnapshot"),
 };
 
 const getLeague = ()=> state.leagues.find(l=>l.id===state.selectedLeagueId) || null;
@@ -239,6 +254,230 @@ function makeRoundRobin(teamIds, legs=1){
   }
   return out;
 }
+
+// ---------------- Rank Bands (legend) ----------------
+function renderRankBands(div){
+  if (!el.rankBandList || !el.btnAddRankBand) return;
+  const list = el.rankBandList;
+  list.innerHTML = "";
+
+  (div.rankBands || []).forEach((b, idx) => {
+    const row = document.createElement("div");
+    row.className = "bandRow";
+    row.innerHTML = `
+      <input class="bandName" placeholder="名称" value="${escapeHtml(b.name||"")}">
+      <input class="bandFrom" type="number" min="1" value="${Number(b.from||1)}">
+      <span class="bandSep">〜</span>
+      <input class="bandTo" type="number" min="1" value="${Number(b.to||1)}">
+      <input class="bandColor" type="color" value="${b.color||"#22c55e"}">
+      <button class="chip danger" type="button">削除</button>
+    `;
+    const [inpName, inpFrom, inpTo, inpColor, btnDel] = [
+      row.querySelector(".bandName"),
+      row.querySelector(".bandFrom"),
+      row.querySelector(".bandTo"),
+      row.querySelector(".bandColor"),
+      row.querySelector("button")
+    ];
+    const sync = () => {
+      b.name = inpName.value.trim();
+      b.from = clampInt(inpFrom.value, 1, 999);
+      b.to = clampInt(inpTo.value, 1, 999);
+      if (b.to < b.from) [b.from, b.to] = [b.to, b.from];
+      inpFrom.value = b.from;
+      inpTo.value = b.to;
+      b.color = inpColor.value;
+      saveState();
+    };
+    inpName.oninput = sync;
+    inpFrom.oninput = sync;
+    inpTo.oninput = sync;
+    inpColor.oninput = sync;
+    btnDel.onclick = () => {
+      div.rankBands.splice(idx, 1);
+      saveState();
+      render();
+    };
+    list.appendChild(row);
+  });
+
+  el.btnAddRankBand.onclick = () => {
+    div.rankBands.push({ name:"", from:1, to:1, color:"#22c55e" });
+    saveState();
+    render();
+  };
+}
+
+function clampInt(v, min, max){
+  const n = Number.parseInt(String(v), 10);
+  if (Number.isNaN(n)) return min;
+  return Math.max(min, Math.min(max, n));
+}
+
+function getBandColor(div, rank){
+  const bands = Array.isArray(div.rankBands) ? div.rankBands : [];
+  for (const b of bands){
+    const from = Number(b.from||0), to = Number(b.to||0);
+    if (rank >= Math.min(from,to) && rank <= Math.max(from,to)) return b.color || "#8b5cf6";
+  }
+  return "rgba(255,255,255,0.12)";
+}
+
+// ---------------- Standings (順位表) ----------------
+function computeStandings(league, div){
+  const teamIds = (div.memberTeamIds || []).slice();
+  const byId = new Map(league.teams.map(t=>[t.id, t]));
+  const stats = new Map();
+  teamIds.forEach(id=>{
+    stats.set(id, {
+      teamId:id,
+      p:0,w:0,d:0,l:0,gf:0,ga:0,gd:0,pts:0,
+      form:[]
+    });
+  });
+
+  const rounds = (div.schedule && Array.isArray(div.schedule.rounds)) ? div.schedule.rounds : [];
+  const addForm = (tid, res) => {
+    const s = stats.get(tid);
+    if (!s) return;
+    s.form.push(res);
+  };
+
+  for (let r=0;r<rounds.length;r++){
+    const matches = rounds[r] || [];
+    for (let m=0;m<matches.length;m++){
+      const match = matches[m];
+      const hs = Number(match.homeScore);
+      const as = Number(match.awayScore);
+      if (!Number.isFinite(hs) || !Number.isFinite(as)) continue;
+      const home = stats.get(match.homeId);
+      const away = stats.get(match.awayId);
+      if (!home || !away) continue;
+      home.p++; away.p++;
+      home.gf += hs; home.ga += as;
+      away.gf += as; away.ga += hs;
+      if (hs > as){
+        home.w++; away.l++;
+        home.pts += 3;
+        addForm(match.homeId, "W");
+        addForm(match.awayId, "L");
+      } else if (hs < as){
+        away.w++; home.l++;
+        away.pts += 3;
+        addForm(match.homeId, "L");
+        addForm(match.awayId, "W");
+      } else {
+        home.d++; away.d++;
+        home.pts += 1; away.pts += 1;
+        addForm(match.homeId, "D");
+        addForm(match.awayId, "D");
+      }
+    }
+  }
+  // finalize
+  const rows = Array.from(stats.values()).map(s=>{
+    s.gd = s.gf - s.ga;
+    s.form = s.form.slice(-5); // last 5
+    return s;
+  });
+  rows.sort((a,b)=>{
+    if (b.pts !== a.pts) return b.pts - a.pts;
+    if (b.gd !== a.gd) return b.gd - a.gd;
+    if (b.gf !== a.gf) return b.gf - a.gf;
+    const an = (byId.get(a.teamId)?.name || "");
+    const bn = (byId.get(b.teamId)?.name || "");
+    return an.localeCompare(bn, 'ja');
+  });
+  return { rows, byId };
+}
+
+function renderStandings(league, div){
+  if (!el.tabStandings || el.tabStandings.style.display === "none") return;
+  if (!el.standingsTbody || !el.standingsLegend) return;
+  const { rows, byId } = computeStandings(league, div);
+
+  // ensure prevRanks map
+  if (!div.prevRanks || typeof div.prevRanks !== "object") div.prevRanks = {};
+
+  el.standingsTbody.innerHTML = "";
+  rows.forEach((s, idx) => {
+    const rank = idx + 1;
+    const prev = Number(div.prevRanks[s.teamId]);
+    const delta = Number.isFinite(prev) ? (prev - rank) : 0;
+    const move = Number.isFinite(prev) ? (delta === 0 ? "same" : (delta > 0 ? "up" : "down")) : "same";
+
+    const t = byId.get(s.teamId);
+    const tr = document.createElement("tr");
+    tr.className = "standingRow";
+    tr.innerHTML = `
+      <td class="pos">
+        <div class="posWrap">
+          <span class="posBar" style="background:${getBandColor(div, rank)}"></span>
+          <span class="posNum">${rank}</span>
+          <span class="move ${move}">${move === "up" ? "▲" : move === "down" ? "▼" : "―"}</span>
+        </div>
+      </td>
+      <td class="team">
+        <div class="teamCell">
+          <span class="miniLogo">${(t?.logoDataUrl) ? `<img alt="" src="${t.logoDataUrl}">` : `<span class="miniLogoText">${escapeHtml((t?.name||"T").slice(0,1))}</span>`}</span>
+          <span class="teamNameBox">${escapeHtml(t?.name||"")}</span>
+        </div>
+      </td>
+      <td class="num">${s.p}</td>
+      <td class="num">${s.w}</td>
+      <td class="num">${s.d}</td>
+      <td class="num">${s.l}</td>
+      <td class="num">${s.gf}</td>
+      <td class="num">${s.ga}</td>
+      <td class="num">${s.gd}</td>
+      <td class="num pts">${s.pts}</td>
+      <td class="form">
+        <div class="formDots">
+          ${renderFormDots(s.form)}
+        </div>
+      </td>
+    `;
+    el.standingsTbody.appendChild(tr);
+  });
+
+  // legend
+  el.standingsLegend.innerHTML = "";
+  const bands = Array.isArray(div.rankBands) ? div.rankBands : [];
+  if (bands.length){
+    bands.forEach(b=>{
+      const item = document.createElement("div");
+      item.className = "legendItem";
+      const from = Number(b.from||0), to = Number(b.to||0);
+      item.innerHTML = `<span class="legendSw" style="background:${b.color||"#22c55e"}"></span><span class="legendText">${escapeHtml(b.name||"")}${b.name?" ":""}(${Math.min(from,to)}〜${Math.max(from,to)})</span>`;
+      el.standingsLegend.appendChild(item);
+    });
+  }
+
+  // snapshot button
+  if (el.btnSaveStandingsSnapshot){
+    el.btnSaveStandingsSnapshot.onclick = () => {
+      const map = {};
+      rows.forEach((s, idx)=>{ map[s.teamId] = idx+1; });
+      div.prevRanks = map;
+      saveState();
+      render();
+    };
+  }
+}
+
+function renderFormDots(formArr){
+  const arr = Array.isArray(formArr) ? formArr : [];
+  const out = [];
+  for (let i=0;i<5;i++){
+    const r = arr[i];
+    let cls = "empty";
+    if (r === "W") cls = "win";
+    else if (r === "D") cls = "draw";
+    else if (r === "L") cls = "loss";
+    out.push(`<span class="dot ${cls}"></span>`);
+  }
+  return out.join("");
+}
 el.btnGenSchedule.onclick = ()=>{
   const league = getLeague(); const season = getSeason(league); const div = getDivision(season);
   if(!div) return;
@@ -390,6 +629,11 @@ function render(){
       el.divisionTeamPick.appendChild(wrap);
     });
 
+    // rank bands (legend)
+    if (!Array.isArray(div.rankBands)) div.rankBands = [];
+    if (!div.prevRanks || typeof div.prevRanks !== "object") div.prevRanks = {};
+    renderRankBands(div);
+
     // tabs
     document.querySelectorAll(".tabBtn").forEach(b=>b.classList.toggle("active", b.getAttribute("data-tab")===state.ui.divTab));
     el.tabSchedule.style.display = (state.ui.divTab==="schedule") ? "" : "none";
@@ -400,6 +644,9 @@ function render(){
     renderSchedule(league, div);
     renderFreeSelectors(league);
     renderFreeList(league, div);
+
+    // standings render (tabStandings 内)
+    renderStandings(league, div);
   }
 }
 
