@@ -795,42 +795,6 @@
       font-size: 12px;
     }
 
-  
-    /* v22: fixed-size team boxes + left aligned board */
-    .matchBoard{
-      align-items: flex-start;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      padding-bottom: 6px;
-    }
-    .matchBoard::-webkit-scrollbar{ height: 6px; }
-    .matchBoard::-webkit-scrollbar-thumb{ background: rgba(255,255,255,.10); border-radius: 999px; }
-
-    .mRow{
-      width: fit-content;
-      max-width: 100%;
-    }
-
-    /* Fixed pixel boxes (same size) */
-    .mGrid{
-      grid-template-columns: 320px 160px 320px;
-      justify-content: start;   /* left aligned */
-      width: fit-content;       /* don't stretch to full */
-      max-width: 100%;
-    }
-    .mTeam{
-      width: 320px;             /* same width for both */
-      height: 64px;             /* same height */
-    }
-    .mScore{
-      width: 160px;
-      height: 64px;
-    }
-
-    /* Make the inside layout stable */
-    .mTeamInner{ width: 100%; }
-    .mNameWrap{ min-width: 0; }
-
   </style>
 </head>
 
