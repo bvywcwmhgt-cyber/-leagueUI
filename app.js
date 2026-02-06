@@ -15,6 +15,9 @@ const readFileAsDataUrl = (file) => new Promise((resolve, reject)=>{
 function load(){ try{ const raw = localStorage.getItem(LS_KEY); return raw ? JSON.parse(raw) : null; }catch{ return null; } }
 function save(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
 
+// Backward-compat: older merge variants referenced saveState().
+function saveState(){ save(); }
+
 function defaultState(){
   const mkTeam = (n)=>({ id: uid(), name:`Team${n}`, logoDataUrl:"", comment:"" });
   const teams = [1,2,3,4].map(mkTeam);

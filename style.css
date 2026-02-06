@@ -84,6 +84,15 @@ body{
   color: rgba(255,255,255,.78);
   cursor:pointer;
 }
+
+/* legacy alias (some buttons still use class="chip") */
+.chip{
+  padding:10px 14px; border-radius: 16px;
+  background: rgba(255,255,255,.04);
+  border:1px solid var(--stroke);
+  color: rgba(255,255,255,.78);
+  cursor:pointer;
+}
 .wrap{
   width:min(1200px, calc(100% - 32px));
   margin:18px auto 40px;
@@ -221,7 +230,14 @@ body{
 .divBtn.active{ border-color: rgba(176,123,255,.35); background: rgba(139,70,255,.18); }
 .rightRow{ display:flex; gap:10px; align-items:center; }
 .collapse{ margin-top:12px; }
-.teamPick{ display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:10px; }
+.teamPick{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap:10px;
+  max-height: 320px;
+  overflow: auto;
+  padding-right: 6px;
+}
 .pickItem{
   border:1px solid rgba(255,255,255,.08);
   border-radius: 14px; background: rgba(255,255,255,.03);
