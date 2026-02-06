@@ -179,12 +179,18 @@ el.btnAddDivision.onclick = ()=>{
 };
 el.btnToggleDivEdit.onclick = ()=>{ state.ui.divEditOpen = !state.ui.divEditOpen; save(); render(); };
 el.divisionLogoPreview.onclick = ()=> el.divisionLogoFile.click();
-el.btnSaveDivision.onclick = async ()=>{
+el.btnSaveDivision.onclick = async (e)=>{
+  try { e?.preventDefault?.(); e?.stopPropagation?.(); } catch(_) {}
   const league = getLeague(); const season = getSeason(league); const div = getDivision(season); if(!div) return;
   div.name = (el.divisionName.value||"").trim() || div.name;
   const file = el.divisionLogoFile.files?.[0];
   if (file){ div.logoDataUrl = await readFileAsDataUrl(file); el.divisionLogoFile.value=""; }
-  save(); render();
+  save();
+  // 「保存」が効いたことが分かるように一瞬表示を変える
+  const oldText = el.btnSaveDivision.textContent;
+  el.btnSaveDivision.textContent = "保存✓";
+  setTimeout(()=>{ el.btnSaveDivision.textContent = oldText; }, 700);
+  render();
 };
 el.btnDeleteDivision.onclick = ()=>{
   const league = getLeague(); const season = getSeason(league); if(!season) return;
