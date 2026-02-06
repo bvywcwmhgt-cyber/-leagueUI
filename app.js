@@ -81,11 +81,13 @@ const el = {
   divisionTeamPick: document.getElementById("divisionTeamPick"),
   rankBandList: document.getElementById("rankBandList"),
   btnAddRankBand: document.getElementById("btnAddRankBand"),
-  tabSchedule: document.getElementById("tabSchedule"),
-  tabStandings: document.getElementById("tabStandings"),
-  tabTeams: document.getElementById("tabTeams"),
+  // サブタブの中身(パネル)
+  divTabSchedule: document.getElementById("divTabSchedule"),
+  divTabStandings: document.getElementById("divTabStandings"),
+  divTabTeams: document.getElementById("divTabTeams"),
   btnGenSchedule: document.getElementById("btnGenSchedule"),
-  selRounds: document.getElementById("selRounds"),
+  // HTML側のidは "selRound"（単数）
+  selRound: document.getElementById("selRound"),
   btnResetSchedule: document.getElementById("btnResetSchedule"),
   matchdayButtons: document.getElementById("matchdayButtons"),
   matchList: document.getElementById("matchList"),
@@ -104,10 +106,18 @@ const el = {
 // NOTE: 以前の版でクリック処理が抜けていて、
 // 「日程/結果」「順位表」「チーム一覧」の切替が効かない → 順位表が表示されない原因になっていました。
 function bindSubTabs(){
-  if (!el.tabSchedule || !el.tabStandings || !el.tabTeams) return;
-  el.tabSchedule.onclick = ()=>{ state.ui.divTab = "schedule"; save(); render(); };
-  el.tabStandings.onclick = ()=>{ state.ui.divTab = "standings"; save(); render(); };
-  el.tabTeams.onclick = ()=>{ state.ui.divTab = "teams"; save(); render(); };
+  // タブボタンは data-tab 属性で管理 (HTMLにidはない)
+  const btns = Array.from(document.querySelectorAll(".tabbar .tabBtn"));
+  if (!btns.length) return;
+  btns.forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const tab = btn.getAttribute("data-tab");
+      if (!tab) return;
+      state.ui.divTab = tab;
+      save();
+      render();
+    });
+  });
 }
 
 // bind once
@@ -408,7 +418,7 @@ function computeStandings(league, div){
 }
 
 function renderStandings(league, div){
-  if (!el.tabStandings || el.tabStandings.style.display === "none") return;
+  if (!el.divTabStandings || el.divTabStandings.style.display === "none") return;
   if (!el.standingsTbody || !el.standingsLegend) return;
   const { rows, byId } = computeStandings(league, div);
 
@@ -497,7 +507,8 @@ function renderFormDots(formArr){
 el.btnGenSchedule.onclick = ()=>{
   const league = getLeague(); const season = getSeason(league); const div = getDivision(season);
   if(!div) return;
-  const legs = Number(el.selRounds.value||"1");
+  // HTML側の<select>は id="selRound"（単数）
+  const legs = Number((el.selRound?.value)||"1");
   div.schedule.rounds = makeRoundRobin(div.memberTeamIds.slice(), legs);
   div.schedule.currentRound = 0;
   save(); render();
@@ -652,9 +663,9 @@ function render(){
 
     // tabs
     document.querySelectorAll(".tabBtn").forEach(b=>b.classList.toggle("active", b.getAttribute("data-tab")===state.ui.divTab));
-    el.tabSchedule.style.display = (state.ui.divTab==="schedule") ? "" : "none";
-    el.tabStandings.style.display = (state.ui.divTab==="standings") ? "" : "none";
-    el.tabTeams.style.display = (state.ui.divTab==="teams") ? "" : "none";
+    if (el.divTabSchedule) el.divTabSchedule.style.display = (state.ui.divTab==="schedule") ? "" : "none";
+    if (el.divTabStandings) el.divTabStandings.style.display = (state.ui.divTab==="standings") ? "" : "none";
+    if (el.divTabTeams) el.divTabTeams.style.display = (state.ui.divTab==="teams") ? "" : "none";
 
     // schedule render
     renderSchedule(league, div);
