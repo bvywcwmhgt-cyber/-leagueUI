@@ -82,12 +82,12 @@ const el = {
   rankBandList: document.getElementById("rankBandList"),
   btnAddRankBand: document.getElementById("btnAddRankBand"),
   // サブタブの中身(パネル)
-  divTabSchedule: document.getElementById("divTabSchedule"),
-  divTabStandings: document.getElementById("divTabStandings"),
-  divTabTeams: document.getElementById("divTabTeams"),
+  divTabSchedule: document.getElementById("tabSchedule"),
+  divTabStandings: document.getElementById("tabStandings"),
+  divTabTeams: document.getElementById("tabTeams"),
   btnGenSchedule: document.getElementById("btnGenSchedule"),
-  // HTML側のidは "selRound"（単数）
-  selRound: document.getElementById("selRound"),
+  // HTML側のidは "selRounds"（単数）
+  selRound: document.getElementById("selRounds"),
   btnResetSchedule: document.getElementById("btnResetSchedule"),
   matchdayButtons: document.getElementById("matchdayButtons"),
   matchList: document.getElementById("matchList"),
@@ -99,7 +99,7 @@ const el = {
 
   standingsTbody: document.getElementById("standingsTbody"),
   standingsLegend: document.getElementById("standingsLegend"),
-  btnSaveStandingsSnapshot: document.getElementById("btnSaveStandingsSnapshot"),
+  btnSaveStandingsSnapshot: document.getElementById("btnSaveRankSnapshot"),
 };
 
 // ---- Sub tab handlers (schedule / standings / teams)
@@ -507,7 +507,7 @@ function renderFormDots(formArr){
 el.btnGenSchedule.onclick = ()=>{
   const league = getLeague(); const season = getSeason(league); const div = getDivision(season);
   if(!div) return;
-  // HTML側の<select>は id="selRound"（単数）
+  // HTML側の<select>は id="selRounds"（単数）
   const legs = Number((el.selRound?.value)||"1");
   div.schedule.rounds = makeRoundRobin(div.memberTeamIds.slice(), legs);
   div.schedule.currentRound = 0;
