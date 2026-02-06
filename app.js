@@ -100,6 +100,19 @@ const el = {
   btnSaveStandingsSnapshot: document.getElementById("btnSaveStandingsSnapshot"),
 };
 
+// ---- Sub tab handlers (schedule / standings / teams)
+// NOTE: 以前の版でクリック処理が抜けていて、
+// 「日程/結果」「順位表」「チーム一覧」の切替が効かない → 順位表が表示されない原因になっていました。
+function bindSubTabs(){
+  if (!el.tabSchedule || !el.tabStandings || !el.tabTeams) return;
+  el.tabSchedule.onclick = ()=>{ state.ui.divTab = "schedule"; save(); render(); };
+  el.tabStandings.onclick = ()=>{ state.ui.divTab = "standings"; save(); render(); };
+  el.tabTeams.onclick = ()=>{ state.ui.divTab = "teams"; save(); render(); };
+}
+
+// bind once
+bindSubTabs();
+
 const getLeague = ()=> state.leagues.find(l=>l.id===state.selectedLeagueId) || null;
 const getSeason = (league)=> league?.seasons.find(s=>s.id===state.selectedSeasonId) || null;
 const getDivision = (season)=> season?.divisions.find(d=>d.id===state.selectedDivisionId) || null;

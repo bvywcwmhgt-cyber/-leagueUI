@@ -237,6 +237,7 @@ body{
   max-height: 320px;
   overflow: auto;
   padding-right: 6px;
+  -webkit-overflow-scrolling: touch;
 }
 .pickItem{
   border:1px solid rgba(255,255,255,.08);
