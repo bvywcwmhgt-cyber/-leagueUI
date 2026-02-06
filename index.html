@@ -7,19 +7,251 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="top">
-    <div class="title">League Builder</div>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brandIcon">L</div>
+      <div class="brandText">
+        <div class="brandTitle">League Builder</div>
+        <div class="brandSub" id="crumb">ホーム</div>
+      </div>
+    </div>
+
+    <div class="topActions" id="topActions">
+      <button class="chipBtn" id="btnHomeTop">ホーム</button>
+      <button class="chipBtn" id="btnSeasonPicker" style="display:none;">
+        シーズン切替 ▾
+      </button>
+    </div>
   </header>
 
-  <main class="main">
-    <section class="panel">
-      <h2>日程 / 結果</h2>
-      <div class="controls">
-        <button id="gen">日程を作成</button>
-        <button id="reset">リセット</button>
+  <!-- Season switch dropdown (collapsible) -->
+  <div class="dropdown" id="seasonDropdown" style="display:none;">
+    <div class="dropdownInner">
+      <div class="dropdownTitle">シーズン</div>
+      <div class="dropdownList" id="seasonListTop"></div>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <!-- HOME -->
+    <section class="panel" id="viewHome">
+      <div class="panelHead">
+        <div class="panelTitle">リーグ</div>
+        <div class="panelMeta">リーグを作成して管理します</div>
       </div>
-      <div id="matches" class="matches"></div>
+
+      <div class="tools">
+        <button class="btnPrimary" id="btnAddLeague">リーグ追加</button>
+      </div>
+
+      <div class="grid2" id="leagueGrid"></div>
     </section>
+
+    <!-- LEAGUE MANAGER -->
+    <section class="panel" id="viewLeague" style="display:none;">
+      <div class="panelHead">
+        <div>
+          <div class="panelTitle" id="leagueTitle">リーグ</div>
+          <div class="panelMeta" id="leagueMeta">リーグ設定 / チーム / シーズン</div>
+        </div>
+        <div class="headRight">
+          <button class="chipBtn" id="btnBackHome">戻る</button>
+        </div>
+      </div>
+
+      <div class="subPanel">
+        <div class="subHead">
+          <div class="subTitle">リーグ設定</div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label>リーグ名</label>
+            <input id="leagueName" placeholder="League1" />
+          </div>
+          <div class="field">
+            <label>ロゴ</label>
+            <div class="logoPick">
+              <div class="sqLogo" id="leagueLogoPreview">L</div>
+              <input type="file" accept="image/*" id="leagueLogoFile" />
+            </div>
+          </div>
+          <div class="field">
+            <label>&nbsp;</label>
+            <button class="btnPrimary" id="btnSaveLeague">保存</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="cols">
+        <div class="col">
+          <div class="subPanel">
+            <div class="subHead">
+              <div class="subTitle">チーム</div>
+              <button class="btnGhost" id="btnAddTeam">チーム追加</button>
+            </div>
+            <div class="grid2 scrollBox" id="teamGrid"></div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="subPanel">
+            <div class="subHead">
+              <div class="subTitle">シーズン</div>
+              <button class="btnGhost" id="btnAddSeason">シーズン追加</button>
+            </div>
+            <div class="scrollBox" id="seasonList"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEASON -->
+    <section class="panel" id="viewSeason" style="display:none;">
+      <div class="panelHead">
+        <div>
+          <div class="panelTitle" id="seasonTitle">Season</div>
+          <div class="panelMeta" id="seasonMeta">ディビジョンを作成して管理します</div>
+        </div>
+        <div class="headRight">
+          <button class="chipBtn" id="btnBackLeague">リーグへ</button>
+        </div>
+      </div>
+
+      <div class="subPanel compact">
+        <div class="subHead">
+          <div class="subTitle">シーズン設定</div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label>シーズン名</label>
+            <input id="seasonName" placeholder="Season 1" />
+          </div>
+          <div class="field">
+            <label>&nbsp;</label>
+            <button class="btnPrimary" id="btnSaveSeason">保存</button>
+          </div>
+          <div class="field">
+            <label>&nbsp;</label>
+            <button class="btnDanger" id="btnDeleteSeason">削除</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="subPanel">
+        <div class="subHead">
+          <div class="subTitle">ディビジョン</div>
+          <button class="btnGhost" id="btnAddDivision">ディビジョン追加</button>
+        </div>
+
+        <div class="divisionListWrap">
+          <div class="divisionButtons" id="divisionButtons"></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="divisionEditor" id="divisionEditor" style="display:none;">
+          <div class="subHead">
+            <div class="subTitle" id="divisionTitle">Division</div>
+            <div class="rightRow">
+              <button class="btnGhost" id="btnToggleDivEdit">編集 ▾</button>
+              <button class="btnDanger" id="btnDeleteDivision">削除</button>
+            </div>
+          </div>
+
+          <div class="collapse" id="divEditCollapse" style="display:none;">
+            <div class="row">
+              <div class="field">
+                <label>ディビジョン名</label>
+                <input id="divisionName" placeholder="Division1" />
+              </div>
+              <div class="field">
+                <label>ロゴ</label>
+                <div class="logoPick">
+                  <div class="sqLogo" id="divisionLogoPreview">D</div>
+                  <input type="file" accept="image/*" id="divisionLogoFile" />
+                </div>
+              </div>
+              <div class="field">
+                <label>&nbsp;</label>
+                <button class="btnPrimary" id="btnSaveDivision">保存</button>
+              </div>
+            </div>
+
+            <div class="subHead thin">
+              <div class="subTitle">参加チーム</div>
+              <div class="subMeta">リーグに登録済みのチームから選択</div>
+            </div>
+            <div class="scrollBox teamPick" id="divisionTeamPick"></div>
+          </div>
+
+          <div class="divNav">
+            <button class="tabBtn active" data-tab="schedule">日程/結果</button>
+            <button class="tabBtn" data-tab="standings">順位表</button>
+            <button class="tabBtn" data-tab="teams">チーム一覧</button>
+          </div>
+
+          <div class="divTab" id="tabSchedule">
+            <div class="tools">
+              <button class="btnPrimary" id="btnGenSchedule">日程を作成</button>
+              <select id="selRounds" class="select">
+                <option value="1">1回総当たり</option>
+                <option value="2">2回総当たり</option>
+              </select>
+              <button class="btnDanger" id="btnResetSchedule">日程リセット</button>
+            </div>
+
+            <div class="matchdayRow">
+              <div class="matchdayLabel">節</div>
+              <div class="matchdayButtons" id="matchdayButtons"></div>
+            </div>
+
+            <div class="matchList" id="matchList"></div>
+
+            <div class="divider"></div>
+
+            <div class="subHead thin">
+              <div class="subTitle">任意の試合（リーグ全体）</div>
+              <div class="subMeta">ディビジョン外</div>
+            </div>
+
+            <div class="freeForm">
+              <div class="field">
+                <label>試合名</label>
+                <input id="freeName" placeholder="例：Super Cup / Friendly など" />
+              </div>
+              <div class="field">
+                <label>ホーム</label>
+                <select id="freeHome"></select>
+              </div>
+              <div class="field">
+                <label>アウェイ</label>
+                <select id="freeAway"></select>
+              </div>
+              <button id="btnAddFree" class="btnPrimary">追加</button>
+            </div>
+
+            <div class="matchList compact" id="freeList"></div>
+          </div>
+
+          <div class="divTab" id="tabStandings" style="display:none;">
+            <div class="emptyNote">順位表は次で実装します</div>
+          </div>
+
+          <div class="divTab" id="tabTeams" style="display:none;">
+            <div class="emptyNote">チーム一覧は次で実装します</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="hint">
+      <div class="hintTitle">メモ</div>
+      <div class="hintText">
+        ・V26 を基準に外部参照（index/style/app）で再構築<br/>
+        ・日程/結果は 1試合=1行（HOME左赤 / AWAY右青）<br/>
+        ・データはブラウザに保存（localStorage）<br/>
+      </div>
+    </aside>
   </main>
 
   <script src="app.js"></script>
